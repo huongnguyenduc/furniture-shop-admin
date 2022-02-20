@@ -8,7 +8,11 @@ export default {
       routes: [
         {
           path: '/Products',
-          component: './Products',
+          component: './Products/index',
+        },
+        {
+          path: '/Products/create',
+          component: './Products/createProduct/index',
         },
         {
           path: '/',
