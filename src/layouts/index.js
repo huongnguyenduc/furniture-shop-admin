@@ -48,7 +48,7 @@ function BasicLayout(props) {
         <Menu.Item className={styles.menuItems} key="6" icon={<TagsOutlined className={styles.menuIcons}/>}>
           <span className={styles.menuTitle}>Khuyến Mại</span>
         </Menu.Item>
-        <Menu.Item className={styles.menuItems} key="7" icon={<PieChartOutlined className={styles.menuIcons}/>}>
+        <Menu.Item className={styles.menuItems} key="7" icon={<PieChartOutlined className={styles.menuIcons}/>} onClick = {() => router.push('/report')} >
           <span className={styles.menuTitle}>Báo Cáo</span>
         </Menu.Item>
       </Menu>

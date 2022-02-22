@@ -38,10 +38,11 @@ const CreateProduct = () => {
       >
            <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }]}>
           <Col span={24}>
-            <Title>Thêm sản phẩm mới</Title>
+            <Title className={styles.title}>THÊM SẢN PHẨM MỚI</Title>
           </Col>
           <Col span={10}>
             <Form.Item
+              className={styles.formItems}
               label="TÊN SẢN PHẨM"
               name="name"
               rules={[
@@ -51,11 +52,12 @@ const CreateProduct = () => {
                 },
               ]}
             >
-              <Input placeholder="Tên sản phẩm" />
+              <Input className={styles.inputItems} placeholder="Tên sản phẩm" />
             </Form.Item>
           </Col>
           <Col span={5}>
             <Form.Item
+              className={styles.formItems}
               label="LOẠI SẢN PHẨM"
               name="category"
               rules={[
@@ -65,25 +67,27 @@ const CreateProduct = () => {
                 },
               ]}
             >
-              <Input placeholder="Loại sản phẩm" />
+              <Input  className={styles.inputItems} placeholder="Loại sản phẩm" />
             </Form.Item>
           </Col>
           <Col span={5}>
             <Form.Item
+              className={styles.formItems}
               label="THƯƠNG HIỆU"
               name="brand"
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng điền loại sản phẩm!',
+                  message: 'Vui lòng điền thương hiệu sản phẩm!',
                 },
               ]}
             >
-              <Input placeholder="Loại sản phẩm" />
+              <Input className={styles.inputItems} placeholder="Thương hiệu" />
             </Form.Item>
           </Col>
           <Col span={10}>
             <Form.Item
+              className={styles.formItems}
               label="MÔ TẢ"
               name="description"
               rules={[
@@ -93,21 +97,23 @@ const CreateProduct = () => {
                 },
               ]}
             >
-              <TextArea placeholder="Mô tả sản phẩm" />
+              <TextArea className={styles.inputItems} placeholder="Mô tả sản phẩm" />
             </Form.Item>
           </Col>
           <Col span={4}>
             <Form.Item
+              className={styles.formItems}
               label="SỐ LƯỢNG"
               name="quantity"
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng điền mô tả sản phẩm!',
+                  message: 'Vui lòng điền số lượng sản phẩm!',
                 },
               ]}
             >
               <InputNumber
+               className={styles.numberInputItems}
                defaultValue={10}
                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                parser={value => value.replace(/\$\s?|(,*)/g, '')}
@@ -122,11 +128,12 @@ const CreateProduct = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng điền mô tả sản phẩm!',
+                  message: 'Vui lòng điền giá nhập sản phẩm!',
                 },
               ]}
             >
               <InputNumber
+               className={styles.numberInputItems}
                defaultValue={1000}
                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                parser={value => value.replace(/\$\s?|(,*)/g, '')}
@@ -135,16 +142,18 @@ const CreateProduct = () => {
           </Col>
           <Col span={3}>
             <Form.Item
+              className={styles.formItems}
               label="GIÁ BÁN"
               name="price"
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng điền mô tả sản phẩm!',
+                  message: 'Vui lòng điền giá bán sản phẩm!',
                 },
               ]}
             >
               <InputNumber
+               className={styles.numberInputItems}
                defaultValue={1000}
                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                parser={value => value.replace(/\$\s?|(,*)/g, '')}
@@ -152,15 +161,18 @@ const CreateProduct = () => {
             </Form.Item>
           </Col>
           <Col span={10}>
-          <Form.Item label="HÌNH ẢNH">
+          <Form.Item 
+          className={styles.formItems}
+          label="HÌNH ẢNH">
             <Form.Item 
+                className={styles.formItems}
                 name="dragger"  
                 valuePropName="fileList" 
                 getValueFromEvent={normFile} noStyle 
                 rules={[
                 {
                   required: true,
-                  message: 'Vui lòng điền mô tả sản phẩm!',
+                  message: 'Vui lòng thêm hình ảnh sản phẩm!',
                 },
               ]}>
                 <Upload.Dragger name="files" action="/upload.do">
@@ -177,6 +189,7 @@ const CreateProduct = () => {
             <Row>
               <Col span={24}>
                 <Form.Item
+                className={styles.formItems}
                 label="CHẤT LIỆU"
                 name="material"
                 rules={[
@@ -186,7 +199,7 @@ const CreateProduct = () => {
                 },
                 ]}
                 >
-                    <Input placeholder="Chất liệu" />
+                    <Input className={styles.inputItems} placeholder="Chất liệu" />
                 </Form.Item>
               </Col>
               <Col span={4} offset={15}>

@@ -1,5 +1,9 @@
 // ref: https://umijs.org/config/
 export default {
+  theme: {
+   '@background-input': '#EDF2F7',
+   'font-family': 'Open Sans, serif',
+  },
   treeShaking: true,
   routes: [
     {
@@ -7,12 +11,16 @@ export default {
       component: '../layouts/index',
       routes: [
         {
-          path: '/Products',
+          path: '/products',
           component: './Products/index',
         },
         {
-          path: '/Products/create',
+          path: '/products/create',
           component: './Products/createProduct/index',
+        },
+        {
+          path: '/report',
+          component: './Report/index',
         },
         {
           path: '/',

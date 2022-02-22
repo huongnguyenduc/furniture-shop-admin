@@ -1,6 +1,7 @@
 import  React, { useState,} from 'react'
 import { connect } from 'dva';
 import { Layout, Table, Button, Modal } from 'antd';
+import {PlusOutlined, } from '@ant-design/icons';
 import styles from './styles.less';
 import ActionRender from '../../components/product/actionRender/index';
 import ViewDetail from '../../components/product/viewDetail/index';
@@ -66,7 +67,7 @@ const Product = props => {
   <Layout className={styles.layoutContainer}>
       <ViewDetail onCancel={handleCancel} visible = {isModalVisible} />
       <Header className={styles.productHeader}>
-        <span>PRODUCTS LIST</span> 
+        <span className={styles.title}>DANH SÁCH SẢN PHẨM</span> 
         <Button
           type="primary"
           size="large"
@@ -75,7 +76,8 @@ const Product = props => {
             router.push('/products/create');
           }}
         >
-          <div className={styles.myTextButton}>Thêm sản phẩm</div>
+          <PlusOutlined className ={styles.plusIcon}/>
+          <div className={styles.myTextButton}> Tạo mới</div>
         </Button>
       </Header>
       <Content className= {styles.productContent}>
