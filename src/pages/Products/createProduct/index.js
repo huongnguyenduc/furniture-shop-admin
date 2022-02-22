@@ -1,24 +1,24 @@
-import React from 'react'
-import styles from './styles.less'
-import {Form, Upload, Row, Col, Input, Typography, Button, InputNumber } from 'antd'
-import {InboxOutlined,  } from '@ant-design/icons'
+import React from 'react';
+import styles from './styles.less';
+import { Form, Upload, Row, Col, Input, Typography, Button, InputNumber } from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
 import { router } from 'umi';
-const normFile = (e) => {
-    console.log('Upload event:', e);
-  
-    if (Array.isArray(e)) {
-      return e;
-    }
-  
-    return e && e.fileList;
-  };
+const normFile = e => {
+  console.log('Upload event:', e);
+
+  if (Array.isArray(e)) {
+    return e;
+  }
+
+  return e && e.fileList;
+};
 const CreateProduct = () => {
-    const [form] = Form.useForm();
-    const { TextArea } = Input;
-    const { Title } = Typography;
+  const [form] = Form.useForm();
+  const { TextArea } = Input;
+  const { Title } = Typography;
   return (
     <div>
-        <Form
+      <Form
         name="create-product"
         labelCol={{
           span: 12,
@@ -36,7 +36,7 @@ const CreateProduct = () => {
         autoComplete="off"
         className={styles.container}
       >
-           <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }]}>
+        <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }]}>
           <Col span={24}>
             <Title>Thêm sản phẩm mới</Title>
           </Col>
@@ -108,9 +108,9 @@ const CreateProduct = () => {
               ]}
             >
               <InputNumber
-               defaultValue={10}
-               formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-               parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                defaultValue={10}
+                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                parser={value => value.replace(/\$\s?|(,*)/g, '')}
               />
             </Form.Item>
           </Col>
@@ -127,9 +127,9 @@ const CreateProduct = () => {
               ]}
             >
               <InputNumber
-               defaultValue={1000}
-               formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-               parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                defaultValue={1000}
+                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                parser={value => value.replace(/\$\s?|(,*)/g, '')}
               />
             </Form.Item>
           </Col>
@@ -145,83 +145,85 @@ const CreateProduct = () => {
               ]}
             >
               <InputNumber
-               defaultValue={1000}
-               formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-               parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                defaultValue={1000}
+                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                parser={value => value.replace(/\$\s?|(,*)/g, '')}
               />
             </Form.Item>
           </Col>
           <Col span={10}>
-          <Form.Item label="HÌNH ẢNH">
-            <Form.Item 
-                name="dragger"  
-                valuePropName="fileList" 
-                getValueFromEvent={normFile} noStyle 
+            <Form.Item label="HÌNH ẢNH">
+              <Form.Item
+                name="dragger"
+                valuePropName="fileList"
+                getValueFromEvent={normFile}
+                noStyle
                 rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng điền mô tả sản phẩm!',
-                },
-              ]}>
+                  {
+                    required: true,
+                    message: 'Vui lòng điền mô tả sản phẩm!',
+                  },
+                ]}
+              >
                 <Upload.Dragger name="files" action="/upload.do">
-                    <p className="ant-upload-drag-icon">
+                  <p className="ant-upload-drag-icon">
                     <InboxOutlined />
-                    </p>
-                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                    <p className="ant-upload-hint">Support for a single or bulk upload.</p>
+                  </p>
+                  <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                  <p className="ant-upload-hint">Support for a single or bulk upload.</p>
                 </Upload.Dragger>
-            </Form.Item>
+              </Form.Item>
             </Form.Item>
           </Col>
           <Col span={10}>
             <Row>
               <Col span={24}>
                 <Form.Item
-                label="CHẤT LIỆU"
-                name="material"
-                rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng điền chất liệu sản phẩm!',
-                },
-                ]}
+                  label="CHẤT LIỆU"
+                  name="material"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng điền chất liệu sản phẩm!',
+                    },
+                  ]}
                 >
-                    <Input placeholder="Chất liệu" />
+                  <Input placeholder="Chất liệu" />
                 </Form.Item>
               </Col>
               <Col span={4} offset={15}>
-              <Form.Item>
-                <Button
-                className={styles.myButton}
-                  onClick={() => {
-                    router.push('/products');
-                  }}
-                  size="large"
-                  htmlType="button"
-                >
+                <Form.Item>
+                  <Button
+                    className={styles.myButton}
+                    onClick={() => {
+                      router.push('/products');
+                    }}
+                    size="large"
+                    htmlType="button"
+                  >
                     Hủy
-                    </Button>
+                  </Button>
                 </Form.Item>
               </Col>
-              <Col span={3} >
+              <Col span={3}>
                 <Form.Item>
-                    <Button
+                  <Button
                     type="primary"
                     className={styles.myButton}
                     size="large"
                     // onClick={handleAllFields}
                     // loading={isLoading}
-                    >
+                  >
                     Thêm mới
-                    </Button>
+                  </Button>
                 </Form.Item>
               </Col>
             </Row>
           </Col>
-          </Row>
+        </Row>
       </Form>
     </div>
-  )
-}
+  );
+};
 
-export default CreateProduct
+export default CreateProduct;

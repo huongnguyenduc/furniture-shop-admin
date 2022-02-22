@@ -9,7 +9,7 @@ const { Content, Header } = Layout
 
 const Product = props => {
     const {products} = props;
-    const [isModalVisible, setIsModalVisible] = useState(true);
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const columns = [
         {
             title: 'ID',

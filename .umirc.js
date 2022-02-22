@@ -7,6 +7,10 @@ export default {
       component: '../layouts/index',
       routes: [
         {
+          path: '/dashboard',
+          component: './Dashboard/index',
+        },
+        {
           path: '/Products',
           component: './Products/index',
         },
@@ -16,7 +20,7 @@ export default {
         },
         {
           path: '/',
-          component: '../pages/index',
+          component: './Dashboard/index',
         },
       ],
     },
