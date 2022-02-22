@@ -6,7 +6,7 @@ import {  LeftOutlined, RightOutlined }from '@ant-design/icons';
 const ViewDetail = ({visible, onCancel, products}) => {
   return (
     <Modal 
-    className={styles.modalContainer}
+    className= 'cc'
     title= {products[1].name} 
     footer={null}
     visible={visible} 
@@ -52,6 +52,6 @@ const ViewDetail = ({visible, onCancel, products}) => {
   )
 }
 
-export default  connect(({ products }) => ({
-    products,
+export default  connect( state => ({
+    products: state.products
   })) (ViewDetail)
