@@ -1,7 +1,73 @@
 export default {
-    namespace: 'chart',
-    state: [
+    namespace: 'report',
+    state: {
+      products:[
         {
+          name: 'Bàn học',
+          sales: 100,
+          vote: 5,
+          price: 1000000,
+          status: 'Còn hàng'
+        },
+        {
+          name: 'Bàn học',
+          sales: 100,
+          vote: 5,
+          price: 1000000,
+          status: 'Còn hàng'
+        },
+        {
+          name: 'Bàn học',
+          sales: 100,
+          vote: 5,
+          price: 1000000,
+          status: 'Còn hàng'
+        },
+        {
+          name: 'Bàn học',
+          sales: 100,
+          vote: 5,
+          price: 1000000,
+          status: 'Còn hàng'
+        },
+        {
+          name: 'Bàn học',
+          sales: 100,
+          vote: 5,
+          price: 1000000,
+          status: 'Còn hàng'
+        },
+      ],
+      customers: [
+        {
+          "name": "Annete Black",
+          "image": "https://cdn.pixabay.com/photo/2016/03/23/04/01/woman-1274056_960_720.jpg",
+          "email" : "annete@gmail.com"
+        },
+        {
+          "name": "Annete Black",
+          "image": "https://cdn.pixabay.com/photo/2016/03/23/04/01/woman-1274056_960_720.jpg",
+          "email" : "annete@gmail.com"
+        },
+        {
+          "name": "Annete Black",
+          "image": "https://cdn.pixabay.com/photo/2016/03/23/04/01/woman-1274056_960_720.jpg",
+          "email" : "annete@gmail.com"
+        },
+        {
+          "name": "Annete Black",
+          "image": "https://cdn.pixabay.com/photo/2016/03/23/04/01/woman-1274056_960_720.jpg",
+          "email" : "annete@gmail.com"
+        },
+        {
+          "name": "Annete Black",
+          "image": "https://cdn.pixabay.com/photo/2016/03/23/04/01/woman-1274056_960_720.jpg",
+          "email" : "annete@gmail.com"
+        },
+        
+      ],
+      chart: [
+         {
             "time": "1850",
             "value": 45,
             "category": "Sales"
@@ -221,7 +287,8 @@ export default {
             "value": 90,
             "category": "New Customers"
           },
-    ],
+        ],
+        },
     reducers: {
     },
   };

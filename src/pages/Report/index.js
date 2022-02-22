@@ -11,10 +11,14 @@ import {
   RobotOutlined } 
 from '@ant-design/icons';
 import styles from './styles.less'  
+import CustomerItem from '../../components/report/customerItem/index'
+import ProductItem from '../../components/report/productItem/index'
 const Report = props => {
   const { RangePicker } = DatePicker;
   const { Option } = Select;
-  const data = useSelector(state => state.chart)
+  const data = useSelector(state => state.report.chart)
+  const cus = useSelector(state => state.report.customers)
+  const products = useSelector(state => state.report.products)
   const config = {
     data,
     xField: 'time',
@@ -42,10 +46,10 @@ const Report = props => {
       <Col className={styles.chartContainer} span = {14} >
         <div className={styles.chartPicker}>
           <RangePicker className={styles.picker} />
-          <Select className={styles.picker} defaultValue="month" style={{ width: 120 }} >
-            <Option value="week">Week</Option>
-            <Option value="month">Month</Option>
-            <Option value="year">Year</Option>
+          <Select className='picker' defaultValue="month" style={{ width: 120 }} >
+            <Option value="week">Tuần</Option>
+            <Option value="month">Tháng</Option>
+            <Option value="year">Năm</Option>
           </Select>
         </div>
         <div className={styles.chartInfor}> 
@@ -58,7 +62,7 @@ const Report = props => {
          <StockOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
            <div>
              <p className={styles.titleInfor}>
-               Total Sales
+               Tổng doanh số
              </p>
              <span className={styles.bodyInfor}>
                $321K
@@ -69,7 +73,7 @@ const Report = props => {
            <DollarCircleOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
            <div>
              <p className={styles.titleInfor}>
-               Total Cost
+               Tổng chi phí
              </p>
              <span className={styles.bodyInfor}>
                $321K
@@ -80,7 +84,7 @@ const Report = props => {
            <TrademarkOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
            <div>
              <p className={styles.titleInfor}>
-               Today's Revenue
+               Doanh thu hôm nay
              </p>
              <span className={styles.bodyInfor}>
                $321K
@@ -91,7 +95,7 @@ const Report = props => {
            <FileDoneOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
            <div>
              <p className={styles.titleInfor}>
-               Total Orders
+               Tổng đơn đặt
              </p>
              <span className={styles.bodyInfor}>
                $321K
@@ -102,7 +106,7 @@ const Report = props => {
            <RobotOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
            <div>
              <p className={styles.titleInfor}>
-               Visit 
+               Lượt ghé thăm
              </p>
              <span className={styles.bodyInfor}>
                $321K
@@ -113,7 +117,7 @@ const Report = props => {
            <UserAddOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
            <div>
              <p className={styles.titleInfor}>
-               New Customers
+               Khách hàng mới
              </p>
              <span className={styles.bodyInfor}>
                $321K
@@ -123,8 +127,18 @@ const Report = props => {
         </Row>
       </Col>
       <Col className={styles.customerContainer} span={6}>
+        <div className={styles.customerTitle}>Khách mua nhiều nhất</div>
+        {cus.map((item, index) => {
+          return (
+            <div key={`key-${index}`}>
+            <CustomerItem url={item.image} name={item.name} email={item.email} />
+            </div>
+          )
+        })}
       </Col>
       <Col className={styles.productContainer} span={14}>
+      <div className={styles.productTitle}>Sản phẩm bán chạy</div>
+      <ProductItem products ={products} />
       </Col>
     </Row>
    </Layout>

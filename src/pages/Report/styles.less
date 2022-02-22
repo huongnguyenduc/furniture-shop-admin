@@ -5,18 +5,18 @@
     margin-left: 40px;
     .chartPicker{
         margin: 20px 0px 0px 40px;
-        width: 450px;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         .picker{
             border-radius: 5px;
-            border-style: hidden;
+            border: none;
             background-color: var(--input-background);
             color: black;
             font-weight: 900;
         }
     }
     .chartInfor{
+        height: calc(100% - 40px);
         margin: 20px 10px 0px 10px;
     }
 }
@@ -25,7 +25,8 @@
   margin-left: 10px;
   .itemsInfor{
     background-color: white;
-    margin: 0px 5px 25px 15px;
+    margin-left: 15px;
+    margin-bottom: 15px;
     height: 14vh;
     align-items: center;
     display: flex;
@@ -58,10 +59,22 @@
  background-color: white;
  height: 40vh;
  border-radius: 15px;
+ .customerTitle{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    margin: 20px 0px 20px 20px;
+ }
 }
 .productContainer{
  margin: 30px 15px 10px 30px;
  background-color: white;
  height: 40vh;
  border-radius: 15px;
+ .productTitle{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    margin: 20px 0px 20px 20px;
+ }
 }
