@@ -41,6 +41,8 @@ const CreateProduct = () => {
             <Title className={styles.title}>THÊM SẢN PHẨM MỚI</Title>
           </Col>
           <Col span={10}>
+            <Row gutter={[{ xs: 8, sm: 16, md: 24 }]}>
+            <Col span ={24}>
             <Form.Item
               className={styles.formItems}
               label="TÊN SẢN PHẨM"
@@ -54,8 +56,8 @@ const CreateProduct = () => {
             >
               <Input className={styles.inputItems} placeholder="Tên sản phẩm" />
             </Form.Item>
-          </Col>
-          <Col span={5}>
+            </Col>
+            <Col span={12}>
             <Form.Item
               className={styles.formItems}
               label="LOẠI SẢN PHẨM"
@@ -70,7 +72,7 @@ const CreateProduct = () => {
               <Input  className={styles.inputItems} placeholder="Loại sản phẩm" />
             </Form.Item>
           </Col>
-          <Col span={5}>
+          <Col span={12}>
             <Form.Item
               className={styles.formItems}
               label="THƯƠNG HIỆU"
@@ -85,7 +87,7 @@ const CreateProduct = () => {
               <Input className={styles.inputItems} placeholder="Thương hiệu" />
             </Form.Item>
           </Col>
-          <Col span={10}>
+          <Col span={24}>
             <Form.Item
               className={styles.formItems}
               label="MÔ TẢ"
@@ -100,70 +102,10 @@ const CreateProduct = () => {
               <TextArea className={styles.inputItems} placeholder="Mô tả sản phẩm" />
             </Form.Item>
           </Col>
-          <Col span={4}>
-            <Form.Item
-              className={styles.formItems}
-              label="SỐ LƯỢNG"
-              name="quantity"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng điền số lượng sản phẩm!',
-                },
-              ]}
-            >
-              <InputNumber
-               className={styles.numberInputItems}
-               defaultValue={10}
-               formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-               parser={value => value.replace(/\$\s?|(,*)/g, '')}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={3}>
-            <Form.Item
-              className={styles.formItems}
-              label="GIÁ NHẬP"
-              name="orignalPrice"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng điền giá nhập sản phẩm!',
-                },
-              ]}
-            >
-              <InputNumber
-               className={styles.numberInputItems}
-               defaultValue={1000}
-               formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-               parser={value => value.replace(/\$\s?|(,*)/g, '')}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={3}>
-            <Form.Item
-              className={styles.formItems}
-              label="GIÁ BÁN"
-              name="price"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng điền giá bán sản phẩm!',
-                },
-              ]}
-            >
-              <InputNumber
-               className={styles.numberInputItems}
-               defaultValue={1000}
-               formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-               parser={value => value.replace(/\$\s?|(,*)/g, '')}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={10}>
+          <Col span={24}>
           <Form.Item 
           className={styles.formItems}
-          label="HÌNH ẢNH">
+          label="HÌNH ẢNH CHÍNH">
             <Form.Item 
                 className={styles.formItems}
                 name="dragger"  
@@ -185,24 +127,7 @@ const CreateProduct = () => {
               </Form.Item>
             </Form.Item>
           </Col>
-          <Col span={10}>
-            <Row>
-              <Col span={24}>
-                <Form.Item
-                className={styles.formItems}
-                label="CHẤT LIỆU"
-                name="material"
-                rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng điền chất liệu sản phẩm!',
-                },
-                ]}
-                >
-                    <Input className={styles.inputItems} placeholder="Chất liệu" />
-                </Form.Item>
-              </Col>
-              <Col span={4} offset={15}>
+          <Col span={4} offset={15}>
                 <Form.Item>
                   <Button
                     className={styles.myButton}
