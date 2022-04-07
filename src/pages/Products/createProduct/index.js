@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './styles.less';
-import { Form, Upload, Row, Col, Input, Typography, Button, InputNumber } from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
+import { connect, useSelector } from 'dva';
+import {Affix, Form, Upload, Row, Col, Input, Typography, Button, InputNumber } from 'antd';
+import { InboxOutlined,UploadOutlined,CloseOutlined } from '@ant-design/icons';
 import { router } from 'umi';
 const normFile = e => {
   console.log('Upload event:', e);
@@ -12,10 +13,43 @@ const normFile = e => {
 
   return e && e.fileList;
 };
-const CreateProduct = () => {
+const CreateProduct = props => {
+  const { dispatch } = props;
+  let productTemp = {
+    product_id: 2,
+    product_name: 'HUY NÈ', 
+    url: '',
+    brand_id: 0,
+    brand_name: '',
+    category_id: 0, 
+    category_name: '',
+    variants : []
+  };
+  let variant ={
+    name:'',
+    price: '',
+  }
+  const categories = useSelector(state => state.category.categories);
+  categories[0].options.forEach(element => {
+    variant[element] = '';
+  });
+  productTemp.variants.push(variant);
+  const [newProduct, setnewProduct] = useState(productTemp);
   const [form] = Form.useForm();
   const { TextArea } = Input;
   const { Title } = Typography;
+  const onClickAddVariant = () => {
+    let arr = newProduct.variants;
+    arr.push(variant);
+    setnewProduct({
+      ...newProduct,
+      variants: arr
+    });
+    console.log(arr);
+  };
+  const onDelete =  (item) => {
+
+  }
   return (
     <div>
       <Form
@@ -37,10 +71,24 @@ const CreateProduct = () => {
         className={styles.container}
       >
         <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }]}>
-          <Col span={24}>
-            <Title className={styles.title}>THÊM SẢN PHẨM MỚI</Title>
+          <Col span={6}>
+            <Affix offsetTop={70}>
+              <Title className={styles.title}>THÊM SẢN PHẨM MỚI</Title>
+            </Affix>
           </Col>
-          <Col span={10}>
+          <Col span ={5} offset={13}>
+          <Button
+                    type="primary"
+                    className={styles.buttonAddVariant}
+                    size="medium"
+                     onClick={onClickAddVariant}
+                    // loading={isLoading}
+                  >
+                    Thêm phiên bản
+            </Button>
+          </Col>
+          <Col span={9}>
+          <Affix offsetTop={130}>
             <Row gutter={[{ xs: 8, sm: 16, md: 24 }]}>
             <Col span ={24}>
             <Form.Item
@@ -54,10 +102,10 @@ const CreateProduct = () => {
                 },
               ]}
             >
-              <Input className={styles.inputItems} placeholder="Tên sản phẩm" />
+              <Input className={styles.inputItems} />
             </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={13}>
             <Form.Item
               className={styles.formItems}
               label="LOẠI SẢN PHẨM"
@@ -69,10 +117,10 @@ const CreateProduct = () => {
                 },
               ]}
             >
-              <Input  className={styles.inputItems} placeholder="Loại sản phẩm" />
+              <Input  className={styles.inputItems} />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={11}>
             <Form.Item
               className={styles.formItems}
               label="THƯƠNG HIỆU"
@@ -84,7 +132,7 @@ const CreateProduct = () => {
                 },
               ]}
             >
-              <Input className={styles.inputItems} placeholder="Thương hiệu" />
+              <Input className={styles.inputItems} />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -99,7 +147,7 @@ const CreateProduct = () => {
                 },
               ]}
             >
-              <TextArea className={styles.inputItems} placeholder="Mô tả sản phẩm" />
+              <TextArea className={styles.inputItems} />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -150,10 +198,78 @@ const CreateProduct = () => {
                     // onClick={handleAllFields}
                     // loading={isLoading}
                   >
-                    Thêm mới
+                    Hoàn tất
                   </Button>
                 </Form.Item>
               </Col>
+            </Row>
+          </Affix>
+          </Col>
+          <Col span={14}>
+            <Row gutter={[{ xs: 8, sm: 16, md: 24 }]}>
+            {newProduct.variants.map((item, index) => {
+              return (
+                <Col span={24} className={styles.variantContainer}>
+                <Row gutter={[{ xs: 8, sm: 16, md: 24 }]}>
+                  { Object.entries(item).map((key, value) => {
+                  let label = key +index;
+                  let temp = key.toString().toUpperCase().replace(/,/,'')
+                  if(key.includes('name')) 
+                  return (
+                    <Col span={24}>
+                      <Row> 
+                        <Col span={23}>
+                          <Form.Item
+                          className={styles.formItems}
+                          label="TÊN PHIÊN BẢN"
+                          name={label}
+                          rules={[
+                          {
+                            required: true,
+                            message: 'Vui lòng điền thương hiệu sản phẩm!',
+                          },
+                          ]}
+                          >
+                            <Input className={styles.inputVariantName} />
+                          </Form.Item>
+                        </Col>
+                      <Col span={1}>
+                        <CloseOutlined className={styles.iconDelete} onClick={() => onDelete(item)} />
+                      </Col>
+                      </Row>
+                    </Col>
+                  )
+                  return(
+                    <Col span={10}>
+                      <Form.Item
+                      className={styles.formItems}
+                      label={temp}
+                      name={label}
+                      rules={[
+                      {
+                        required: false,
+                        message: 'Vui lòng điền thương hiệu sản phẩm!',
+                      },
+                      ]}
+                    >
+                        <Input className={styles.inputVariantItems} />
+                      </Form.Item>
+                    </Col>
+                  );
+                })}
+                  <Col span={24} >
+                    <Upload
+                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    listType="picture"
+                    maxCount={1}
+                    >
+                       <Button className={styles.uploader} size='middle' icon={<UploadOutlined />}>Image</Button>
+                    </Upload>
+                  </Col>
+                </Row>
+                </Col>
+              )
+            })}
             </Row>
           </Col>
         </Row>
