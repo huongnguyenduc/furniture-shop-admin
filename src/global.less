@@ -18,8 +18,14 @@ body {
       text-align: center;
     }
   }
-  .ant-select-selector.picker {
+  .ant-select.picker {
+    display: flex;
+    justify-content: space-around;
+    .ant-select-selector {
+    margin-left: 40px;
     border-radius: 5px;
     border-style: hidden;
+    background-color: var(--input-background);
+    }
   }
 }

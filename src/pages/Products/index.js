@@ -1,5 +1,5 @@
 import  React, { useState,} from 'react'
-import { connect } from 'dva';
+import { connect, useSelector } from 'dva';
 import { Layout, Table, Button, Modal } from 'antd';
 import {PlusOutlined, } from '@ant-design/icons';
 import styles from './styles.less';
@@ -9,12 +9,12 @@ import { router } from 'umi';
 const { Content, Header } = Layout
 
 const Product = props => {
-    const {products} = props;
+    const products = useSelector(state => state.products.products);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'id',
+            dataIndex: 'product_id',
             align: 'left',
             width: '4%',
         },

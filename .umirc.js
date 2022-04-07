@@ -23,6 +23,14 @@ export default {
           component: './Products/createProduct/index',
         },
         {
+          path:'/imports',
+          component:'./Import/index',  
+        },
+        {
+          path: '/imports/create',
+          component: './Import/createImport/index',
+        },
+        {
           path: '/report',
           component: './Report/index',
         },
