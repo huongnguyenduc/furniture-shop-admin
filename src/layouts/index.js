@@ -20,6 +20,10 @@ const { Sider, Content } = Layout;
 function BasicLayout(props) {
   const { children } = props;
   const [Collapsed, setCollapsed] = useState(false);
+  window.onunload = () => {
+    // Clear the local storage
+    window.MyStorage.clear()
+  }
   return (
     <Layout>
       <Affix offsetTop={1}>
@@ -56,7 +60,7 @@ function BasicLayout(props) {
             className={styles.menuItems}
             key="3"
             icon={<InboxOutlined className={styles.menuIcons} />}
-            onClick={() => router.push('/products')}
+            onClick={() => router.push('/product')}
           >
             <span className={styles.menuTitle}>Sản Phẩm</span>
           </Menu.Item>
@@ -64,7 +68,7 @@ function BasicLayout(props) {
             className={styles.menuItems}
             key="4"
             icon={<FileDoneOutlined className={styles.menuIcons} />}
-            
+            onClick={() => router.push('/category')}
           >
             <span className={styles.menuTitle}>Phân Loại</span>
           </Menu.Item>
@@ -87,7 +91,7 @@ function BasicLayout(props) {
             className={styles.menuItems}
             key="7"
             icon={<ReconciliationOutlined className={styles.menuIcons} />}
-            onClick={() => router.push('/imports')}
+            onClick={() => router.push('/import')}
           >
             <span className={styles.menuTitle}>Nhập Hàng</span>
           </Menu.Item>

@@ -180,7 +180,7 @@ const CreateProduct = props => {
                   <Button
                     className={styles.myButton}
                     onClick={() => {
-                      router.push('/products');
+                      router.goBack();
                     }}
                     size="large"
                     htmlType="button"
