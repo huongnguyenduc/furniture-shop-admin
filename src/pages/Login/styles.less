@@ -1,0 +1,107 @@
+.backGround {
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-image: url('../../assets/images/back-ground.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .container{
+        height: 85%;
+        width: 65%;
+        margin-top: 3%;
+        margin-left: 17%;
+        border-radius: 20px;
+        .colContainerLeft{
+            height: 100%;
+            width: 50%;
+            border-radius: 20px 0px 0px 20px;
+            background-color: white;
+            .logo{
+                margin: 80px 0px 0px 25%;
+                height: 60px;
+                width:  300px;
+                background-image: url('../../assets/images/logo.png');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            .welcome{
+                 margin: 20px 0px 0px 28%;
+                 font-size: 32px;
+                 font-weight: 900;
+            }
+            .guide{
+                 margin: 10px 0px 0px 20%;
+                 font-size: 16px;
+                 font-weight: 900;
+            }
+            .note{
+                margin: 10px 0px 0px 20%;
+                color: red;
+            }
+            .loginForm{
+                margin: 40px 0px 0px 20%;
+                .formItem{
+                    font-weight: 900;
+                    font-size: 15px;
+                    .inputItem{
+                        height: 50px;
+                        border-radius: 5px;
+                        &:hover {
+                            border-color: #16B9C3;
+                        }
+                        &:focus {
+                            border-color: #16B9C3;
+                        }
+                    }
+                }
+                .buttonSubmit{
+                    margin-left: 4%;
+                    width: 60%;
+                    height: 50px;
+                    background-color: #16B9C3;
+                    font-size: 18px;
+                    font-weight: 600;
+                    border-style: hidden;
+                }
+            }
+        }
+        .colContainerRight{
+            height: 100%;
+            width: 50%;
+            border-radius: 0px 20px 20px 0px;
+            background-image: url('../../assets/images/working-background.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            .sologanContainer{
+                width: 80%;
+                height: 200px;
+                margin-top: 77%;
+                margin-left: 10%;
+                background-color: gray;
+                opacity: 0.7;
+                border: 3px solid white;
+                .sologan{
+                    font-size: 19px;
+                    font-weight: 600;
+                    color: white;
+                    margin: 15px 10px 10px 20px;
+                }
+                .name {
+                    margin: 0px 0px 0px 20px;
+                    font-size: 22px;
+                    font-weight: 900;
+                    color: white;
+                }
+                .decs {
+                    margin: -5px 0px -5px 20px;
+                    color: white;
+                    font-weight: 500;
+                    font-style: italic;
+                }
+            }
+        }
+    }
+}

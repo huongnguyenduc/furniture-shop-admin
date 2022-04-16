@@ -12,3 +12,7 @@ export const getdateTime = () => {
     var dateTime = day+'-'+month+'-'+year;
      return dateTime;
 }
+export function moneyConverter(value) {
+     let dollarUSLocale = Intl.NumberFormat('en-US');
+     return dollarUSLocale.format(value);
+   }

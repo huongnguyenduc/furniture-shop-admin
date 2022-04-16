@@ -7,7 +7,13 @@ export default {
   treeShaking: true,
   routes: [
     {
+      path: '/login',
+      component: '../pages/Login/index'
+    },
+    {
       path: '/',
+      authority: ['ROLE_ADMIN'],
+      Routes: ['./src/wrappers/auth'],
       component: '../layouts/index',
       routes: [
         {
@@ -15,20 +21,36 @@ export default {
           component: './Dashboard/index',
         },
         {
-          path: '/products',
+          path: '/category',
+          component: './Category/index',
+        },
+        {
+          path: '/category/create',
+          component: './Category/createCategory/index',
+        },
+        {
+          path: '/product',
           component: './Products/index',
         },
         {
-          path: '/products/create',
+          path: '/product/create',
           component: './Products/createProduct/index',
         },
         {
-          path:'/imports',
+          path: '/product/edit/:id',
+          component: './Products/editProduct/index.js',
+        },
+        {
+          path:'/import',
           component:'./Import/index',  
         },
         {
-          path: '/imports/create',
+          path: '/import/create',
           component: './Import/createImport/index',
+        },
+        {
+          path: '/import/edit/:id',
+          component: './Import/editImport/index.js',
         },
         {
           path: '/report',
@@ -51,7 +73,7 @@ export default {
         dynamicImport: {
           webpackChunkName: true,
         },
-        title: 'furniture-shop-admin',
+        title: 'gearshop-admin',
         dll: true,
         locale: {
           enable: true,

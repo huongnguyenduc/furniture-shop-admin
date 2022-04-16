@@ -186,7 +186,7 @@ const NewImport = props => {
                   <Button
                     className={styles.myButton}
                     onClick={() => {
-                      router.push('/imports');
+                      router.goBack();
                     }}
                     size="large"
                     htmlType="button"

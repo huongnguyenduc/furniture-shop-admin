@@ -5,6 +5,10 @@ import {PlusOutlined, } from '@ant-design/icons';
 import styles from './styles.less';
 import { router } from 'umi';
 import { create } from 'react-test-renderer';
+import {
+    moneyConverter
+} from '../../Utils/helper';
+import ActionRender from '../../components/imports/actionRender/index';
 const { Content, Header } = Layout
 
 const Import = props => {
@@ -34,6 +38,7 @@ const Import = props => {
             dataIndex: 'total_price',
             align: 'center',
             width: '20%',
+            render: text => { return moneyConverter(text) }
         },
         {
             title: 'Ngày nhập',
@@ -43,12 +48,17 @@ const Import = props => {
         },
         {
             title: 'Hành Động',
-            dataIndex: 'ccc',
             align: 'center',
             width: '15%',
+            render: text =>  <ActionRender showModal = {showModal} text = {text} />
         },
     ];
-   
+   const showModal = () => {
+      return 0;
+   };
+   const editItem = () => {
+
+   }
   return (
    <Layout className={styles.layoutContainer}>
      <Header className={styles.productHeader}>
@@ -58,7 +68,7 @@ const Import = props => {
           size="large"
           className={styles.myButtonStyling}
           onClick={() => {
-              router.push('/imports/create')
+              router.push('/import/create')
           }}
         >
           <PlusOutlined className ={styles.plusIcon}/>
