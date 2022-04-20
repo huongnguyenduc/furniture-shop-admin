@@ -57,6 +57,14 @@ export default {
           component: './Report/index',
         },
         {
+          path: '/voucher',
+          component: './Voucher/index',
+        },
+        {
+          path: '/voucher/create',
+          component: './Voucher/createVoucher/index',
+        },
+        {
           path: '/',
           component: './Dashboard/index',
         },

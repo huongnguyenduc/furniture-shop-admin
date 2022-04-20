@@ -99,6 +99,7 @@ function BasicLayout(props) {
             className={styles.menuItems}
             key="8"
             icon={<TagsOutlined className={styles.menuIcons} />}
+            onClick={() => router.push('/voucher')}
           >
             <span className={styles.menuTitle}>Khuyến Mại</span>
           </Menu.Item>
