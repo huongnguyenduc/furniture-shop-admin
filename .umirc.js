@@ -1,8 +1,8 @@
 // ref: https://umijs.org/config/
 export default {
   theme: {
-   '@background-input': '#EDF2F7',
-   'font-family': 'Open Sans, serif',
+    '@background-input': '#EDF2F7',
+    'font-family': 'Open Sans, serif',
   },
   treeShaking: true,
   routes: [
@@ -23,8 +23,20 @@ export default {
           component: './Products/createProduct/index',
         },
         {
-          path:'/imports',
-          component:'./Import/index',  
+          path: '/brands',
+          component: './Brands/index',
+        },
+        {
+          path: '/brands/create',
+          component: './Brands/createBrand/index',
+        },
+        {
+          path: '/brands/edit',
+          component: './Brands/editBrand/index',
+        },
+        {
+          path: '/imports',
+          component: './Import/index',
         },
         {
           path: '/imports/create',
