@@ -1,42 +1,86 @@
-@import (css)
-  url('https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap&subset=vietnamese');
-@import (css) 
-url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro&family=Kanit&family=Roboto&display=swap');
-html, body, #root {
+@import (css) url('https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap&subset=vietnamese');
+@import (css) url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro&family=Kanit&family=Roboto&display=swap');
+html,
+body,
+#root {
   height: 100%;
 }
 
 body {
   margin: 0;
 }
-:root{
-  --input-background: #EDF2F7;
-  --input-placeholder: #2D3748;
+:root {
+  --input-background: #edf2f7;
+  --input-placeholder: #2d3748;
+  --primary-color: #ff9900;
   .ant-modal.cc {
-    .ant-modal-content .ant-modal-header .ant-modal-title {
-      font-size: 20px;
-      text-align: center;
+    height: 1000px;
+    border-radius: 10px;
+    .ant-modal-content {
+      border-radius: 10px;
+      .ant-modal-header {
+        border-radius: 10px;
+        .ant-modal-title {
+          font-size: 22px;
+          text-align: center;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+  .ant-upload-picture-card-wrapper.upload_card {
+    margin-top: 30px;
+    margin-left: -12px;
+    .ant-upload.ant-upload-select-picture-card {
+      width: 40px;
+      height: 40px;
+    }
+    .ant-upload-list-picture-card-container {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  .ant-select-auto-complete.complete {
+    height: 40px;
+    border-radius: 5px;
+    border-style: hidden;
+    background-color: var(--input-background);
+    color: var(--input-placeholder);
+    .ant-select-selector {
+      height: 40px;
+      border-radius: 5px;
+      border-style: hidden;
+      background-color: var(--input-background);
+      color: var(--input-placeholder);
+      .ant-select-selection-search {
+        .ant-select-selection-search-input {
+          height: 40px;
+        }
+      }
     }
   }
   .ant-select.picker {
     display: flex;
     justify-content: space-around;
     .ant-select-selector {
-    margin-left: 40px;
-    border-radius: 5px;
-    border-style: hidden;
-    background-color: var(--input-background);
+      margin-left: 40px;
+      border-radius: 5px;
+      border-style: hidden;
+      background-color: var(--input-background);
     }
   }
-  .ant-table-thead > tr >th{
+  .ant-descriptions-item-label {
+    font-weight: 600;
+  }
+  .ant-table-thead > tr > th {
     color: white;
     background: #5488b9 !important;
     font-weight: 700;
   }
   .ant-input {
-    border-color: #16B9C3;
+    border-color: #16b9c3;
     &:focus {
-      border-color: #16B9C3;
+      border-color: #16b9c3;
     }
   }
 }

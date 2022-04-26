@@ -1,48 +1,182 @@
-import { extend } from 'umi-request';
-import { notification } from 'antd';
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-empty */
+/**
+ * request
+ * api: https://github.com/umijs/umi-request
+ */
+ import { extend } from 'umi-request';
+ import { notification } from 'antd';
+ //import { getToken } from '@/utils/authority';
+ import { router } from 'umi';
+ 
+ class Response {
+   data = null;
+ 
+   status = null;
+   
+   message = null;
 
-const codeMessage = {
-  200: 'OK',
-  201: 'Created',
-  202: 'Accepted',
-  204: 'No Content',
-  400: 'Bad Request',
-  401: 'Unauthorized',
-  403: 'Forbidden',
-  404: 'Not Found',
-  406: 'Not Acceptable',
-  410: 'Gone',
-  422: 'Unprocessable Entity',
-  500: 'Internal Server Error',
-  502: 'Bad Gateway',
-  503: 'Service Unavailable',
-  504: 'Gateway Timeout',
-};
-
-const errorHandler = error => {
-  const { response } = error;
-
-  if (response && response.status) {
-    const errorText = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
-    notification.error({
-      message: `Yêu cầu lỗi ${status}: ${url}`,
-      description: errorText,
-    });
-  } else if (!response) {
-    notification.error({
-      description: 'Mạng của bạn không bình thường và không thể kết nối với máy chủ',
-      message: 'Không có kết nối mạng ',
-    });
-  }
-
-  return response;
-};
-
-
-const request = extend({
-  errorHandler,
-
-  credentials: 'include', 
-});
-export default request;
+   constructor(response)  {
+     console.log(response.content)
+     if (response.status) {
+       this.status = response.status;
+     }
+     if (response.content) {
+       this.data = response.content;
+     }
+     if (response.message && response.message !== "") {
+       this.message = response.message;
+     }
+     if (this.status === null && this.data === null && this.message === null) {
+       this.data = response;
+       this.message = response;
+       this.status = 200;
+     }
+   }
+ 
+   get isSuccess() {
+     return this.status === 200;
+   }
+ 
+   getErrorMessage(defaultMessage = 'Something went wrong!') {
+     return (this.message) || defaultMessage;
+   }
+ }
+ 
+ const errorHandler = async error => {
+   const { response = {}, data } = error;
+   const { status } = response;
+ 
+   if (status === 401) {
+     notification.error({
+       message: 'Please login to do this',
+     });
+     /* eslint-disable no-underscore-dangle */
+    //  window.g_app._store.dispatch({
+    //    type: 'login/logout',
+    //  });
+   }
+   // environment should not be used
+   if (status === 403) {
+     let messageError = 'You are not allowed to access this page';
+     if (typeof response.json === 'function') {
+       const { message } = await response.json();
+       messageError = message || messageError;
+     }
+     if (/^\/admin/.test(window.location.pathname)) {
+       router.push({ pathname: '/admin/403', state: { message: messageError } });
+     } else {
+       notification.error({
+         message: messageError,
+       });
+     }
+     notification.destroy();
+    //  window.g_app._store.dispatch({
+    //    type: 'user/fetchCurrent',
+    //  });
+   }
+ 
+   if (status <= 504 && status >= 500) {
+     notification.error({
+       message: 'Please try login again, contact admin if you still see this message',
+     });
+     // window.g_app._store.dispatch({
+     //   type: 'login/logout',
+     // });
+   }
+ 
+   if (status > 404 && status < 422) {
+     notification.error({
+       message: `Error ${status}`,
+     });
+   }
+ 
+   if (status === 404) return new Response({ status: data.meta });
+ 
+   if (status === 400) {
+     return new Response({ status: data.meta });
+   }
+   return new Response({ status: { ok: false } });
+ };
+ 
+ const request = extend({
+   errorHandler,
+   credentials: 'omit',
+   prefix: 'http://localhost:8080',
+ });
+ 
+ request.interceptors.request.use(
+   (url, options) => {
+     const authority = localStorage.getItem('token');;
+     const timezone = Intl ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'Asia/Saigon';
+     return {
+       url,
+       options: {
+         ...options,
+         headers: {
+           timezone,
+           'Content-Type': 'application/json; charset=utf-8',
+           Authorization: (authority && `Bearer ${authority}`) || undefined,
+         },
+       },
+     };
+   },
+   { global: false }
+ );
+ 
+ request.interceptors.response.use(async (response, options) => {
+  //  if (response.ok) {
+  //    if (options.responseType === 'blob') {
+  //      try {
+  //        const blob = await response.clone().blob();
+  //        return new Response({ data: blob });
+  //      } catch (error) {}
+  //    }
+  //    try {
+  //      const json = await response.clone().json();
+  //      const myResponse = new Response(json);
+  //      return myResponse;
+  //    } catch (error) {}
+  //    try {
+  //      const text = await response.clone().text();
+  //      return new Response({ data: text });
+  //    } catch (error) {}
+  //  }
+   return response;
+ });
+ 
+ const getRequest = options => {
+   return extend({
+     ...request,
+     ...options,
+     prefix: 'http://localhost:8080',
+   });
+ };
+ 
+ const requestUpload = extend({
+   errorHandler,
+   credentials: 'include',
+   prefix: 'http://localhost:8080',
+ });
+ 
+ requestUpload.interceptors.request.use(
+   (url, options) => {
+     const authority = localStorage.getItem('token');;
+     const timezone = Intl ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'Asia/Saigon';
+     return {
+       url,
+       options: {
+         ...options,
+         headers: {
+           timezone,
+           Authorization: (authority && `Bearer ${authority}`) || undefined,
+         },
+       },
+     };
+   },
+   { global: false }
+ );
+ 
+ export { request, requestUpload };
+ export { getRequest, Response };
+ 
