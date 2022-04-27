@@ -142,34 +142,27 @@ const CreateProduct = props => {
      var index = parseInt(infor.slice(-1));
      var field = infor.slice(7,-1);
      console.log(index,field)
-     var product = state.newProduct;
-     var variants  = product.variants
+     var product =  JSON.parse(JSON.stringify(state.newProduct))
+     var variants  = JSON.parse(JSON.stringify(product.variants));
     console.log(variants)
     for(var option of variants[index].options) {
       if (option.option_name === field) {
         option.option_image = fileList.fileList;
-        console.log(variants)
-        console.log('ccccccccccc')
        }
     }
-    //  variants[index].options.forEach((option) => {
-    //    if (option.option_name === field) {
-    //     option.option_image = fileList.fileList;
-    //     console.log(variants)
-    //    }
-    // });
-     console.log(product.variants)
-   //  product.variants[1] = product_variant;
-    // setState({
-    //   ...state,
-    //   newProduct: product,
-    // });
+     product.variants = variants;
+    setState({
+      ...state,
+      newProduct: product,
+    });
   };
 
   const handleCancel = () => {
     setState({ ...state, previewVisible: false });
   };
-  const onFinish = values => {
+  const onFinish = async (values) => {
+    const validatedAllFields = await form.validateFields();
+    console.log(validatedAllFields)
     console.log(values);
   };
   const onfieldsChange = values => {
