@@ -1,44 +1,9 @@
-import { getDataPulseDetail } from '../services/product';
+import { getDataProduct, addProduct, addVariant } from '../services/product';
+import {uploader} from '../Utils/uploader';
 import { notification } from 'antd';
 export default {
   namespace: 'products',
   state: {
-    productview: {
-      name: 'Bàn ăn gia đình loại lớn',
-      product_id: 1,
-      category_id: 1,
-      categories: 'Nhà bếp',
-      brand_id: 1,
-      brand: 'IKEA',
-      description: 'Đây là mô tả sản phẩm',
-      image_url: 'https://cdn.pixabay.com/photo/2020/02/14/03/20/coffee-4847393__340.jpg',
-      variants: [
-        {
-          variant_id: 1,
-          image_url: [
-            'Ảnh',
-            'https://cdn.pixabay.com/photo/2020/04/28/13/21/landscape-5104510__340.jpg',
-          ],
-          name: ['Tên', 'c'],
-          RAM: ['RAM', '8G'],
-          gianhap: ['Giá nhập', '1000000'],
-          giaban: ['Giá bán', '2000000'],
-          soluong: ['Số lượng', '1000'],
-        },
-        {
-          variant_id: 2,
-          image_url: [
-            'Ảnh',
-            'https://cdn.pixabay.com/photo/2020/03/21/16/02/sunset-4954402__340.jpg',
-          ],
-          name: ['Tên', 'c'],
-          RAM: ['RAM', '8G'],
-          gianhap: ['Giá nhập', '1000000'],
-          giaban: ['Giá bán', '2000000'],
-          soluong: ['Số lượng', '1000'],
-        },
-      ],
-    },
     products: [],
     view: {
       product_id: 1,
@@ -74,18 +39,35 @@ export default {
         },
       ],
     },
-    isShowModal: false,
   },
   effects: {
     *getProductList(action, { put, call }) {
-      const response = yield call(getDataPulseDetail);
+      const response = yield call(getDataProduct);
+      console.log(response)
       if (response.status === 200) {
         yield put({
           type: 'saveProductList',
           payload: response.content,
         });
+      }
+    },
+    *addProduct(action, { put, call }) {
+      action.payload.image_url = yield uploader(action.payload.image_file)
+      const response = yield call(addProduct, action.payload);
+      if (response.status === 200) {
+        for (var element of action.payload.variants) {
+          element.image_url = yield uploader(element.image_file[0]);
+          for(var option of element.options) {
+            option.option_image_url = yield uploader(option.option_image[0]);
+          }
+          const respon = yield call(addVariant, element);
+          if (respon.status !== 200) {
+            notification.error({ message: respon.content });
+            break;
+          }
+        }
       } else {
-        notification.error({ message: response.message });
+        notification.error({ message: response.content });
       }
     },
     *setView({ payload: id }, { put, call }) {

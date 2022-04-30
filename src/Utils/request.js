@@ -17,7 +17,7 @@ class Response {
   message = null;
 
   constructor(response) {
-    console.log(response.content);
+    console.log(response);
     if (response.status) {
       this.status = response.status;
     }
@@ -46,7 +46,9 @@ class Response {
 const errorHandler = async error => {
   const { response = {}, data } = error;
   const { status } = response;
-
+  console.log(status)
+  console.log(response)
+  console.log(data)
   if (status === 401) {
     notification.error({
       message: 'Please login to do this',
@@ -63,17 +65,9 @@ const errorHandler = async error => {
       const { message } = await response.json();
       messageError = message || messageError;
     }
-    if (/^\/admin/.test(window.location.pathname)) {
-      router.push({ pathname: '/admin/403', state: { message: messageError } });
-    } else {
       notification.error({
         message: messageError,
       });
-    }
-    notification.destroy();
-    //  window.g_app._store.dispatch({
-    //    type: 'user/fetchCurrent',
-    //  });
   }
 
   if (status <= 504 && status >= 500) {
@@ -91,12 +85,15 @@ const errorHandler = async error => {
     });
   }
 
-  if (status === 404) return new Response({ status: data.meta });
+  if (status === 404) return new Response({ status: 404 });
 
   if (status === 400) {
-    return new Response({ status: data.meta });
+    notification.error({
+      message: 'Username or password is invalid.',
+    });
+    return new Response({ status:400 });
   }
-  return new Response({ status: { ok: false } });
+  return new Response({ status: 400 });
 };
 
 const request = extend({
@@ -105,9 +102,26 @@ const request = extend({
   prefix: 'https://uit-furniture-shop.herokuapp.com',
 });
 
+function getWithExpiry(key) {
+  const itemStr = localStorage.getItem(key);
+  // if the item doesn't exist, return null
+  if (!itemStr) {
+    return null;
+  }
+  const item = JSON.parse(itemStr);
+  const now = new Date();
+  // compare the expiry time of the item with the current time
+  if (now.getTime() > item.expiry) {
+    // If the item is expired, delete the item from storage
+    // and return null
+    localStorage.removeItem(key);
+    return null;
+  }
+  return item.value;
+}
 request.interceptors.request.use(
   (url, options) => {
-    const authority = localStorage.getItem('token');
+     const token = getWithExpiry('token');
     const timezone = Intl ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'Asia/Saigon';
     return {
       url,
@@ -116,7 +130,7 @@ request.interceptors.request.use(
         headers: {
           timezone,
           'Content-Type': 'application/json; charset=utf-8',
-          Authorization: (authority && `Bearer ${authority}`) || undefined,
+          Authorization: (token && `Bearer ${token}`) || undefined,
         },
       },
     };

@@ -43,8 +43,10 @@ const CreateProduct = props => {
   let productTemp = {
     product_id: 2,
     product_name: 'HUY NÈ',
-    url: '',
-    brand_id: 0,
+    image_file: null,
+    image_url: '',
+    brand_id: 1,
+    description: '',
     brand_name: '',
     category_id: 0,
     category_name: '',
@@ -62,6 +64,8 @@ const CreateProduct = props => {
     variant: {
       sku: '',
       price: '',
+      image_file: [],
+      image_url: '',
       options: [],
     },
   });
@@ -79,22 +83,24 @@ const CreateProduct = props => {
       };
     });
   };
-  const handleSearch = value => {
+  const handleSearchCate = value => {
     setState({
       ...state,
       optionsCate: value ? searchResult(value) : [],
     });
   };
-  const onSelect = value => {
+  const onSelectCate = value => {
     let result = categories.find(item => item.name.toUpperCase() === value.toUpperCase());
     let temp = state.variant;
     temp.options = result.options;
     temp.options.forEach(item => {
       item['option_image'] = [];
+      item['option_image_url'] = '';
       item['option_value'] = '';
     });
-    let product = state.newProduct;
+    let product = JSON.parse(JSON.stringify(state.newProduct));
     product.variants = [];
+    product.category_id = result.id;
     setState({
       ...state,
       isSelectCate: true,
@@ -138,19 +144,19 @@ const CreateProduct = props => {
       previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
     });
   };
-  const handleChange = (fileList, infor) => {
-     var index = parseInt(infor.slice(-1));
-     var field = infor.slice(7,-1);
-     console.log(index,field)
-     var product =  JSON.parse(JSON.stringify(state.newProduct))
-     var variants  = JSON.parse(JSON.stringify(product.variants));
-    console.log(variants)
-    for(var option of variants[index].options) {
+  const handleChangeImageOption = (fileList, infor) => {
+    var index = parseInt(infor.slice(-1));
+    var field = infor.slice(7, -1);
+    console.log(index, field);
+    var product = JSON.parse(JSON.stringify(state.newProduct));
+    var variants = JSON.parse(JSON.stringify(product.variants));
+    console.log(variants);
+    for (var option of variants[index].options) {
       if (option.option_name === field) {
         option.option_image = fileList.fileList;
-       }
+      }
     }
-     product.variants = variants;
+    product.variants = variants;
     setState({
       ...state,
       newProduct: product,
@@ -160,36 +166,27 @@ const CreateProduct = props => {
   const handleCancel = () => {
     setState({ ...state, previewVisible: false });
   };
-  const onFinish = async (values) => {
-    const validatedAllFields = await form.validateFields();
-    console.log(validatedAllFields)
-    console.log(values);
-  };
-  const onfieldsChange = values => {
-  //  console.log(values);
-  };
   const onFill = () => {
     var product = state.newProduct;
     var formfill = {};
-    product.variants.forEach( (variant,index) => {
-      if(variant.sku !=='') {
-          let field = 'variant_sku'+index;
-          formfill[field] = variant.sku
+    product.variants.forEach((variant, index) => {
+      if (variant.sku !== '') {
+        let field = 'variant_sku' + index;
+        formfill[field] = variant.sku;
       }
-      if(variant.price !== '') {
-        let field = 'variant_price'+index;
-        formfill[field] = variant.price
+      if (variant.price !== '') {
+        let field = 'variant_price' + index;
+        formfill[field] = variant.price;
       }
-      variant.options.forEach((option) => {
-        let field = 'option_'+option.option_name+index
-        let fieldImage = 'image_option'+option.option_image+index
+      variant.options.forEach(option => {
+        let field = 'option_' + option.option_name + index;
+        let fieldImage = 'image_option' + option.option_image + index;
         formfill[field] = option.option_value;
         formfill[fieldImage] = option.option_image;
-      })
-    })
-    console.log(formfill)
+      });
+    });
     form.setFieldsValue(formfill);
-  }
+  };
   const onValuesChange = values => {
     let flagEdit = false;
     const field = Object.keys(values)[0];
@@ -216,14 +213,74 @@ const CreateProduct = props => {
     //       }
     //     });
     //}
-    console.log(values);
-    console.log(product);
-    if(flagEdit) {
+    if (flagEdit) {
+      setState({
+        ...state,
+        newProduct: product,
+      });
+    }
+  };
+  const setImageProduct = file => {
+    console.log(file);
+    var product = JSON.parse(JSON.stringify(state.newProduct));
+    product.image_file = file;
     setState({
       ...state,
       newProduct: product,
     });
-  }
+    console.log(product);
+    console.log(state.newProduct);
+  };
+  const setImageVariant = (file, index) => {
+    var product = JSON.parse(JSON.stringify(state.newProduct));
+    product.variants[index].image_file = file.fileList;
+    setState({
+      ...state,
+      newProduct: product,
+    });
+    console.log(state.newProduct);
+  };
+  // validation before submit
+  const validator = product => {
+    let show = false;
+    let result = true;
+    if (product.brand_id < 1) {
+      message.error(`ID thương hiệu sản phẩm không tồn tại`);
+      result = false
+    }
+    if (product.category_id < 1 && !show) {
+      message.error(`ID phân loại sản phẩm không tồn tại`);
+      result =  false;
+      show = true;
+    }
+    if (product.variants.length < 1 && !show) {
+      message.error(`Thêm ít nhất một phiên bản`);
+      result =  false;
+      show = true;
+    }
+    product.variants.forEach((variant, index) => {
+      variant.options.forEach(option => {
+        if (option.option_image.length < 1) {
+         if(!show){ 
+          message.error(`Vui lòng thêm hình ảnh minh họa cho ${option.option_name}`);
+          show = true
+          result = false;
+         }
+        }
+      });
+    });
+    return result;
+  };
+  //submit
+  const onFinish = async values => {
+    const validatedAllFields = await form.validateFields();
+   if(validator(state.newProduct)) {
+     dispatch({
+       type: 'product/addProduct',
+       payload: state.newProduct
+     })
+    console.log(state.newProduct);
+   }
   };
   return (
     <div>
@@ -240,7 +297,6 @@ const CreateProduct = props => {
         autoComplete="off"
         onFinish={onFinish}
         className={styles.container}
-        onFieldsChange={onfieldsChange}
         onValuesChange={onValuesChange}
       >
         <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }]}>
@@ -292,8 +348,8 @@ const CreateProduct = props => {
                       <AutoComplete
                         className="complete"
                         options={state.optionsCate}
-                        onSelect={onSelect}
-                        onSearch={handleSearch}
+                        onSelect={onSelectCate}
+                        onSearch={handleSearchCate}
                       />
                     </Form.Item>
                   </Form.Item>
@@ -333,7 +389,13 @@ const CreateProduct = props => {
                         },
                       ]}
                     >
-                      <Upload.Dragger name="files" action="/upload.do">
+                      <Upload.Dragger
+                        name="files"
+                        action="/upload.do"
+                        beforeUpload={file => {
+                          setImageProduct(file);
+                        }}
+                      >
                         <p className="ant-upload-drag-icon">
                           <InboxOutlined />
                         </p>
@@ -377,7 +439,7 @@ const CreateProduct = props => {
           <Col span={14}>
             <Row gutter={[{ xs: 8, sm: 16, md: 24 }]}>
               {state.newProduct.variants.map((item, index) => {
-                let name_image = 'variant_image' + index;
+                let name_image = 'image_variant' + index;
                 return (
                   <Col span={24} className={styles.variantContainer}>
                     <Row gutter={[{ xs: 8, sm: 16, md: 24 }]}>
@@ -444,28 +506,36 @@ const CreateProduct = props => {
                                         <Form.Item
                                           className={styles.formItems}
                                           label={option.option_name}
-                                          name={label}
                                         >
-                                          <Input className={styles.inputVariantItems} />
+                                          <Form.Item
+                                            className={styles.formItems}
+                                            rules={[
+                                              {
+                                                required: true,
+                                                message:
+                                                  'Vui lòng nhập ' + option.option_name + '!',
+                                              },
+                                            ]}
+                                            name={label}
+                                          >
+                                            <Input className={styles.inputVariantItems} />
+                                          </Form.Item>
                                         </Form.Item>
                                       </Col>
                                       <Col span={1}>
-                                        <Form.Item noStyle name={label_image}>
-                                          <div className={styles.upload_image_container}>
-                                            <Upload
-                                              className="upload_card"
-                                              action="/upload.do"
-                                              listType="picture-card"
-                                              fileList={option.option_image}
-                                              maxCount={1}
-                                              onPreview={handlePreview}
-                                              onChange={fileList => handleChange(fileList, label)}
-                                            >
-                                              {option.option_image.length >= 1
-                                                ? null
-                                                : uploadButton}
-                                            </Upload>
-                                          </div>
+                                        <Form.Item name={label_image}>
+                                          <Upload
+                                            className="upload_card"
+                                            action="/upload.do"
+                                            listType="picture-card"
+                                            fileList={option.option_image}
+                                            maxCount={1}
+                                            onPreview={handlePreview}
+                                            onChange={file => handleChangeImageOption(file, label)}
+                                          >
+                                            {option.option_image.length >= 1 ? null : uploadButton}
+                                          </Upload>
+
                                           <Modal
                                             visible={state.previewVisible}
                                             footer={null}
@@ -498,7 +568,12 @@ const CreateProduct = props => {
                               },
                             ]}
                           >
-                            <Upload listType="picture" maxCount={1}>
+                            <Upload
+                              fileList={item.image_file}
+                              listType="picture"
+                              maxCount={1}
+                              onChange={file => setImageVariant(file, index)}
+                            >
                               <Button
                                 className={styles.uploader}
                                 size="middle"
