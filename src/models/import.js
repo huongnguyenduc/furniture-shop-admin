@@ -1,7 +1,6 @@
 export default {
     namespace: 'imports',
     state: { 
-        newImport: null,
         loading: false,
         imports: [
         { 

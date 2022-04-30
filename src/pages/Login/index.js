@@ -6,6 +6,7 @@ const Login = props => {
     const { dispatch } = props;
 
     const onFinish = (values) => {
+        console.log(values)
         dispatch({ type: "login/login", payload: values });
     };
     

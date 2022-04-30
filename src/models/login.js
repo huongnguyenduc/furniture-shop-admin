@@ -1,16 +1,15 @@
 import { stringify } from 'querystring';
 import { history, router } from 'umi';
 import { accountLogin, getPageQuery } from '../services/login';
-
+import { message } from 'antd';
 const Model = {
-  namespace: 'login',   
-  state: {},   
+  namespace: 'login',
+  state: {},
 
-  effects: {    
+  effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(accountLogin, payload);
-
-      if (response.code === 200) {
+      if (response.status === 200) {
         yield put({
           type: 'changeLoginStatus',
           payload: response,
@@ -34,34 +33,39 @@ const Model = {
             return;
           }
         }
-        redirect = redirect === 'login'? '/':redirect;
+        redirect = redirect === 'login' ? '/' : redirect;
         router.push(redirect || '/');
       }
     },
-
     logout() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("roles");
-     
+      localStorage.removeItem('token');
+      localStorage.removeItem('roles');
+
       if (window.location.pathname !== '/login') {
         router.replace({
           pathname: '/login',
           search: stringify({
-            redirect: window.location.href
+            redirect: window.location.href,
           }),
         });
       }
     },
   },
 
-  reducers: {  
+  reducers: {
     changeLoginStatus(state, { payload }) {
-      // localStorage.setItem("token", payload.data.token);
-      // localStorage.setItem("roles", payload.data.auth);
-      localStorage.setItem("token", "cc");
-      localStorage.setItem("roles", JSON.stringify(payload.auth));
+      const now = new Date();
+
+      // `item` is an object which contains the original value
+      // as well as the time when it's supposed to expire
+      const item = {
+        value: payload.content,
+        expiry: now.getTime() + 86400 * 1000,
+      };
+      localStorage.setItem('token', JSON.stringify(item));
+      localStorage.setItem('roles', JSON.stringify(payload.auth));
       //console.log(`login, ${payload.data.auth}`);
-      return { ...state};
+      return { ...state };
     },
   },
 };
