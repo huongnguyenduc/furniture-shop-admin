@@ -12,8 +12,7 @@ export default {
     },
     {
       path: '/',
-      authority: ['ROLE_ADMIN'],
-      Routes: ['./src/wrappers/auth'],
+
       component: '../layouts/index',
       routes: [
         {
@@ -39,6 +38,14 @@ export default {
         {
           path: '/product/edit/:id',
           component: './Products/editProduct/index.js',
+        },
+        {
+          path: '/brand',
+          component: './Brands/index.js',
+        },
+        {
+          path: '/brand/edit/:id',
+          component: './Brands/editBrand/index',
         },
         {
           path: '/import',
