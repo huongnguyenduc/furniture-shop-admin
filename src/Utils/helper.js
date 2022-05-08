@@ -17,6 +17,7 @@ export function moneyConverter(value) {
   return dollarUSLocale.format(value);
 }
 export function modifyString(str) {
+  if(str === undefined) return undefined;
   str = str.replace(/\s/g, '');
   return str
     .normalize('NFD')
@@ -27,7 +28,7 @@ export function modifyString(str) {
 export function setDataSource(source) {
   var result = source.map(item => {
     item.options.forEach(option => {
-      item[modifyString(option.option_name)] = option.option_value;
+      item[modifyString(option.optionName)] = option.optionValue;
     });
     return item;
   });

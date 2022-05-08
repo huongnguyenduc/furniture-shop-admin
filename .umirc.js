@@ -29,6 +29,10 @@ export default {
           component: './Category/createCategory/index',
         },
         {
+          path: '/category/edit/:id',
+          component: './Category/editCategory/index.js',
+        },
+        {
           path: '/product',
           component: './Products/index',
         },

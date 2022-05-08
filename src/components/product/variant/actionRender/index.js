@@ -4,29 +4,23 @@ import { connect, useSelector } from 'dva';
 import { Space, Tooltip, Button } from 'antd';
 import { EditOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const ActionRender = ({ dispatch, text, show }) => {
-  const setView = () => {
-    dispatch({
-      type: 'products/setView',
-      payload: text.productId,
-    });
+const ActionRender = ({ dispatch, item }) => {
+  const setEdit = () => {
+    // dispatch({
+    //   type: 'products/setView',
+    //   payload: text.productId,
+    // });
   };
 
   return (
     <Space size="middle">
-      <Tooltip title="Chi tiết">
+      <Tooltip title="Sửa">
         <Button
           className={styles.buttonContainer}
           onClick={() => {
-            setView();
-            show();
+            setEdit();
           }}
         >
-          <EyeOutlined />
-        </Button>
-      </Tooltip>
-      <Tooltip title="Sửa">
-        <Button className={styles.buttonContainer}>
           <EditOutlined />
         </Button>
       </Tooltip>
