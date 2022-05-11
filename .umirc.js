@@ -1,19 +1,18 @@
 // ref: https://umijs.org/config/
 export default {
   theme: {
-   '@background-input': '#EDF2F7',
-   'font-family': 'Open Sans, serif',
+    '@background-input': '#EDF2F7',
+    'font-family': 'Open Sans, serif',
   },
   treeShaking: true,
   routes: [
     {
       path: '/login',
-      component: '../pages/Login/index'
+      component: '../pages/Login/index',
     },
     {
       path: '/',
-      authority: ['ROLE_ADMIN'],
-      Routes: ['./src/wrappers/auth'],
+
       component: '../layouts/index',
       routes: [
         {
@@ -41,8 +40,16 @@ export default {
           component: './Products/editProduct/index.js',
         },
         {
-          path:'/import',
-          component:'./Import/index',  
+          path: '/brand',
+          component: './Brands/index.js',
+        },
+        {
+          path: '/brand/edit/:id',
+          component: './Brands/editBrand/index',
+        },
+        {
+          path: '/import',
+          component: './Import/index',
         },
         {
           path: '/import/create',
@@ -81,7 +88,7 @@ export default {
         dynamicImport: {
           webpackChunkName: true,
         },
-        title: 'gearshop-admin',
+        title: 'FS Admin',
         dll: true,
         locale: {
           enable: true,
