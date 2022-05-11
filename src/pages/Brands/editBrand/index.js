@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
-import styles from './styles.less';
+import React from 'react';
 
-import { connect, useSelector } from 'dva';
-import { Form, Upload, Row, Col, Input, Typography, Button, InputNumber } from 'antd';
-import { InboxOutlined, UploadOutlined, CloseOutlined } from '@ant-design/icons';
-import { router } from 'umi';
+import { Form, Input, Typography, Button } from 'antd';
 
 const { Title } = Typography;
 
@@ -46,7 +42,7 @@ const editBrand = props => {
             },
           ]}
         >
-          <Input style={{ width: '300px' }} defaultValue={props.location.state.name} />
+          <Input style={{ width: '300px' }} defaultValue={props.location.state.brandName} />
         </Form.Item>
         <Form.Item
           label="Mô tả"
@@ -58,7 +54,7 @@ const editBrand = props => {
             },
           ]}
         >
-          <Input style={{ width: '300px' }} defaultValue={props.location.state.description} />
+          <Input style={{ width: '300px' }} defaultValue={props.location.state.brandDesc} />
         </Form.Item>
         <Form.Item
           wrapperCol={{

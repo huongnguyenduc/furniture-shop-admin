@@ -1,6 +1,8 @@
 import React from 'react';
 import { Modal, Button, Form, Input } from 'antd';
+
 const create = ({ visible, onCancel }) => {
+  const handleSubmit = props => {};
   return (
     <Modal
       title="Create Brand"
@@ -54,7 +56,7 @@ const create = ({ visible, onCancel }) => {
             span: 16,
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" onClick={handleSubmit}>
             Submit
           </Button>
         </Form.Item>

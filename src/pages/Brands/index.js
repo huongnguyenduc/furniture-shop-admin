@@ -5,13 +5,18 @@ import styles from './styles.less';
 
 import React, { useState } from 'react';
 import ActionRender from '../../components/brand/actionRender';
-import { router } from 'umi';
 import CreateModal from '../../components/brand/create/index';
 const { Content, Header } = Layout;
 
 const Brand = props => {
   const brands = useSelector(state => state.brands.brands);
-  const [listBrand, setListBrand] = useState(brands);
+
+  const { loading, dispatch } = props;
+  React.useEffect(() => {
+    dispatch({
+      type: 'brands/getBrandList',
+    });
+  }, [brands, dispatch]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleCreate, setIsModalVisibleCreate] = useState(false);
@@ -19,27 +24,27 @@ const Brand = props => {
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'brand_id',
+      dataIndex: 'brandId',
       align: 'left',
-      width: '10%',
+      width: '5%',
     },
 
     {
       title: 'Tên thương hiệu',
-      dataIndex: 'name',
+      dataIndex: 'brandName',
       align: 'center',
-      width: '15%',
+      width: '10%',
     },
     {
       title: 'Mô tả',
-      dataIndex: 'description',
+      dataIndex: 'brandDesc',
       align: 'center',
       width: '15%',
     },
     {
       title: 'Hành Động',
       align: 'center',
-      width: '15%',
+      width: '10%',
       render: record => {
         return <ActionRender showModal={showModal} record={record} />;
       },
