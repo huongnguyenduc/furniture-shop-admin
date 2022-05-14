@@ -1,57 +1,78 @@
 import  React, { useState,} from 'react'
 import { connect, useSelector } from 'dva';
-import { Layout, Table, Button, Modal, Tag } from 'antd';
+import { Layout, Table, Button, Modal, Tag ,Spin} from 'antd';
 import {PlusOutlined, } from '@ant-design/icons';
 import styles from './styles.less';
 import ActionRender from '../../components/voucher/actionRender/index';
+import {getdateTime, moneyConverter} from '../../Utils/helper';
 import { router } from 'umi';
+import moment from 'moment';
 const { Content, Header } = Layout
 
 const Voucher = props => {
+    const { dispatch, loading } = props;
+    const isLoading = loading.effects['voucher/getVoucherList'];
     const vouchers = useSelector(state => state.voucher.vouchers);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    React.useEffect(() => {
+      dispatch({
+        type: 'voucher/getVoucherList',
+      });    
+    }, [dispatch]);
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'id',
+            dataIndex: 'voucherId',
             align: 'left',
             width: '4%',
         },
         {
-            title: 'Tên',
-            dataIndex: 'name',
-            align: 'center',
-            width: '15%',
+          title: 'Mô tả',
+          dataIndex: 'voucherDesc',
+          align: 'center',
+          width: '15%',
         },
         {
-          title: 'Mô tả',
-          dataIndex: 'description',
+          title: 'Số lượng',
+          dataIndex: 'amount',
           align: 'center',
           width: '15%',
         },
         {
             title: 'Ngày áp dụng',
-            dataIndex: 'valid_date',
+            dataIndex: 'validDate',
             align: 'center',
             width: '15%',
+            render: item =>{
+              return moment(item).format("DD-MM-YYYY");
+            }
         },
         {
             title: 'Ngày hết hạn',
-            dataIndex: 'expiration_date',
+            dataIndex: 'expirationDate',
             align: 'center',
             width: '15%',
+            render: item =>{
+              return moment(item).format("DD-MM-YYYY");
+            }
         },
         {
             title: 'Giá trị',
-            dataIndex: 'value',
+            dataIndex: 'voucherValue',
             align: 'center',
             width: '15%',
+            render: item =>{
+              return (moneyConverter(item) + 'đ');
+            }
         },
         {
             title: 'Hóa đơn tối thiểu',
-            dataIndex: 'min_purchase',
+            dataIndex: 'cappedAt',
             align: 'center',
             width: '15%',
+            render: item =>{
+              return (moneyConverter(item) + 'đ');
+            }
         },
         {
             title: 'Hành Động',
@@ -69,7 +90,9 @@ const Voucher = props => {
       };
   return (
   <Layout className={styles.layoutContainer}>
-      <Header className={styles.productHeader}>
+    {isLoading ? (<Spin />) : (
+      <div>
+        <Header className={styles.productHeader}>
         <span className={styles.title}>DANH SÁCH KHUYẾN MÃI</span> 
         <Button
           type="primary"
@@ -90,8 +113,11 @@ const Voucher = props => {
        >
        </Table>
       </Content>
+      </div>
+    )}
+      
   </Layout>
   );
 }
 
-export default Voucher;
+export default connect(state=> ({loading: state.loading}))(Voucher);
