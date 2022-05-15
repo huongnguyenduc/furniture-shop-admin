@@ -4,7 +4,6 @@ import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.less';
 
 import React, { useState } from 'react';
-import ViewDetail from '../../components/brand/viewDetail';
 import ActionRender from '../../components/brand/actionRender';
 import { router } from 'umi';
 import CreateModal from '../../components/brand/create/index';
@@ -65,7 +64,6 @@ const Brand = props => {
   };
   return (
     <Layout className={styles.layoutContainer}>
-      <ViewDetail onCancel={handleCancel} visible={isModalVisible} />
       <CreateModal onCancel={handleCancelCreate} visible={isModalVisibleCreate} />
       <Header className={styles.brandHeader}>
         <span className={styles.title}>DANH SÁCH THƯƠNG HIỆU</span>
