@@ -88,10 +88,7 @@ const errorHandler = async error => {
   if (status === 404) return new Response({ status: 404 });
 
   if (status === 400) {
-    notification.error({
-      message: 'Username or password is invalid.',
-    });
-    return new Response({ status:400 });
+    return new Response({ status:400, message: data.errors[0] });
   }
   return new Response({ status: 400 });
 };

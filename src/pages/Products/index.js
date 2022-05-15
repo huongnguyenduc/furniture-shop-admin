@@ -11,14 +11,15 @@ const { Content, Header } = Layout;
 
 const Product = props => {
   const { dispatch, loading } = props;
-  const isLoading = loading.effects[('products/getProductList', 'products/setView')];
-  const products = useSelector(state => state.products.products);
-  const [isShowModal, setIsShowModal] = useState(false);
   React.useEffect(() => {
     dispatch({
       type: 'products/getProductList',
     });
   }, [dispatch]);
+  const isLoading = loading.effects['products/getProductList'];
+  const products = useSelector(state => state.products.products);
+  const [isShowModal, setIsShowModal] = useState(false);
+  console.log(products);
   const columns = [
     {
       title: 'ID',
@@ -64,7 +65,7 @@ const Product = props => {
       {isLoading ? (
         <Spin />
       ) : (
-        <div>
+        <>
           <ViewDetail onCancel={handleCancel} visible={isShowModal} />
           <Header className={styles.productHeader}>
             <span className={styles.title}>DANH SÁCH SẢN PHẨM</span>
@@ -89,7 +90,7 @@ const Product = props => {
               dataSource={products}
             ></Table>
           </Content>
-        </div>
+        </>
       )}
     </Layout>
   );

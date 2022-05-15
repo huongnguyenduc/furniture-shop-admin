@@ -1,10 +1,19 @@
-import { getDataProduct, addProduct, addVariant } from '../services/product';
-import {uploader} from '../Utils/uploader';
+import {
+  getDataProduct,
+  addProduct,
+  addVariant,
+  getDataVariant,
+  getProduct,
+  getVariant,
+} from '../services/product';
+import { uploader } from '../Utils/uploader';
 import { notification } from 'antd';
+import request from 'umi-request';
 export default {
   namespace: 'products',
   state: {
     products: [],
+    variants: [],
     view: {
       product_id: 1,
       product_name: 'Sloan Left Chaise Sleeper Sectional',
@@ -41,9 +50,18 @@ export default {
     },
   },
   effects: {
+    *getVariantList(action, { put, call }) {
+      const response = yield call(getDataVariant);
+      console.log(response.content);
+      if (response.status === 200) {
+        yield put({
+          type: 'saveVariantList',
+          payload: response.content,
+        });
+      }
+    },
     *getProductList(action, { put, call }) {
       const response = yield call(getDataProduct);
-      console.log(response)
       if (response.status === 200) {
         yield put({
           type: 'saveProductList',
@@ -56,10 +74,8 @@ export default {
       const response = yield call(addProduct, action.payload);
       if (response.status === 200) {
         for (var element of action.payload.variants) {
-          element.image_url = yield uploader(element.image_file[0]);
-          for(var option of element.options) {
-            option.option_image_url = yield uploader(option.option_image[0]);
-          }
+          element['productId'] = response.content.productId;
+          console.log(response.content.productId);
           const respon = yield call(addVariant, element);
           if (respon.status !== 200) {
             notification.error({ message: respon.content });
@@ -86,6 +102,12 @@ export default {
         ...state,
         products: action.payload,
         view: action.payload[0],
+      };
+    },
+    saveVariantList(state, action) {
+      return {
+        ...state,
+        variants: action.payload,
       };
     },
     setViewProduct(state, { payload: id }) {
