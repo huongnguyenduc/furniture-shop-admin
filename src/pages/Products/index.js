@@ -16,32 +16,32 @@ const Product = props => {
       type: 'products/getProductList',
     });
   }, [dispatch]);
-  const isLoading = loading.effects['products/getProductList'];
+  const isLoading = loading.effects[('products/getProductList')];
   const products = useSelector(state => state.products.products);
   const [isShowModal, setIsShowModal] = useState(false);
   console.log(products);
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'product_id',
+      dataIndex: 'productId',
       align: 'left',
       width: '4%',
     },
     {
       title: 'Tên Sản Phẩm',
-      dataIndex: 'category_name',
+      dataIndex: 'categoryName',
       align: 'center',
       width: '15%',
     },
     {
       title: 'Thương hiệu',
-      dataIndex: 'brand_name',
+      dataIndex: 'brandName',
       align: 'center',
       width: '15%',
     },
     {
       title: 'Mô tả',
-      dataIndex: 'description',
+      dataIndex: 'productDesc',
       align: 'center',
       width: '25%',
     },
@@ -62,9 +62,7 @@ const Product = props => {
   };
   return (
     <Layout className={styles.layoutContainer}>
-      {isLoading ? (
-        <Spin />
-      ) : (
+      {isLoading ? ( <Spin />) : (
         <>
           <ViewDetail onCancel={handleCancel} visible={isShowModal} />
           <Header className={styles.productHeader}>
@@ -86,7 +84,6 @@ const Product = props => {
               className={styles.tableProducts}
               columns={columns}
               bordered
-              loading={isLoading}
               dataSource={products}
             ></Table>
           </Content>
