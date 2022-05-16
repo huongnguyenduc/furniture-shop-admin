@@ -36,7 +36,8 @@ const CreateVoucher = props => {
   const validFields = (voucher) =>{
     const tomorow = moment(moment().add(1, 'days'));
     const validDate = voucher.range_picker[0];
-    if (validDate >= tomorow){
+
+    if (validDate.format("YYYYMMDD") < tomorow.format('YYYYMMDD')){
       message.error(`Ngày áp dụng phải bắt đầu từ hôm sau (`+ tomorow.format("DD-MM-YYYY") + `)` );
       return false;
     }
