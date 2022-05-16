@@ -20,7 +20,27 @@ const Brand = props => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleCreate, setIsModalVisibleCreate] = useState(false);
-
+  //update brand
+  const handleUpdate = async props => {
+    await dispatch({
+      type: 'brands/updateBrand',
+      payload: props,
+    });
+  };
+  //delete brand
+  const handleDelete = async props => {
+    await dispatch({
+      type: 'brands/deleteBrand',
+      payload: props,
+    });
+  };
+  //create brand
+  const handleCreate = async props => {
+    await dispatch({
+      type: 'brands/addBrand',
+      payload: props,
+    });
+  };
   const columns = [
     {
       title: 'ID',
@@ -46,7 +66,14 @@ const Brand = props => {
       align: 'center',
       width: '10%',
       render: record => {
-        return <ActionRender showModal={showModal} record={record} />;
+        return (
+          <ActionRender
+            handleUpdate={handleUpdate}
+            handleDelete={handleDelete}
+            showModal={showModal}
+            record={record}
+          />
+        );
       },
     },
   ];
@@ -57,8 +84,6 @@ const Brand = props => {
   const handleCancelCreate = () => {
     setIsModalVisibleCreate(false);
   };
-  //
-  const handleDelete = () => {};
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -69,7 +94,11 @@ const Brand = props => {
   };
   return (
     <Layout className={styles.layoutContainer}>
-      <CreateModal onCancel={handleCancelCreate} visible={isModalVisibleCreate} />
+      <CreateModal
+        handleCreate={handleCreate}
+        onCancel={handleCancelCreate}
+        visible={isModalVisibleCreate}
+      />
       <Header className={styles.brandHeader}>
         <span className={styles.title}>DANH SÁCH THƯƠNG HIỆU</span>
         <Button

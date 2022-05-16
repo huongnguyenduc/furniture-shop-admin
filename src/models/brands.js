@@ -1,4 +1,4 @@
-import { getDataBrand } from '../services/brand';
+import { getDataBrand, addDataBrand, delDataBrand, updateDataBrand } from '../services/brand';
 export default {
   namespaces: 'brands',
   state: {
@@ -23,23 +23,62 @@ export default {
       }
     },
     //add brand
-    *addBrand(state, action) {},
+    *addBrand({ payload }, { put, call }) {
+      const { data } = yield call(addDataBrand, payload);
+      if (data) {
+        yield put({
+          type: 'createBrand',
+          payload: data,
+        });
+      }
+    },
+    //update brand
+    *updateBrand({ payload }, { put, call }) {
+      console.log(payload);
+      const data = yield call(updateDataBrand, payload);
+      yield put({
+        type: 'editBrand',
+        payload: data,
+      });
+    },
+    //delete brand
+    *deleteBrand({ payload }, { put, call }) {
+      yield call(delDataBrand, payload);
+      const brandId = payload.brandId;
+      yield put({ type: 'delBrand', payload: brandId });
+    },
   },
   reducers: {
-    saveAddBrand(state, action) {
-      return {
-        ...state,
-        
-      }
-    }, 
+    createBrand(state, { payload }) {
+      const brand = {
+        brandName: payload.brandName,
+        brandId: payload.brandId,
+        brandDesc: payload.brandDesc,
+      };
+      const newStateBrands = [...state.brands];
+      newStateBrands[state.items.length] = brand;
+      return { ...state, brands: newStateBrands };
+    },
+    editBrand(state, { payload }) {
+      const { brandId } = payload;
+      const newStateItems = [...state.brands];
+      const index = newStateItems.findIndex(brand => brand.brandId === brandId);
+      newStateItems[index] = payload;
+      return { ...state, brands: newStateItems };
+    },
+    delBrand(state, { payload }) {
+      const previousState = state.brands;
+      var newState = previousState.filter(brand => brand.brandId !== payload);
+      return { ...state, brands: newState };
+    },
     saveBrandList(state, action) {
       return {
         ...state,
         brands: action.payload,
       };
     },
-    delete(state, { payload: id }) {
-      return state.filter(item => item.id !== id);
+    delete(state, { payload: brandId }) {
+      return state.filter(brand => brand.brandId !== brandId);
     },
   },
 };
