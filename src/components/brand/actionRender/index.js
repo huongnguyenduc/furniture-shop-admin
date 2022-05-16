@@ -15,8 +15,8 @@ const ActionRender = props => {
     });
   };
   const handleClickUpdate = async () => {
-    const { brandId, brandName, description } = props.record;
-    const brandEdit = { brandId, brandName, description };
+    const { brandId, brandName, brandDesc } = props.record;
+    const brandEdit = { brandId, brandName, brandDesc };
     props.showModalUpdate(brandEdit);
   };
 

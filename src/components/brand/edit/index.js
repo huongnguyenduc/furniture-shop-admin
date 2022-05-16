@@ -8,7 +8,7 @@ const edit = props => {
   form.setFieldsValue({
     brandId: props.value.brandId,
     brandName: props.value.brandName,
-    description: props.value.description,
+    description: props.value.brandDesc,
   });
 
   const handleSubmit = async () => {
@@ -78,8 +78,8 @@ const edit = props => {
         >
           <Input
             style={{ width: '300px' }}
-            value={props.value.description}
-            defaultValue={props.value.description}
+            value={props.value.brandDesc}
+            defaultValue={props.value.brandDesc}
           />
         </Form.Item>
         <Form.Item

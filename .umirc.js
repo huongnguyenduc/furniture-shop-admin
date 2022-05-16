@@ -45,10 +45,6 @@ export default {
           component: './Brands/index.js',
         },
         {
-          path: '/brand/edit/:id',
-          component: './Brands/editBrand/index',
-        },
-        {
           path: '/import',
           component: './Import/index',
         },

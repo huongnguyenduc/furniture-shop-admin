@@ -22,7 +22,7 @@ const Brand = props => {
   const [value, setValue] = useState({
     brandId: 0,
     brandName: '0',
-    description: '0',
+    brandDesc: '0',
   });
   const [isModalVisibleUpdate, setIsModalVisibleUpdate] = useState(false);
   const [isModalVisibleCreate, setIsModalVisibleCreate] = useState(false);
@@ -32,7 +32,7 @@ const Brand = props => {
       type: 'brands/updateBrand',
       payload: props,
     });
-    router.push('/brand');
+    console.log(brands);
   };
   //delete brand
   const handleDelete = async props => {
@@ -40,6 +40,7 @@ const Brand = props => {
       type: 'brands/deleteBrand',
       payload: props,
     });
+    console.log(brands);
   };
   //create brand
   const handleCreate = async props => {
@@ -47,6 +48,7 @@ const Brand = props => {
       type: 'brands/addBrand',
       payload: props,
     });
+    console.log(brands);
   };
   const columns = [
     {
@@ -142,4 +144,5 @@ const Brand = props => {
     </Layout>
   );
 };
+
 export default connect(state => ({ loading: state.loading }))(Brand);
