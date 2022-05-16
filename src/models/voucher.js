@@ -1,5 +1,5 @@
-import { getDataVoucher , addVoucher} from "../services/voucher";
-import { notification } from 'antd';
+import { getDataVoucher , addVoucher, editVoucher,deleteVoucher} from "../services/voucher";
+import { notification , message} from 'antd';
 export default {
     namespace: 'voucher',
     state: {
@@ -39,6 +39,14 @@ export default {
                 ...state,
                 vouchers: action.payload,
             }
+        },
+        delete(state, action){
+            // state.vouchers.filter(item => item.voucherId !== action.payload.voucherId);
+            // alert(JSON.stringify(state.vouchers));
+            return {
+                ...state,
+                vouchers: state.vouchers.filter(item =>item.voucherId !== action.payload.voucherId)
+            }
         }
     },
     effects: {
@@ -55,15 +63,51 @@ export default {
         *addVoucher(action, {put,call}){
             const response = yield call(addVoucher, action.payload);
             if (response.status === 200){
-                notification.info({
-                    message: `POST API DONE`,
-                    description:
-                      'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-                    });
+                notification.success({
+                    message: `Thêm mới voucher thành công`,
+                    placement: 'bottomRight'
+                });
             }
             else{
-                notification.error({ message: response.content });
+                response.error.forEach(e => {
+                    notification.error({ message: response.error });
+                });
+            }
+        },
+        *editVoucher(action, {put,call}){
+            const response = yield call(editVoucher, action.payload);
+            if (response.status === 200){
+                notification.success({
+                    message: `Cập nhật voucher thành công`,
+                    placement: 'bottomRight'
+                });
+            }
+            else{
+                notification.error({ 
+                    message: response.error,
+                    placement: 'bottomRight'
+                });
+            }
+        },
+        *deleteVoucher(action, {put,call}){
+            const response = yield call(deleteVoucher, action.payload);
+            if (response.status === 200){
+                yield put({
+                    type: 'delete',
+                    payload: action.payload
+                });
+                notification.success({
+                    message: `Xóa voucher thành công`,
+                    placement: 'bottomRight'
+                });
+            }
+            else{
+                notification.error({ 
+                    message: response.error,
+                    placement: 'bottomRight'
+                });
             }
         }
+
     }
 }

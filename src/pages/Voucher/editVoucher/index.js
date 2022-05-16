@@ -18,25 +18,37 @@ const rangeConfig = {
     ],
   };
 
-const voucherTemp = {
-  voucherName: 'Khuyến mãi ví dụ',
-  amount: 10,
-  range_picker: [moment(moment().add(1, 'days')), moment(moment().add(3, 'days'))],
-  validDate: "2022-05-15T17:00:00.000Z",
-  expirationDate: "2022-05-28T17:00:00.000Z",
-  voucherValue: 20000,
-  cappedAt: 100000,
-  voucherDesc: "Đây là mô tả khuyến mãi ",
-}
+// -- //  
 
-const CreateVoucher = props => {
+  // const voucherTemp = {
+  //   voucherName: 'Khuyến mãi ví dụ',
+  //   amount: 10,
+  //   range_picker: [moment(moment().add(1, 'days')), moment(moment().add(3, 'days'))],
+  //   validDate: "2022-05-15T17:00:00.000Z",
+  //   expirationDate: "2022-05-28T17:00:00.000Z",
+  //   voucherValue: 20000,
+  //   cappedAt: 100000,
+  //   voucherDesc: "Đây là mô tả khuyến mãi ",
+  // }
+
+ 
+// -- //
+
+
+const EditVoucher = props => {
   const [newVoucher, setNewVoucher] = useState(voucherTemp);
   const {dispatch} = props;
+  const voucherTemp = JSON.parse(props.location.query.voucher);
+
+  React.useEffect(() => {
+    
+  }, []);
   
   const validFields = (voucher) =>{
     const tomorow = moment(moment().add(1, 'days'));
     const validDate = voucher.range_picker[0];
-    if (validDate >= tomorow){
+
+    if (validDate.format("YYYYMMDD") < tomorow.format("YYYYMMDD")){
       message.error(`Ngày áp dụng phải bắt đầu từ hôm sau (`+ tomorow.format("DD-MM-YYYY") + `)` );
       return false;
     }
@@ -48,17 +60,16 @@ const CreateVoucher = props => {
     //console.log(newVoucher);
     if (validFields(newVoucher)){
       dispatch({
-        type:"voucher/addVoucher",
+        type:"voucher/editVoucher",
         payload: newVoucher,
       })
-      router.goBack();
+      router.push('/voucher');
     }
-    
   }
   
   const onValuesChange = async (changedValues, allValues) => {
     const tmp = allValues;
-    if (allValues.range_picker !== null){
+    if (tmp.range_picker !== null && tmp.range_picker !== undefined){
       tmp.validDate = allValues.range_picker[0].toISOString();
       tmp.expirationDate = allValues.range_picker[1].toISOString();
     }
@@ -67,8 +78,8 @@ const CreateVoucher = props => {
  
   return (
     <Form
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 15 }}
+      labelCol={{ span: 6 }}
+      wrapperCol={{ span: 17 }}
       layout="horizontal"
       labelAlign = "left"
       className = {styles.container}
@@ -77,7 +88,15 @@ const CreateVoucher = props => {
       initialValues = {voucherTemp}
     >
     <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }]}>
-        <h1 className={styles.title}>THÊM MỚI KHUYẾN MÃI</h1>
+        <h1 className={styles.title}>CẬP NHẬT KHUYẾN MÃI</h1>
+        <Col span={24}>
+        <Form.Item label="ID" 
+            name='voucherId'
+            className={styles.formItems}
+        >
+            <Input className={styles.inputItems} disabled={true}/>
+        </Form.Item>
+        </Col>
         <Col span={24}>
         <Form.Item label="TÊN" 
             name='voucherName'
@@ -174,8 +193,7 @@ const CreateVoucher = props => {
                 size='large'
                 type='primary'
                 htmlType="submit"
-                //onClick={}
-            >Hoàn tất</Button>
+            >Cập nhât</Button>
             </Form.Item>
         </Col>
     </Row>
@@ -183,4 +201,4 @@ const CreateVoucher = props => {
   );
 };
 
-export default connect() (CreateVoucher);
+export default connect() (EditVoucher);

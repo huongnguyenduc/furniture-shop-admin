@@ -38,11 +38,11 @@ const Dashboard = props => {
         </Col>
         <Col span={8}>
           <OrderStatus
-            heading="Khách hàng mới"
-            leftColor="#0097EC"
-            rightColor="#003AD2"
-            icon={HonourIcon}
-            value="12"
+            heading="Lượt truy cập"
+            leftColor="#9852F0"
+            rightColor="#5900C9"
+            icon={UserReceivedIcon}
+            value="12.654"
           />
         </Col>
         
@@ -73,20 +73,11 @@ const Dashboard = props => {
             value="12"
           />
         </Col>
-        <Col span={16}
+        <Col span={24}
           className={styles.card}
         >
           <h1 className= {styles.header}>Voucher đang áp dụng</h1>
           <VoucherTable />
-        </Col>
-        <Col span={8}>
-          <OrderStatus
-            heading="Lượt truy cập"
-            leftColor="#9852F0"
-            rightColor="#5900C9"
-            icon={UserReceivedIcon}
-            value="12.654"
-          />
         </Col>
       </Row>
     </div>

@@ -1,25 +1,26 @@
 import {request} from '../Utils/request';
 
 export async function getDataVoucher(){
-    return await request(`/api/vouchers`);
+    return await request(`/api/vouchers?onlyActive=true`);
 }
 
 export async function addVoucher(payload){
-    const {name, voucherDesc, amount, validDate, expirationDate, voucherValue, cappedAt} = payload;
-    const formData = new FormData();
-    //formData.append('name', name);
-    formData.append('voucherDesc',voucherDesc);
-    formData.append('amount',amount);
-    formData.append('validDate',validDate);
-    formData.append('expirationDate',expirationDate);
-    formData.append('voucherValue',voucherValue);
-    formData.append('cappedAt',cappedAt);
-    console.log('service: ');                // console.log data
-    for(var pair of formData.entries()) {
-        console.log(pair[0]+ ', '+ pair[1]); 
-     }
     return request(`/api/vouchers`,{
         method: "POST",
-        data: formData, 
+        data: payload, 
     })
+}
+
+export async function editVoucher(payload){
+    //console.log(JSON.stringify(payload))
+    return request(`/api/vouchers`,{
+        method: "PUT",
+        data: JSON.stringify(payload),
+    })
+}
+
+export async function deleteVoucher(payload){   
+    return request(`/api/vouchers/` + payload.voucherId,{
+        method: "DELETE"
+    });
 }

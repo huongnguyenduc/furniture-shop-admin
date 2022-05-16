@@ -25,6 +25,13 @@ const Voucher = props => {
             dataIndex: 'voucherId',
             align: 'left',
             width: '4%',
+            sorter: (a, b) => (parseInt(a.voucherId) - parseInt(b.voucherId)),
+        },
+        {
+          title: 'Tên',
+          dataIndex: 'voucherName',
+          align: 'center',
+          width: '13%',
         },
         {
           title: 'Mô tả',
@@ -36,13 +43,13 @@ const Voucher = props => {
           title: 'Số lượng',
           dataIndex: 'amount',
           align: 'center',
-          width: '15%',
+          width: '7%',
         },
         {
             title: 'Ngày áp dụng',
             dataIndex: 'validDate',
             align: 'center',
-            width: '15%',
+            width: '13%',
             render: item =>{
               return moment(item).format("DD-MM-YYYY");
             }
@@ -51,7 +58,7 @@ const Voucher = props => {
             title: 'Ngày hết hạn',
             dataIndex: 'expirationDate',
             align: 'center',
-            width: '15%',
+            width: '13%',
             render: item =>{
               return moment(item).format("DD-MM-YYYY");
             }
@@ -78,16 +85,9 @@ const Voucher = props => {
             title: 'Hành Động',
             align: 'center',
             width: '15%',
-            render: () => {return <ActionRender showModal = {showModal} />}
+            render: (voucher) => {return <ActionRender voucher={voucher} />}
         },
     ];
-      const showModal = () => {
-        setIsModalVisible(true);
-      };
-    
-      const handleCancel = () => {
-        setIsModalVisible(false);
-      };
   return (
   <Layout className={styles.layoutContainer}>
     {isLoading ? (<Spin />) : (
@@ -109,8 +109,7 @@ const Voucher = props => {
        className={styles.tableCategory}
        columns={columns}
        bordered
-       dataSource={vouchers} 
-       >
+       dataSource={vouchers}>
        </Table>
       </Content>
       </div>

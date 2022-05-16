@@ -72,6 +72,10 @@ export default {
           component: './Voucher/createVoucher/index',
         },
         {
+          path: '/voucher/edit',
+          component: './Voucher/editVoucher/index',
+        },
+        {
           path: '/',
           component: './Dashboard/index',
         },
