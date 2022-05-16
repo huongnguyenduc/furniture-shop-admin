@@ -16,7 +16,7 @@ const edit = props => {
     const { brandId, brandName, description } = validatedAllFields;
     const brandEdit = { brandId, brandName, description };
     props.handleUpdate(brandEdit);
-    props.handleCancelUpdate();
+    props.onCancel();
   };
   return (
     <Modal

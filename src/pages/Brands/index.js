@@ -1,7 +1,8 @@
 import { connect, useSelector } from 'dva';
-import { Layout, Table, Button, Modal } from 'antd';
+import { Layout, Table, Button, Modal, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.less';
+import { router } from 'umi';
 
 import React, { useState } from 'react';
 import ActionRender from '../../components/brand/actionRender';
@@ -10,14 +11,15 @@ import EditModal from '../../components/brand/edit/index';
 const { Content, Header } = Layout;
 
 const Brand = props => {
+  const { loading, dispatch } = props;
+  const isLoading = loading.effects['brands/getBrandList'];
   const brands = useSelector(state => state.brands.brands);
 
-  const { loading, dispatch } = props;
   React.useEffect(() => {
     dispatch({
       type: 'brands/getBrandList',
     });
-  });
+  }, [dispatch]);
   const [value, setValue] = useState({
     brandId: 0,
     brandName: '0',
@@ -31,6 +33,7 @@ const Brand = props => {
       type: 'brands/updateBrand',
       payload: props,
     });
+    router.push('/brand');
   };
   //delete brand
   const handleDelete = async props => {
@@ -100,40 +103,44 @@ const Brand = props => {
   };
   return (
     <Layout className={styles.layoutContainer}>
-      <CreateModal
-        handleCreate={handleCreate}
-        onCancel={handleCancelCreate}
-        visible={isModalVisibleCreate}
-      />
-      <EditModal
-        value={value}
-        handleUpdate={handleUpdate}
-        onCancel={handleCancelUpdate}
-        visible={isModalVisibleUpdate}
-      />
-      <Header className={styles.brandHeader}>
-        <span className={styles.title}>DANH SÁCH THƯƠNG HIỆU</span>
-        <Button
-          type="primary"
-          size="large"
-          className={styles.myButtonStyling}
-          onClick={showModalCreate}
-        >
-          <PlusOutlined className={styles.plusIcon} />
-          <div className={styles.myTextButton}> Tạo mới</div>
-        </Button>
-      </Header>
-      <Content className={styles.brandContent}>
-        <Table
-          className={styles.tableBrands}
-          columns={columns}
-          bordered
-          dataSource={brands}
-        ></Table>
-      </Content>
+      {isLoading ? (
+        <Spin />
+      ) : (
+        <div>
+          <CreateModal
+            handleCreate={handleCreate}
+            onCancel={handleCancelCreate}
+            visible={isModalVisibleCreate}
+          />
+          <EditModal
+            value={value}
+            handleUpdate={handleUpdate}
+            onCancel={handleCancelUpdate}
+            visible={isModalVisibleUpdate}
+          />
+          <Header className={styles.brandHeader}>
+            <span className={styles.title}>DANH SÁCH THƯƠNG HIỆU</span>
+            <Button
+              type="primary"
+              size="large"
+              className={styles.myButtonStyling}
+              onClick={showModalCreate}
+            >
+              <PlusOutlined className={styles.plusIcon} />
+              <div className={styles.myTextButton}> Tạo mới</div>
+            </Button>
+          </Header>
+          <Content className={styles.brandContent}>
+            <Table
+              className={styles.tableBrands}
+              columns={columns}
+              bordered
+              dataSource={brands}
+            ></Table>
+          </Content>
+        </div>
+      )}
     </Layout>
   );
 };
-export default connect(({ brands }) => ({
-  brands,
-}))(Brand);
+export default connect(state => ({ loading: state.loading }))(Brand);
