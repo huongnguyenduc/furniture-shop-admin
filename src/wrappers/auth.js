@@ -7,8 +7,9 @@ function getWithExpiry(key) {
   if (!itemStr) {
     return null;
   }
-
   const item = JSON.parse(itemStr);
+  if (item?.expiry === undefined) return null;
+  if (item?.value === undefined) return null;
   const now = new Date();
   // compare the expiry time of the item with the current time
   if (now.getTime() > item.expiry) {

@@ -4,21 +4,21 @@ import { connect, useSelector } from 'dva';
 import { Space, Tooltip, Button, Popconfirm, message } from 'antd';
 import { EditOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { router } from 'umi';
-const ActionRender = ({ dispatch, text, show }) => {
-  const setView = () => {
-    dispatch({
-      type: 'products/setView',
-      payload: text.productId,
-    });
-  };
+
+const ActionRender = ({ dispatch, item }) => {
   const setEdit = () => {
-    router.push(`/products/edit/${text.productId}`);
+    dispatch({
+        type: 'category/setEdit',
+        payload: item,
+      });
+    router.push(`/category/edit/${item.categoryId}`);
   };
   async function confirm(e) {
     dispatch({
-      type: 'products/delProduct',
-      payload: text.productId,
+      type: 'category/delCategory',
+      payload: item.categoryId,
     });
+
   }
 
   function cancel(e) {
@@ -26,17 +26,6 @@ const ActionRender = ({ dispatch, text, show }) => {
   }
   return (
     <Space size="middle">
-      <Tooltip title="Chi tiết">
-        <Button
-          className={styles.buttonContainer}
-          onClick={() => {
-            setView();
-            show();
-          }}
-        >
-          <EyeOutlined />
-        </Button>
-      </Tooltip>
       <Tooltip title="Sửa">
         <Button
           className={styles.buttonContainer}
