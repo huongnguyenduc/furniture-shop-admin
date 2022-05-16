@@ -1,7 +1,6 @@
 import React from 'react';
 import { Modal, Button, Form, Input } from 'antd';
 import styles from './index.less';
-
 import { useDispatch } from 'dva';
 import { connect } from 'dva';
 
@@ -41,6 +40,7 @@ const create = props => {
         autoComplete="off"
       >
         <Form.Item
+          className={styles.formItems}
           label="Tên thương hiệu"
           name="brandName"
           rules={[
