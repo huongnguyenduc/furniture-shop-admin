@@ -6,6 +6,7 @@ import styles from './styles.less';
 import React, { useState } from 'react';
 import ActionRender from '../../components/brand/actionRender';
 import CreateModal from '../../components/brand/create/index';
+import EditModal from '../../components/brand/edit/index';
 const { Content, Header } = Layout;
 
 const Brand = props => {
@@ -16,9 +17,13 @@ const Brand = props => {
     dispatch({
       type: 'brands/getBrandList',
     });
-  }, [brands, dispatch]);
-
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  });
+  const [value, setValue] = useState({
+    brandId: 0,
+    brandName: '0',
+    description: '0',
+  });
+  const [isModalVisibleUpdate, setIsModalVisibleUpdate] = useState(false);
   const [isModalVisibleCreate, setIsModalVisibleCreate] = useState(false);
   //update brand
   const handleUpdate = async props => {
@@ -68,9 +73,9 @@ const Brand = props => {
       render: record => {
         return (
           <ActionRender
-            handleUpdate={handleUpdate}
+            showModalUpdate={showModalUpdate}
+            handleCancelUpdate={handleCancelUpdate}
             handleDelete={handleDelete}
-            showModal={showModal}
             record={record}
           />
         );
@@ -85,12 +90,13 @@ const Brand = props => {
     setIsModalVisibleCreate(false);
   };
 
-  const showModal = () => {
-    setIsModalVisible(true);
+  const showModalUpdate = props => {
+    setValue(props);
+    setIsModalVisibleUpdate(true);
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
+  const handleCancelUpdate = () => {
+    setIsModalVisibleUpdate(false);
   };
   return (
     <Layout className={styles.layoutContainer}>
@@ -98,6 +104,12 @@ const Brand = props => {
         handleCreate={handleCreate}
         onCancel={handleCancelCreate}
         visible={isModalVisibleCreate}
+      />
+      <EditModal
+        value={value}
+        handleUpdate={handleUpdate}
+        onCancel={handleCancelUpdate}
+        visible={isModalVisibleUpdate}
       />
       <Header className={styles.brandHeader}>
         <span className={styles.title}>DANH SÁCH THƯƠNG HIỆU</span>
