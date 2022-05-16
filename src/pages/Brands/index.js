@@ -14,7 +14,6 @@ const Brand = props => {
   const { loading, dispatch } = props;
   const isLoading = loading.effects['brands/getBrandList'];
   const brands = useSelector(state => state.brands.brands);
-
   React.useEffect(() => {
     dispatch({
       type: 'brands/getBrandList',

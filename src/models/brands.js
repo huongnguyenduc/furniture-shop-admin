@@ -68,7 +68,7 @@ export default {
     },
     delBrand(state, { payload }) {
       const previousState = state.brands;
-      var newState = previousState.filter(brand => brand.brandId !== payload);
+      const newState = previousState.filter(brand => brand.brandId !== payload);
       return { ...state, brands: newState };
     },
     saveBrandList(state, action) {
@@ -77,8 +77,8 @@ export default {
         brands: action.payload,
       };
     },
-    delete(state, { payload: brandId }) {
-      return state.filter(brand => brand.brandId !== brandId);
+    delete(state, action) {
+      return { ...state, brands: state.filter(brand => brand.brandId !== action.payload.brandId) };
     },
   },
 };
