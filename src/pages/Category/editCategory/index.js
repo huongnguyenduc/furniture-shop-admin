@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styles from './styles.less';
-import { TweenOneGroup } from 'rc-tween-one';
 import { connect, useSelector } from 'dva';
 import {
   Affix,

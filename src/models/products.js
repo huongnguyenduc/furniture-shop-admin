@@ -1,6 +1,15 @@
-import { getDataProduct, addProduct, addVariant } from '../services/product';
+import {
+  getDataProduct,
+  addProduct,
+  addVariant,
+  editProduct,
+  editVariant,
+  delProduct,
+  delVariant,
+} from '../services/product';
 import { uploader } from '../Utils/uploader';
 import { notification } from 'antd';
+import { NotificationOutlined } from '@ant-design/icons';
 export default {
   namespace: 'products',
   state: {
@@ -55,16 +64,55 @@ export default {
       const response = yield call(addProduct, action.payload);
       console.log(response);
       if (response.status === 200) {
-        
         for (var element of action.payload.variants) {
           element['productId'] = response.content.productId;
-          console.log(response.content.productId)
+          console.log(response.content.productId);
           const respon = yield call(addVariant, element);
           if (respon.status !== 200) {
             notification.error({ message: respon.content });
             break;
           }
         }
+      } else {
+        notification.error({ message: response.content });
+      }
+    },
+    *editProduct(action, { put, call }) {
+      const response = yield call(editProduct, action.payload);
+      if (response.status === 200) {
+        notification.success({ message: 'Save success' });
+      } else {
+        notification.error({ message: response.content });
+      }
+    },
+    *editVariant(action, { put, call }) {
+      const response = yield call(editVariant, action.payload);
+      if (response.status === 200) {
+        notification.success({ message: 'Detele success' });
+      } else {
+        notification.error({ message: response.content });
+      }
+    },
+    *delProduct(action, { put, call }) {
+      const response = yield call(delProduct, action.payload);
+      if (response.status === 200) {
+        yield put({
+          type: 'deleteProduct',
+          payload: action.payload,
+        });
+        notification.success({ message: 'Detele success' });
+      } else {
+        notification.error({ message: response.content });
+      }
+    },
+    *delVariant(action, { put, call }) {
+      const response = yield call(delVariant, action.payload);
+      if (response.status === 200) {
+        yield put({
+          type: 'deleteVariant',
+          payload: action.payload,
+        });
+        notification.success({ message: 'Delete success' });
       } else {
         notification.error({ message: response.content });
       }
@@ -77,8 +125,29 @@ export default {
     },
   },
   reducers: {
-    delete(state, { payload: id }) {
-      return state.filter(item => item.id !== id);
+    deleteProduct(state, action) {
+      console.log(action.payload);
+      const product = state.products.filter(item => item.productId !== action.payload);
+      return {
+        ...state,
+        products: product,
+      };
+    },
+    deleteVariant(state, action) {
+      // update view
+      let currProduct = state.view;
+      currProduct.variants = currProduct.variants.filter(item => item.variantId !== action.payload);
+      console.log(currProduct);
+      //update product list
+      let productList = state.products.map(obj =>
+        obj.productId === currProduct.productId ? { ...obj, variants: currProduct.variants } : obj,
+      );
+      console.log(productList);
+      return {
+        ...state,
+        view: currProduct,
+        products: productList,
+      };
     },
     saveProductList(state, action) {
       return {
@@ -88,12 +157,12 @@ export default {
       };
     },
     setViewProduct(state, { payload: id }) {
-      const view = state.products.find(product => {
-        if (product.productId === id) return product;
-      });
+      const view = state.products.find(product => product.productId === id);
+      const newObject = JSON.parse(JSON.stringify(view));
+      console.log(newObject);
       return {
         ...state,
-        view: view,
+        view: newObject,
         isShowModal: true,
       };
     },

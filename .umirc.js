@@ -33,16 +33,20 @@ export default {
           component: './Category/editCategory/index.js',
         },
         {
-          path: '/product',
+          path: '/products',
           component: './Products/index',
         },
         {
-          path: '/product/create',
+          path: '/products/create',
           component: './Products/createProduct/index',
         },
         {
-          path: '/product/edit/:id',
+          path: '/products/edit/:id',
           component: './Products/editProduct/index.js',
+        },
+        {
+          path: '/products/:id/variant/:vrId',
+          component: './Products/editVariant/index.js',
         },
         {
           path: '/import',
@@ -55,6 +59,10 @@ export default {
         {
           path: '/import/edit/:id',
           component: './Import/editImport/index.js',
+        },
+        {
+          path: '/user',
+          component: './User/index',
         },
         {
           path: '/report',

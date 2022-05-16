@@ -18,7 +18,7 @@ const ActionRender = ({ dispatch, item }) => {
       type: 'category/delCategory',
       payload: item.categoryId,
     });
-    message.success('Đã xóa');
+
   }
 
   function cancel(e) {
