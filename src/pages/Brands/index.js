@@ -4,45 +4,76 @@ import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.less';
 
 import React, { useState } from 'react';
-//import ViewDetail from '../../components/brand/viewDetail';
 import ActionRender from '../../components/brand/actionRender';
-import { router } from 'umi';
 import CreateModal from '../../components/brand/create/index';
 const { Content, Header } = Layout;
 
 const Brand = props => {
   const brands = useSelector(state => state.brands.brands);
-  const [listBrand, setListBrand] = useState(brands);
+
+  const { loading, dispatch } = props;
+  React.useEffect(() => {
+    dispatch({
+      type: 'brands/getBrandList',
+    });
+  }, [brands, dispatch]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleCreate, setIsModalVisibleCreate] = useState(false);
-
+  //update brand
+  const handleUpdate = async props => {
+    await dispatch({
+      type: 'brands/updateBrand',
+      payload: props,
+    });
+  };
+  //delete brand
+  const handleDelete = async props => {
+    await dispatch({
+      type: 'brands/deleteBrand',
+      payload: props,
+    });
+  };
+  //create brand
+  const handleCreate = async props => {
+    await dispatch({
+      type: 'brands/addBrand',
+      payload: props,
+    });
+  };
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'brand_id',
+      dataIndex: 'brandId',
       align: 'left',
-      width: '10%',
+      width: '5%',
     },
 
     {
       title: 'Tên thương hiệu',
-      dataIndex: 'name',
+      dataIndex: 'brandName',
       align: 'center',
-      width: '15%',
+      width: '10%',
     },
     {
       title: 'Mô tả',
-      dataIndex: 'description',
+      dataIndex: 'brandDesc',
       align: 'center',
       width: '15%',
     },
     {
       title: 'Hành Động',
       align: 'center',
-      width: '15%',
+      width: '10%',
       render: record => {
-        return <ActionRender showModal={showModal} record={record} />;
+        return (
+          <ActionRender
+            handleUpdate={handleUpdate}
+            handleDelete={handleDelete}
+            showModal={showModal}
+            record={record}
+          />
+        );
       },
     },
   ];
@@ -53,8 +84,6 @@ const Brand = props => {
   const handleCancelCreate = () => {
     setIsModalVisibleCreate(false);
   };
-  //
-  const handleDelete = () => {};
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -65,8 +94,11 @@ const Brand = props => {
   };
   return (
     <Layout className={styles.layoutContainer}>
-      {/* <ViewDetail onCancel={handleCancel} visible={isModalVisible} /> */}
-      <CreateModal onCancel={handleCancelCreate} visible={isModalVisibleCreate} />
+      <CreateModal
+        handleCreate={handleCreate}
+        onCancel={handleCancelCreate}
+        visible={isModalVisibleCreate}
+      />
       <Header className={styles.brandHeader}>
         <span className={styles.title}>DANH SÁCH THƯƠNG HIỆU</span>
         <Button

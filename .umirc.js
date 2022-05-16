@@ -12,7 +12,8 @@ export default {
     },
     {
       path: '/',
-
+      authority: ['ROLE_ADMIN'],
+      Routes: ['./src/wrappers/auth'],
       component: '../layouts/index',
       routes: [
         {
