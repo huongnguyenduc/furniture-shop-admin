@@ -1,7 +1,8 @@
 import { request } from '../Utils/request';
 export async function getDataProduct() {
-  return await request(`/api/products`);
+  return await request(`/api/website/products`);
 }
+
 export function addProduct(payload) {
   const { product_name, description, image_url, brand_id, category_id } = payload;
   const formData = {};
@@ -28,6 +29,7 @@ export function delProduct(payload) {
     method: 'DELETE',
   });
 }
+
 export function addVariant(payload) {
   const { productId, sku, price, image_url, options } = payload;
   var optionDTO = [];
@@ -44,8 +46,9 @@ export function addVariant(payload) {
   formData['productId'] = productId;
   formData['image'] = image_url;
   formData['price'] = price;
-  formData['values'] = optionDTO;
+  formData['options'] = optionDTO;
   console.log(optionDTO);
+
   return request(`/api/variants`, {
     method: 'POST',
     body: JSON.stringify(formData),

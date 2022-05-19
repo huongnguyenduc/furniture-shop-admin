@@ -14,6 +14,7 @@ export default {
   namespace: 'products',
   state: {
     products: [],
+    variants: [],
     view: {
       productId: 1,
       productName: 'Sloan Left Chaise Sleeper Sectional',
@@ -154,6 +155,12 @@ export default {
         ...state,
         products: action.payload,
         view: action.payload[0],
+      };
+    },
+    saveVariantList(state, action) {
+      return {
+        ...state,
+        variants: action.payload,
       };
     },
     setViewProduct(state, { payload: id }) {
