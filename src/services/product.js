@@ -5,17 +5,28 @@ export async function getDataProduct() {
 
 export function addProduct(payload) {
   const { product_name, description, image_url, brand_id, category_id } = payload;
-  const formData = new FormData();
+  const formData = {};
 
-  formData.append('brandId', parseInt(brand_id));
-  formData.append('categoryId', parseInt(category_id));
-  formData.append('image', image_url);
-  formData.append('productDesc', description);
-  formData.append('productName', product_name);
+  formData['brandId'] = parseInt(brand_id);
+  formData['categoryId'] = parseInt(category_id);
+  formData['image'] = image_url;
+  formData['productDesc'] = description;
+  formData['productName'] = product_name;
   console.log(formData);
   return request(`/api/products`, {
     method: 'POST',
-    body: JSON.stringify(Object.fromEntries(formData)),
+    body: JSON.stringify(formData),
+  });
+}
+export function editProduct(payload) {
+  return request(`/api/products`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  });
+}
+export function delProduct(payload) {
+  return request(`/api/products/${payload}`, {
+    method: 'DELETE',
   });
 }
 
@@ -41,5 +52,16 @@ export function addVariant(payload) {
   return request(`/api/variants`, {
     method: 'POST',
     body: JSON.stringify(formData),
+  });
+}
+export function editVariant(payload) {
+  return request(`/api/variants`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  });
+}
+export function delVariant(payload) {
+  return request(`/api/variants/${payload}`, {
+    method: 'DELETE',
   });
 }

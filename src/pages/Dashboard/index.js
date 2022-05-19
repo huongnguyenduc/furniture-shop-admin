@@ -12,74 +12,72 @@ import { ReactComponent as ShoppingBasketIcon } from '../../assets/icons/shoppin
 import { ReactComponent as ArchiveDrawerIcon } from '../../assets/icons/archive-drawer-line.svg';
 import { ReactComponent as HandHeartIcon } from '../../assets/icons/hand-heart-line.svg';
 import { ProductStatus } from './ProductStatus';
-import { SaleTable } from './SaleTable';
+import { VoucherTable } from './VoucherTable';
 
 const Dashboard = props => {
   return (
     <div className={styles.container}>
-      <Row gutter={[16, 16]}>
-        <Col span={6}>
+       <Row gutter={[16, 16]}>
+       <Col span={8}>
           <OrderStatus
-            heading="To be Fulfilled"
-            leftColor="#F39034"
-            rightColor="#FF2727"
-            icon={FileListIcon}
-          />
-        </Col>
-        <Col span={6}>
-          <OrderStatus
-            heading="To be invoiced"
-            leftColor="#0097EC"
-            rightColor="#003AD2"
-            icon={HonourIcon}
-          />
-        </Col>
-        <Col span={6}>
-          <OrderStatus
-            heading="Completed"
+            heading="Đơn hàng"
             leftColor="#1FD071"
             rightColor="#00A843"
             icon={CheckBoxCircleIcon}
+            value = "36"
           />
         </Col>
-        <Col span={6}>
+        <Col span={8}>
           <OrderStatus
-            heading="Assigned to me"
+            heading="Doanh thu"
+            leftColor="#F39034"
+            rightColor="#FF2727"
+            icon={FileListIcon}
+            value= "12.500.000 VND"
+          />
+        </Col>
+        <Col span={8}>
+          <OrderStatus
+            heading="Lượt truy cập"
             leftColor="#9852F0"
             rightColor="#5900C9"
             icon={UserReceivedIcon}
+            value="12.654"
           />
         </Col>
-        <Col span={6}>
-          <ProductStatus heading="Out of stock products" icon={HomeIcon} color="#FF2727" />
-        </Col>
-        <Col span={6}>
-          <ProductStatus heading="All products" icon={ShoppingBasketIcon} color="#003AD2" />
-        </Col>
-        <Col span={6}>
-          <ProductStatus heading="Archived products" icon={ArchiveDrawerIcon} color="#00A843" />
-        </Col>
-        <Col span={6}>
-          <ProductStatus heading="Quantity on hand" icon={HandHeartIcon} color="#5900C9" />
-        </Col>
-        <Col span={12}>
-          <SaleTable />
-        </Col>
-        <Col span={6}>
+        
+        <Col span={8}>
           <OrderStatus
-            heading="To be invoiced"
-            leftColor="#0097EC"
-            rightColor="#003AD2"
-            icon={HonourIcon}
+            heading="Đơn hàng chờ xử lí"
+            leftColor="#9852F0"
+            rightColor="#5900C9"
+            icon={UserReceivedIcon}
+            value="7"
           />
         </Col>
-        <Col span={6}>
+        <Col span={8}>
           <OrderStatus
-            heading="To be invoiced"
-            leftColor="#0097EC"
-            rightColor="#003AD2"
-            icon={HonourIcon}
+            heading="Đơn hàng đang đóng gói"
+            leftColor="#9852F0"
+            rightColor="#5900C9"
+            icon={UserReceivedIcon}
+            value= "23"
           />
+        </Col>
+        <Col span={8}>
+          <OrderStatus
+            heading="Đơn hàng đang giao"
+            leftColor="#9852F0"
+            rightColor="#5900C9"
+            icon={UserReceivedIcon}
+            value="12"
+          />
+        </Col>
+        <Col span={24}
+          className={styles.card}
+        >
+          <h1 className= {styles.header}>Voucher đang áp dụng</h1>
+          <VoucherTable />
         </Col>
       </Row>
     </div>

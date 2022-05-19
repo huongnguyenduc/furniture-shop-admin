@@ -1,18 +1,32 @@
 import React from 'react';
 import { Modal, Button, Form, Input } from 'antd';
-const create = ({ visible, onCancel }) => {
+import { useDispatch } from 'dva';
+import { connect } from 'dva';
+
+const create = props => {
+  const [form] = Form.useForm();
+  const handleSubmit = async () => {
+    const validatedAllFields = await form.validateFields();
+    const { brandName, description } = validatedAllFields;
+    const brandCreate = { brandName, description };
+    document.getElementById('formCreate').reset();
+    props.handleCreate(brandCreate);
+    props.onCancel();
+  };
   return (
     <Modal
       title="Create Brand"
-      onCancel={onCancel}
-      visible={visible}
+      onCancel={props.onCancel}
+      visible={props.visible}
       cancelButtonProps={{ style: { display: 'none' } }}
       okButtonProps={{ style: { display: 'none' } }}
       width={700}
       bodyStyle={{ height: 'unset' }}
     >
       <Form
+        id="formCreate"
         name="create-brand"
+        form={form}
         labelCol={{
           span: 8,
         }}
@@ -26,7 +40,7 @@ const create = ({ visible, onCancel }) => {
       >
         <Form.Item
           label="Tên thương hiệu"
-          name="name"
+          name="brandName"
           rules={[
             {
               required: true,
@@ -54,7 +68,7 @@ const create = ({ visible, onCancel }) => {
             span: 16,
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" onClick={handleSubmit}>
             Submit
           </Button>
         </Form.Item>

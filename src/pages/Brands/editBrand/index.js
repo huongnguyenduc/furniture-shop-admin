@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
-import styles from './styles.less';
+import React from 'react';
 
-import { connect, useSelector } from 'dva';
-import { Form, Upload, Row, Col, Input, Typography, Button, InputNumber } from 'antd';
-import { InboxOutlined, UploadOutlined, CloseOutlined } from '@ant-design/icons';
+import { Form, Input, Typography, Button } from 'antd';
+import { connect } from 'dva';
 import { router } from 'umi';
-
 const { Title } = Typography;
 
 const editBrand = props => {
-  const onFinish = values => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
+  const { dispatch } = props;
+  const [form] = Form.useForm();
+  form.setFieldsValue({
+    brandId: props.location.state.brandId,
+    brandName: props.location.state.brandName,
+    description: props.location.state.description,
+  });
+  const handleClick = async () => {
+    const validatedAllFields = await form.validateFields();
+    const { brandId, brandName, description } = validatedAllFields;
+    const brandEdit = { brandId, brandName, description };
+    console.log(brandEdit);
+    await dispatch({
+      type: 'brands/updateBrand',
+      payload: brandEdit,
+    });
+    router.goBack();
   };
   return (
     <div>
@@ -22,7 +30,8 @@ const editBrand = props => {
         Edit brand
       </Title>
       <Form
-        name="create-brand"
+        form={form}
+        name="edit-brand"
         labelCol={{
           span: 8,
         }}
@@ -32,13 +41,18 @@ const editBrand = props => {
         initialValues={{
           remember: true,
         }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
+        <Form.Item name="brandId" hidden={true}>
+          <Input
+            style={{ width: '300px' }}
+            value={props.location.state.brandId}
+            defaultValue={props.location.state.brandId}
+          />
+        </Form.Item>
         <Form.Item
           label="Tên thương hiệu"
-          name="name"
+          name="brandName"
           rules={[
             {
               required: true,
@@ -46,7 +60,11 @@ const editBrand = props => {
             },
           ]}
         >
-          <Input style={{ width: '300px' }} defaultValue={props.location.state.name} />
+          <Input
+            style={{ width: '300px' }}
+            value={props.location.state.brandName}
+            defaultValue={props.location.state.brandName}
+          />
         </Form.Item>
         <Form.Item
           label="Mô tả"
@@ -58,7 +76,11 @@ const editBrand = props => {
             },
           ]}
         >
-          <Input style={{ width: '300px' }} defaultValue={props.location.state.description} />
+          <Input
+            style={{ width: '300px' }}
+            value={props.location.state.brandDesc}
+            defaultValue={props.location.state.brandDesc}
+          />
         </Form.Item>
         <Form.Item
           wrapperCol={{
@@ -66,7 +88,7 @@ const editBrand = props => {
             span: 16,
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" onClick={handleClick}>
             Submit
           </Button>
         </Form.Item>
@@ -75,4 +97,4 @@ const editBrand = props => {
   );
 };
 
-export default editBrand;
+export default connect()(editBrand);

@@ -75,7 +75,7 @@ const data = [
   },
 ];
 
-export const SaleTable = () => {
+export const VoucherTable = () => {
   return (
     <Table
       className={styles.container}
