@@ -1,9 +1,6 @@
 import { request } from '../Utils/request';
 export async function getDataProduct() {
-  return await request(`/api/products`);
-}
-export async function getDataVariant() {
-  return await request(`/api/variants`);
+  return await request(`/api/website/products`);
 }
 
 export function addProduct(payload) {
@@ -21,6 +18,7 @@ export function addProduct(payload) {
     body: JSON.stringify(Object.fromEntries(formData)),
   });
 }
+
 export function addVariant(payload) {
   const { productId, sku, price, image_url, options } = payload;
   var optionDTO = [];

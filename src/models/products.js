@@ -2,11 +2,8 @@ import {
   getDataProduct,
   addProduct,
   addVariant,
-  getDataVariant,
 } from '../services/product';
-import { uploader } from '../Utils/uploader';
 import { notification } from 'antd';
-import request from 'umi-request';
 export default {
   namespace: 'products',
   state: {
@@ -48,16 +45,6 @@ export default {
     },
   },
   effects: {
-    *getVariantList(action, { put, call }) {
-      const response = yield call(getDataVariant);
-      console.log(response.content);
-      if (response.status === 200) {
-        yield put({
-          type: 'saveVariantList',
-          payload: response.content,
-        });
-      }
-    },
     *getProductList(action, { put, call }) {
       const response = yield call(getDataProduct);
       console.log(response);

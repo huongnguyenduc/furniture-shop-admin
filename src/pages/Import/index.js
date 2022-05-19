@@ -25,12 +25,12 @@ const Import = props => {
     {
       title: 'ID',
       dataIndex: 'importId',
-      align: 'left',
+      align: 'center',
       width: '4%',
     },
     {
       title: 'Người Nhập',
-      dataIndex: 'username',
+      dataIndex: 'emailImporter',
       align: 'center',
       width: '10%',
     },

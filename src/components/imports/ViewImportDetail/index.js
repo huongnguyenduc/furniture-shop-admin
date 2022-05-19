@@ -4,25 +4,31 @@ import { Modal, Table, Image, Button } from 'antd';
 const ViewImportDetail = props => {
   const columns = [
     {
-      title: 'ID',
+      title: 'Variant ID',
       dataIndex: 'variantId',
-      align: 'left',
+      align: 'center',
       width: '10%',
     },
     {
       title: 'Ảnh',
       dataIndex: 'image',
       align: 'left',
-      width: '40%',
+      width: '10%',
       render: item => {
-        return <Image width={200} src={item}></Image>;
+        return <Image width={50} src={item}></Image>;
       },
+    },
+    {
+      title: 'SKU',
+      dataIndex: 'sku',
+      align: 'left',
+      width: '50%',
     },
     {
       title: 'Quantity',
       dataIndex: 'quantity',
       align: 'center',
-      width: '30%',
+      width: '10%',
     },
     {
       title: 'Giá nhập',
@@ -35,6 +41,7 @@ const ViewImportDetail = props => {
   ];
 
   const data = props.importDetails.map(value => ({
+    sku: value.variant.sku,
     price: value.price,
     quantity: value.quantity,
     variantId: value.variant.variantId,
@@ -48,8 +55,8 @@ const ViewImportDetail = props => {
       visible={props.visible}
       onCancel={props.onCancel}
       footer={[
-        <Button key="back" onClick={props.onCancel}>
-          Return
+        <Button key="Ok" onClick={props.onCancel}>
+          Export
         </Button>,
       ]}
     >
