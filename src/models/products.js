@@ -1,39 +1,49 @@
-import { getDataProduct, addProduct, addVariant } from '../services/product';
-import {uploader} from '../Utils/uploader';
+import {
+  getDataProduct,
+  addProduct,
+  addVariant,
+  editProduct,
+  editVariant,
+  delProduct,
+  delVariant,
+} from '../services/product';
+import { uploader } from '../Utils/uploader';
 import { notification } from 'antd';
+import { NotificationOutlined } from '@ant-design/icons';
 export default {
   namespace: 'products',
   state: {
     products: [],
+    variants: [],
     view: {
-      product_id: 1,
-      product_name: 'Sloan Left Chaise Sleeper Sectional',
-      category_id: 5,
-      category_name: 'Sleeper Sectional',
-      brand_id: 1,
-      brand_name: 'Sloan',
-      description: null,
-      image_url:
+      productId: 1,
+      productName: 'Sloan Left Chaise Sleeper Sectional',
+      categoryId: 5,
+      categoryName: 'Sleeper Sectional',
+      brandId: 1,
+      brandName: 'Sloan',
+      productDesc: null,
+      image:
         'https://content.cylindo.com/api/v2/4472/products/SLON.FABRIC.SECT.SSLEFT/frames/1/SLON.FABRIC.SECT.SSLEFT.JPG?background=FFFFFF&feature=COLOR:BI-132&feature=FINISH:LEG007-1&feature=CHAISE%20LENGTH:CHAISE-63&feature=CUSHIONS:CUSHION-2&feature=BED:BED_IN',
       variants: [
         {
-          variant_id: 1,
+          variantId: 1,
           sku: 'SLON.FABRIC.SECT.SSLEFT - BI-132 - Leg007-1',
           price: 3245,
-          import_price: 1000,
+          importPrice: 1000,
           quantity: 10,
-          image_url:
+          image:
             'https://content.cylindo.com/api/v2/4472/products/SLON.FABRIC.SECT.SSLEFT/frames/1/SLON.FABRIC.SECT.SSLEFT.JPG?background=FFFFFF&feature=COLOR:BI-132&feature=FINISH:Leg007-1&feature=CHAISE%20LENGTH:CHAISE-63&feature=CUSHIONS:CUSHION-2&feature=BED:BED_IN',
           options: [
             {
-              option_id: 1,
-              option_name: 'Chất liệu',
-              option_value: 'Opal',
+              optionId: 1,
+              optionName: 'Chất liệu',
+              optionValue: 'Opal',
             },
             {
-              option_id: 2,
-              option_name: 'Chất liệu chân',
-              option_value: 'Oiled Walnut',
+              optionId: 2,
+              optionName: 'Chất liệu chân',
+              optionValue: 'Oiled Walnut',
             },
           ],
         },
@@ -43,7 +53,7 @@ export default {
   effects: {
     *getProductList(action, { put, call }) {
       const response = yield call(getDataProduct);
-      console.log(response)
+      console.log(response);
       if (response.status === 200) {
         yield put({
           type: 'saveProductList',
@@ -52,20 +62,58 @@ export default {
       }
     },
     *addProduct(action, { put, call }) {
-      action.payload.image_url = yield uploader(action.payload.image_file)
       const response = yield call(addProduct, action.payload);
+      console.log(response);
       if (response.status === 200) {
         for (var element of action.payload.variants) {
-          element.image_url = yield uploader(element.image_file[0]);
-          for(var option of element.options) {
-            option.option_image_url = yield uploader(option.option_image[0]);
-          }
+          element['productId'] = response.content.productId;
+          console.log(response.content.productId);
           const respon = yield call(addVariant, element);
           if (respon.status !== 200) {
             notification.error({ message: respon.content });
             break;
           }
         }
+      } else {
+        notification.error({ message: response.content });
+      }
+    },
+    *editProduct(action, { put, call }) {
+      const response = yield call(editProduct, action.payload);
+      if (response.status === 200) {
+        notification.success({ message: 'Save success' });
+      } else {
+        notification.error({ message: response.content });
+      }
+    },
+    *editVariant(action, { put, call }) {
+      const response = yield call(editVariant, action.payload);
+      if (response.status === 200) {
+        notification.success({ message: 'Detele success' });
+      } else {
+        notification.error({ message: response.content });
+      }
+    },
+    *delProduct(action, { put, call }) {
+      const response = yield call(delProduct, action.payload);
+      if (response.status === 200) {
+        yield put({
+          type: 'deleteProduct',
+          payload: action.payload,
+        });
+        notification.success({ message: 'Detele success' });
+      } else {
+        notification.error({ message: response.content });
+      }
+    },
+    *delVariant(action, { put, call }) {
+      const response = yield call(delVariant, action.payload);
+      if (response.status === 200) {
+        yield put({
+          type: 'deleteVariant',
+          payload: action.payload,
+        });
+        notification.success({ message: 'Delete success' });
       } else {
         notification.error({ message: response.content });
       }
@@ -78,8 +126,29 @@ export default {
     },
   },
   reducers: {
-    delete(state, { payload: id }) {
-      return state.filter(item => item.id !== id);
+    deleteProduct(state, action) {
+      console.log(action.payload);
+      const product = state.products.filter(item => item.productId !== action.payload);
+      return {
+        ...state,
+        products: product,
+      };
+    },
+    deleteVariant(state, action) {
+      // update view
+      let currProduct = state.view;
+      currProduct.variants = currProduct.variants.filter(item => item.variantId !== action.payload);
+      console.log(currProduct);
+      //update product list
+      let productList = state.products.map(obj =>
+        obj.productId === currProduct.productId ? { ...obj, variants: currProduct.variants } : obj,
+      );
+      console.log(productList);
+      return {
+        ...state,
+        view: currProduct,
+        products: productList,
+      };
     },
     saveProductList(state, action) {
       return {
@@ -88,13 +157,19 @@ export default {
         view: action.payload[0],
       };
     },
-    setViewProduct(state, { payload: id }) {
-      const view = state.products.find(product => {
-        if (product.product_id === id) return product;
-      });
+    saveVariantList(state, action) {
       return {
         ...state,
-        view: view,
+        variants: action.payload,
+      };
+    },
+    setViewProduct(state, { payload: id }) {
+      const view = state.products.find(product => product.productId === id);
+      const newObject = JSON.parse(JSON.stringify(view));
+      console.log(newObject);
+      return {
+        ...state,
+        view: newObject,
         isShowModal: true,
       };
     },

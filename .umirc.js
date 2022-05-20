@@ -29,16 +29,24 @@ export default {
           component: './Category/createCategory/index',
         },
         {
-          path: '/product',
+          path: '/category/edit/:id',
+          component: './Category/editCategory/index.js',
+        },
+        {
+          path: '/products',
           component: './Products/index',
         },
         {
-          path: '/product/create',
+          path: '/products/create',
           component: './Products/createProduct/index',
         },
         {
-          path: '/product/edit/:id',
+          path: '/products/edit/:id',
           component: './Products/editProduct/index.js',
+        },
+        {
+          path: '/products/:id/variant/:vrId',
+          component: './Products/editVariant/index.js',
         },
         {
           path: '/brand',
@@ -57,8 +65,24 @@ export default {
           component: './Import/editImport/index.js',
         },
         {
+          path: '/user',
+          component: './User/index',
+        },
+        {
           path: '/report',
           component: './Report/index',
+        },
+        {
+          path: '/voucher',
+          component: './Voucher/index',
+        },
+        {
+          path: '/voucher/create',
+          component: './Voucher/createVoucher/index',
+        },
+        {
+          path: '/voucher/edit',
+          component: './Voucher/editVoucher/index',
         },
         {
           path: '/',

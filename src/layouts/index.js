@@ -59,7 +59,7 @@ function BasicLayout(props) {
               className={styles.menuItems}
               key="3"
               icon={<InboxOutlined className={styles.menuIcons} />}
-              onClick={() => router.push('/product')}
+              onClick={() => router.push('/products')}
             >
               <span className={styles.menuTitle}>Sản Phẩm</span>
             </Menu.Item>
@@ -98,6 +98,9 @@ function BasicLayout(props) {
               className={styles.menuItems}
               key="8"
               icon={<TagsOutlined className={styles.menuIcons} />}
+              // --chưa commit --// 
+              onClick={() => router.push('/voucher')}
+              // -- //
             >
               <span className={styles.menuTitle}>Khuyến Mại</span>
             </Menu.Item>
@@ -105,8 +108,9 @@ function BasicLayout(props) {
               className={styles.menuItems}
               key="9"
               icon={<TeamOutlined className={styles.menuIcons} />}
+              onClick={() => router.push('/user')}
             >
-              <span className={styles.menuTitle}>Khách Hàng</span>
+              <span className={styles.menuTitle}>Tài Khoản</span>
             </Menu.Item>
             <Menu.Item
               className={styles.menuItems}
