@@ -6,7 +6,7 @@ const { Content } = Layout;
 
 const Invoice = forwardRef((props, ref) => {
   const listItems = props.data.location.state.items;
-
+  console.log(props.data.location.state.createdAt);
   const columns = [
     {
       title: 'Variant ID',
@@ -53,7 +53,7 @@ const Invoice = forwardRef((props, ref) => {
           </div>
           <div></div>
           <div>
-            <p>Ngày nhập: {getdateTime(props.data.location.state.createdAt)}</p>
+            <p>Ngày nhập: {props.data.location.state.createdAt}</p>
             <p>Mô tả: {props.data.location.state.importDesc}</p>
           </div>
           <div></div>
