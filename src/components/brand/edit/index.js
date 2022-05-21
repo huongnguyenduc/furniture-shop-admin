@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button, Form, Input } from 'antd';
 import { useDispatch } from 'dva';
+import styles from './index.less';
 import { connect } from 'dva';
 
 const edit = props => {
@@ -43,14 +44,16 @@ const edit = props => {
         }}
         autoComplete="off"
       >
-        <Form.Item name="brandId" hidden={true}>
+        <Form.Item name="brandId" className={styles.formItems} hidden={true}>
           <Input
+            className={styles.inputItems}
             style={{ width: '300px' }}
             value={props.value.brandId}
             defaultValue={props.value.brandId}
           />
         </Form.Item>
         <Form.Item
+          className={styles.formItems}
           label="Tên thương hiệu"
           name="brandName"
           rules={[
@@ -61,12 +64,14 @@ const edit = props => {
           ]}
         >
           <Input
+            className={styles.inputItems}
             style={{ width: '300px' }}
             value={props.value.brandName}
             defaultValue={props.value.brandName}
           />
         </Form.Item>
         <Form.Item
+          className={styles.formItems}
           label="Mô tả"
           name="description"
           rules={[
@@ -77,6 +82,7 @@ const edit = props => {
           ]}
         >
           <Input
+            className={styles.inputItems}
             style={{ width: '300px' }}
             value={props.value.brandDesc}
             defaultValue={props.value.brandDesc}
@@ -88,7 +94,12 @@ const edit = props => {
             span: 16,
           }}
         >
-          <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+          <Button
+            type="primary"
+            className={styles.myButton}
+            htmlType="submit"
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
         </Form.Item>

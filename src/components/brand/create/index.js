@@ -19,6 +19,7 @@ const create = props => {
       title="Create Brand"
       onCancel={props.onCancel}
       visible={props.visible}
+      className={styles.styleModal}
       cancelButtonProps={{ style: { display: 'none' } }}
       okButtonProps={{ style: { display: 'none' } }}
       width={700}
@@ -50,10 +51,11 @@ const create = props => {
             },
           ]}
         >
-          <Input style={{ width: '300px' }} />
+          <Input className={styles.inputItems} style={{ width: '300px' }} />
         </Form.Item>
         <Form.Item
           label="Mô tả"
+          className={styles.formItems}
           name="description"
           rules={[
             {
@@ -62,7 +64,7 @@ const create = props => {
             },
           ]}
         >
-          <Input style={{ width: '300px' }} />
+          <Input className={styles.inputItems} style={{ width: '300px' }} />
         </Form.Item>
         <Form.Item
           wrapperCol={{
@@ -70,7 +72,12 @@ const create = props => {
             span: 16,
           }}
         >
-          <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+          <Button
+            type="primary"
+            className={styles.myButton}
+            htmlType="submit"
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
         </Form.Item>

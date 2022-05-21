@@ -17,19 +17,17 @@ const ImportInvoice = props => {
       <div className={styles.buttonLayout}>
         <ReactToPrint
           trigger={() => (
-            <Button className={styles.styleButton} onClick={handlePrint} type="primary">
-              Print
+            <Button
+              className={styles.styleButton}
+              style={{ backgroundColor: '#dc3545' }}
+              onClick={handlePrint}
+              type="primary"
+            >
+              Print/Dowload PDF
             </Button>
           )}
           content={() => componentRef.current}
         />
-        <Button
-          className={styles.styleButton}
-          style={{ backgroundColor: '#dc3545' }}
-          type="primary"
-        >
-          Dowload PDF
-        </Button>
       </div>
       <Invoice data={props} ref={componentRef} />
     </div>
