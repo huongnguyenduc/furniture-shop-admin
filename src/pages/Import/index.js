@@ -61,8 +61,8 @@ const Import = props => {
       width: '15%',
       render: importData => {
         return (
-          <div onClick={() => setImportDetails(importData.importDetails)}>
-            <ActionRender showModal={showModal} text={importData} />
+          <div onClick={() => setImportDetails(importData)}>
+            <ActionRender showModal={showModal} />
           </div>
         );
       },

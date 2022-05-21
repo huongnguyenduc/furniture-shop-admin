@@ -65,6 +65,10 @@ export default {
           component: './Import/editImport/index.js',
         },
         {
+          path: '/import/invoice/:id?',
+          component: './importInvoice/index.js',
+        },
+        {
           path: '/user',
           component: './User/index',
         },

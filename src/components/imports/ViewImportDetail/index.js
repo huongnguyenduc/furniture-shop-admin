@@ -1,7 +1,19 @@
 import React from 'react';
 import { Modal, Table, Image, Button } from 'antd';
+import { router } from 'umi';
 
+const pdfpreview = props => {
+  router.push(`/import/invoice/${props.importDetails.importId}`, {
+    items: props.importDetails.importDetails,
+    idInvoice: props.importDetails.importId,
+    importDesc: props.importDetails.importDesc,
+    emailImporter: props.importDetails.emailImporter,
+    createdAt: props.importDetails.createdAt,
+    totalPrice: props.importDetails.totalPrice,
+  });
+};
 const ViewImportDetail = props => {
+  console.log(props.importDetails.importId);
   const columns = [
     {
       title: 'Variant ID',
@@ -39,14 +51,17 @@ const ViewImportDetail = props => {
       // },
     },
   ];
-
-  const data = props.importDetails.map(value => ({
-    sku: value.variant.sku,
-    price: value.price,
-    quantity: value.quantity,
-    variantId: value.variant.variantId,
-    image: value.variant.image,
-  }));
+  const listImport = props.importDetails.importDetails;
+  let data = null;
+  if (listImport != null) {
+    data = listImport.map(value => ({
+      sku: value.variant.sku,
+      price: value.price,
+      quantity: value.quantity,
+      variantId: value.variant.variantId,
+      image: value.variant.image,
+    }));
+  }
 
   return (
     <Modal
@@ -55,7 +70,7 @@ const ViewImportDetail = props => {
       visible={props.visible}
       onCancel={props.onCancel}
       footer={[
-        <Button key="Ok" onClick={props.onCancel}>
+        <Button key="Ok" onClick={() => pdfpreview(props)}>
           Export
         </Button>,
       ]}
