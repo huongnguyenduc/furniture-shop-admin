@@ -8,6 +8,23 @@ import moment from 'moment';
 const { TextArea } = Input;
 const {RangePicker} = DatePicker;
 
+function convertViToEn(str, toUpperCase = false) {  
+  str = str.toLowerCase();
+  str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+  str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+  str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+  str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+  str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+  str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+  str = str.replace(/đ/g, "d");
+  
+  // Some system encode vietnamese combining accent as individual utf-8 characters
+  str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền sắc hỏi ngã nặng
+  str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
+
+  return toUpperCase ? str.toUpperCase() : str;
+}
+
 const rangeConfig = {
     rules: [
       {
@@ -18,19 +35,31 @@ const rangeConfig = {
     ],
   };
 
+// const voucherTemp = {
+//   voucherName: 'Khuyến mãi ví dụ',
+//   amount: 10,
+//   range_picker: [moment(moment().add(1, 'days')), moment(moment().add(3, 'days'))],
+//   validDate: "2022-05-15T17:00:00.000Z",
+//   expirationDate: "2022-05-28T17:00:00.000Z",
+//   voucherValue: 20000,
+//   cappedAt: 100000,
+//   voucherDesc: "Đây là mô tả khuyến mãi ",
+// }
+
 const voucherTemp = {
-  voucherName: 'Khuyến mãi ví dụ',
-  amount: 10,
-  range_picker: [moment(moment().add(1, 'days')), moment(moment().add(3, 'days'))],
-  validDate: "2022-05-15T17:00:00.000Z",
-  expirationDate: "2022-05-28T17:00:00.000Z",
-  voucherValue: 20000,
-  cappedAt: 100000,
-  voucherDesc: "Đây là mô tả khuyến mãi ",
-}
+    voucherName: '',
+    amount: '',
+    range_picker: null,
+    validDate: "2022-05-15T17:00:00.000Z",
+    expirationDate: "2022-05-28T17:00:00.000Z",
+    voucherValue: '',
+    cappedAt: '',
+    voucherDesc: "",
+  }
 
 const CreateVoucher = props => {
   const [newVoucher, setNewVoucher] = useState(voucherTemp);
+  const [nameVoucher, setNameVoucher] = useState('');
   const {dispatch} = props;
   
   const validFields = (voucher) =>{
@@ -46,23 +75,25 @@ const CreateVoucher = props => {
   }
 
   const onFinish = async values =>{
-    //console.log(newVoucher);
     if (validFields(newVoucher)){
       dispatch({
         type:"voucher/addVoucher",
         payload: newVoucher,
       })
-      router.goBack();
+      //router.goBack();
     }
-    
   }
   
   const onValuesChange = async (changedValues, allValues) => {
-    const tmp = allValues;
-    if (allValues.range_picker !== null){
+    const tmp = {...allValues};
+
+    // -- fill validDate, expirationDate to FORM
+    if (tmp.range_picker !== undefined && tmp.range_picker !== null){
       tmp.validDate = allValues.range_picker[0].toISOString();
       tmp.expirationDate = allValues.range_picker[1].toISOString();
     }
+
+    console.log(tmp)
     setNewVoucher(tmp);
   }
  
@@ -80,7 +111,7 @@ const CreateVoucher = props => {
     <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }]}>
         <h1 className={styles.title}>THÊM MỚI KHUYẾN MÃI</h1>
         <Col span={24}>
-        <Form.Item label="TÊN" 
+        <Form.Item label="MÃ VOUCHER" 
             name='voucherName'
             className={styles.formItems}
             rules={[
@@ -88,6 +119,10 @@ const CreateVoucher = props => {
                   required: true,
                   message: 'Vui lòng điền tên khuyến mãi!',
                 },
+                { 
+                  pattern: "^[A-Z0-9]*$",
+                  message: 'Mã chỉ bao gồm kí tự A-Z và chữ số 0-9',
+                }
               ]}
         >
             <Input className={styles.inputItems} />
@@ -111,8 +146,13 @@ const CreateVoucher = props => {
             rules={[
                 {
                   required: true,
-                  message: 'Vui lòng chọn giá trị khuyến mãi!',
+                  message: 'Vui lòng nhập giá trị khuyến mãi!',
                 },
+                {
+                  type:"number",
+                  min: 1,
+                  message: "Giá trị phải lớn hơn 0",
+                }
               ]}
         >
             <InputNumber className={styles.numberInputItems}/>
@@ -128,6 +168,11 @@ const CreateVoucher = props => {
                   required: true,
                   message: 'Vui lòng chọn số lượng khuyến mãi!',
                 },
+                {
+                  type:"number",
+                  min: 1,
+                  message: "Số lương phải lớn hơn 0",
+                }
               ]}
         >
             <InputNumber className={styles.numberInputItems}/>
@@ -143,6 +188,11 @@ const CreateVoucher = props => {
                   required: true,
                   message: 'Vui lòng chọn giá tiền hóa đơn tối thiểu để áp dụng khuyễn mãi!',
                 },
+                {
+                  type:"number",
+                  min: 1,
+                  message: "Hóa đơn phải lớn hơn 0",
+                }
               ]}
         >
             <InputNumber className={styles.numberInputItems}/>

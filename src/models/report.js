@@ -66,228 +66,199 @@ export default {
         },
         
       ],
-      chart: [
-         {
-            "time": "1850",
-            "value": 45,
-            "category": "Sales"
-          },
-          {
-            "time": "1850",
-            "value": 54,
-            "category": "Cost"
-          },
-          {
-            "time": "1850",
-            "value": 45,
-            "category": "Visit"
-          },
-          {
-            "time": "1850",
-            "value": 67,
-            "category": "New Customers"
-          },
-          {
-            "time": "1851",
-            "value": 34,
-            "category": "Sales"
-          },
-          {
-            "time": "1851",
-            "value": 54,
-            "category": "Cost"
-          },
-          {
-            "time": "1851",
-            "value": 56,
-            "category": "Visit"
-          },
-          {
-            "time": "1851",
-            "value": 66,
-            "category": "New Customers"
-          },
-          {
-            "time": "1852",
-            "value": 32,
-            "category": "Sales"
-          },
-          {
-            "time": "1852",
-            "value": 57,
-            "category": "Cost"
-          },
-          {
-            "time": "1852",
-            "value": 44,
-            "category": "Visit"
-          },
-          {
-            "time": "1852",
-            "value": 46,
-            "category": "New Customers"
-          },
-          {
-            "time": "1853",
-            "value": 66,
-            "category": "Sales"
-          },
-          {
-            "time": "1853",
-            "value": 59,
-            "category": "Cost"
-          },
-          {
-            "time": "1853",
-            "value": 34,
-            "category": "Visit"
-          },
-          {
-            "time": "1853",
-            "value": 61,
-            "category": "New Customers"
-          },
-          {
-            "time": "1854",
-            "value": 55,
-            "category": "Sales"
-          },
-          {
-            "time": "1854",
-            "value": 69,
-            "category": "Cost"
-          },
-          {
-            "time": "1854",
-            "value": 44,
-            "category": "Visit"
-          },
-          {
-            "time": "1854",
-            "value": 23,
-            "category": "New Customers"
-          },
-          {
-            "time": "1855",
-            "value": 89,
-            "category": "Sales"
-          },
-          {
-            "time": "1855",
-            "value": 71,
-            "category": "Cost"
-          },
-          {
-            "time": "1855",
-            "value": 55,
-            "category": "Visit"
-          },
-          {
-            "time": "1855",
-            "value": 40,
-            "category": "New Customers"
-          },
-          {
-            "time": "1856",
-            "value": 70,
-            "category": "Sales"
-          },
-          {
-            "time": "1856",
-            "value": 76,
-            "category": "Cost"
-          },
-          {
-            "time": "1856",
-            "value": 50,
-            "category": "Visit"
-          },
-          {
-            "time": "1856",
-            "value": 50,
-            "category": "New Customers"
-          },
-          {
-            "time": "1857",
-            "value": 66,
-            "category": "Sales"
-          },
-          {
-            "time": "1857",
-            "value": 77,
-            "category": "Cost"
-          },
-          {
-            "time": "1857",
-            "value": 63,
-            "category": "Visit"
-          },
-          {
-            "time": "1857",
-            "value": 43,
-            "category": "New Customers"
-          },
-          {
-            "time": "1858",
-            "value": 85,
-            "category": "Sales"
-          },
-          {
-            "time": "1858",
-            "value": 78,
-            "category": "Cost"
-          },
-          {
-            "time": "1858",
-            "value": 38,
-            "category": "Visit"
-          },
-          {
-            "time": "1858",
-            "value": 23,
-            "category": "New Customers"
-          },
-          {
-            "time": "1859",
-            "value": 75,
-            "category": "Sales"
-          },
-          {
-            "time": "1859",
-            "value": 83,
-            "category": "Cost"
-          },
-          {
-            "time": "1859",
-            "value": 50,
-            "category": "Visit"
-          },
-          {
-            "time": "1859",
-            "value": 65,
-            "category": "New Customers"
-          },
-          {
-            "time": "1860",
-            "value": 70,
-            "category": "Sales"
-          },
-          {
-            "time": "1860",
-            "value": 91,
-            "category": "Cost"
-          },
-          {
-            "time": "1860",
-            "value": 80,
-            "category": "Visit"
-          },
-          {
-            "time": "1860",
-            "value": 90,
-            "category": "New Customers"
-          },
-        ],
+      dataLineChart:[ // date: fomart 'DD-MM_YYYY', object theo thứ tự từng category
+        {
+          "date": "1-1-2022",
+          "value": 12,
+          "category": "Đơn hàng",
+        },
+        {
+          "date": "2-1-2022",
+          "value": 8,
+          "category": "Đơn hàng",
+        },
+        {
+          "date": "3-1-2022",
+          "value": 14,
+          "category": "Đơn hàng",
+        },
+        {
+          "date": "4-1-2022",
+          "value": 16,
+          "category": "Đơn hàng",
+        },
+        {
+          "date": "5-1-2022",
+          "value": 20,
+          "category": "Đơn hàng",
+        },
+        {
+          "date": "6-1-2022",
+          "value": 12,
+          "category": "Đơn hàng",
+        },
+
+        {
+          "date": "1-1-2022",
+          "value": 1200000,
+          "category": "Doanh thu",
+        },
+        {
+          "date": "2-1-2022",
+          "value": 800000,
+          "category": "Doanh thu",
+        },
+        {
+          "date": "3-1-2022",
+          "value": 100400,
+          "category": "Doanh thu",
+        },
+        {
+          "date": "4-1-2022",
+          "value": 106000,
+          "category": "Doanh thu",
+        },
+        {
+          "date": "5-1-2022",
+          "value": 200000,
+          "category": "Doanh thu",
+        },
+        {
+          "date": "6-1-2022",
+          "value": 120000,
+          "category": "Doanh thu",
+        },
+
+        {
+          "date": "1-1-2022",
+          "value": 100000,
+          "category": "Chi phí",
+        },
+        {
+          "date": "2-1-2022",
+          "value": 360000,
+          "category": "Chi phí",
+        },
+        {
+          "date": "3-1-2022",
+          "value": 480000,
+          "category": "Chi phí",
+        },
+        {
+          "date": "4-1-2022",
+          "value": 150000,
+          "category": "Chi phí",
+        },
+        {
+          "date": "5-1-2022",
+          "value": 1200000,
+          "category": "Chi phí",
+        },
+        {
+          "date": "6-1-2022",
+          "value": 600000,
+          "category": "Chi phí",
+        },
+      ],
+      dataTopProducts:[
+        {
+          index: 1,
+          name: 'Bàn to gia đính',
+          quantity: 10,
+        },
+        {
+          index: 2,
+          name: 'Bàn nhỏ phòng khách',
+          quantity: 10,
+        },
+        {
+          index: 3,
+          name: 'Ghế đá vỉa hè',
+          quantity: 10,
+        },
+        {
+          index: 4,
+          name: 'Ghế gỗ',
+          quantity: 10,
+        },
+        {
+          index: 5,
+          name: 'Bàn nhựa',
+          quantity: 10,
+        },
+        {
+          index: 6,
+          name: 'Bàn nhựa',
+          quantity: 10,
+        },
+        {
+          index: 7,
+          name: 'Bàn nhựa',
+          quantity: 10,
+        },
+        {
+          index: 8,
+          name: 'Bàn nhựa',
+          quantity: 10,
+        },
+        {
+          index: 9,
+          name: 'Bàn nhựa',
+          quantity: 10,
+        },
+        {
+          index: 10,
+          name: 'Bàn nhựa',
+          quantity: 10,
+        },
+        {
+          index: 11,
+          name: 'Bàn nhựa',
+          quantity: 10,
+        },
+      ],
+      dataReportTable:[
+        {
+          index: '1',
+          date: '01-01-2022',
+          "numberOfSales": 12,
+          revenue: 12000,
+          "numberOfImports": 2,
+          cost: 1000,
+        },
+        {
+          index: '1',
+          date: '01-01-2022',
+          "numberOfSales": 12,
+          revenue: 12000,
+          "numberOfImports": 2,
+          cost: 1000,
+        },
+        {
+          index: '1',
+          date: '01-01-2022',
+          "numberOfSales": 12,
+          revenue: 12000,
+          "numberOfImports": 2,
+          cost: 1000,
+        },
+        {
+          index: '1',
+          date: '01-01-2022',
+          "numberOfSales": 12,
+          revenue: 12000,
+          "numberOfImports": 2,
+          cost: 1000,
+        },
+        {
+          index: '1',
+          date: '01-01-2022',
+          "numberOfSales": 12,
+          revenue: 12000,
+          "numberOfImports": 2,
+          cost: 1000,
+        }
+      ]
         },
     reducers: {
     },
