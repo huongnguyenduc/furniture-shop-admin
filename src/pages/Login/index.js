@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './styles.less';
-import { Row, Col, Form, Input, Button, Checkbox } from 'antd';
+import { Row, Col, Form, Input, Button, Checkbox, Spin } from 'antd';
 import { connect } from 'dva';
 const Login = props => {
-  const { dispatch } = props;
-
+  const { dispatch, loading } = props;
+  let isLoading = false
   const onFinish = values => {
+  isLoading = loading.effects[('login/login')];
     console.log(values);
     dispatch({ type: 'login/login', payload: values });
   };
@@ -15,12 +16,12 @@ const Login = props => {
   };
   return (
     <div className={styles.backGround}>
+     <Spin spinning={isLoading}>
       <Row className={styles.container}>
         <Col className={styles.colContainerLeft}>
           <div className={styles.logo}></div>
           <div className={styles.welcome}>Welcome back!</div>
           <div className={styles.guide}>Vui lòng điền thông tin đăng nhập bên dưới.</div>
-          <div className={styles.note}>Gõ admin vô Username để đăng nhập thành công</div>
           <Form
             className={styles.loginForm}
             name="login"
@@ -36,7 +37,7 @@ const Login = props => {
               className={styles.formItem}
               label="Username"
               name="username"
-              rules={[{ required: false, message: 'Please input your username!' }]}
+              rules={[{ required: true, message: 'Please input your username!' }]}
             >
               <Input className={styles.inputItem} />
             </Form.Item>
@@ -45,7 +46,7 @@ const Login = props => {
               className={styles.formItem}
               label="Password"
               name="password"
-              rules={[{ required: false, message: 'Please input your password!' }]}
+              rules={[{ required: true, message: 'Please input your password!' }]}
             >
               <Input.Password className={styles.inputItem} />
             </Form.Item>
@@ -78,8 +79,9 @@ const Login = props => {
           </div>
         </Col>
       </Row>
+      </Spin>
     </div>
   );
 };
 
-export default connect()(Login);
+export default connect(state => ({ loading: state.loading }))(Login);

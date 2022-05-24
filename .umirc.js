@@ -69,8 +69,16 @@ export default {
           component: './Import/editImport/index.js',
         },
         {
+          path: '/orders',
+          component: './Orders/index',
+        },
+        {
           path: '/user',
           component: './User/index',
+        },
+        {
+          path: '/user/create',
+          component: './User/createUser/index',
         },
         {
           path: '/report',

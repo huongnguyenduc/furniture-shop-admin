@@ -20,7 +20,6 @@ const Product = props => {
   const isLoading = loading.effects['products/getProductList'];
   const products = useSelector(state => state.products.products);
   const [isShowModal, setIsShowModal] = useState(false);
-  console.log(products);
   const [state, setState] = useState({
     searchText: '',
     searchedColumn: '',

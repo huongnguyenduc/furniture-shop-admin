@@ -88,7 +88,7 @@ export default {
     *editVariant(action, { put, call }) {
       const response = yield call(editVariant, action.payload);
       if (response.status === 200) {
-        notification.success({ message: 'Detele success' });
+        notification.success({ message: 'Edit success' });
       } else {
         notification.error({ message: response.content });
       }

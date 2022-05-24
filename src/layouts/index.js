@@ -83,6 +83,7 @@ function BasicLayout(props) {
               className={styles.menuItems}
               key="6"
               icon={<ShoppingCartOutlined className={styles.menuIcons} />}
+              onClick={() => router.push('/orders')}
             >
               <span className={styles.menuTitle}>Đơn Hàng</span>
             </Menu.Item>

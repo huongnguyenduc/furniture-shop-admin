@@ -1,3 +1,6 @@
+
+export const DEFAULT_AVATAR = 'https://res.cloudinary.com/dthfkshzd/image/upload/v1652983803/125366266-user_cas0im.webp';
+
 export const getdateTime = () => {
   var now = new Date();
   var year = now.getFullYear();
@@ -15,6 +18,10 @@ export const getdateTime = () => {
 export function moneyConverter(value) {
   let dollarUSLocale = Intl.NumberFormat('en-US');
   return dollarUSLocale.format(value);
+}
+export function toDate(value) {
+ 
+  return value.substring(0,10);
 }
 export function modifyString(str) {
   if(str === undefined) return undefined;

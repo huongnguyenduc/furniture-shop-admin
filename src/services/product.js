@@ -1,6 +1,6 @@
 import { request } from '../Utils/request';
 export async function getDataProduct() {
-  return await request(`/api/products`);
+  return await request(`/api/website/products`);
 }
 export function addProduct(payload) {
   const { product_name, description, image_url, brand_id, category_id } = payload;

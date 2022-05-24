@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect, useSelector } from 'dva';
 import { Layout, Table, Button, Space, Tag,Spin,Input } from 'antd';
 import Highlighter from 'react-highlight-words';
-import { PlusOutlined, SearchOutlined  } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined,UpOutlined  } from '@ant-design/icons';
 import styles from './styles.less';
 import ActionRender from '../../components/Category/actionRender/index';
 
@@ -21,7 +21,24 @@ const Category = props => {
   const [state, setState] = useState({
     searchText: '',
     searchedColumn: '',
-  })
+  });
+  window.onscroll = function() {
+    scrollFunction();
+  };
+  function scrollFunction() {
+    var mybutton = document.getElementById('myBtn');
+    if (mybutton !== null) {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.style.display = 'block';
+      } else {
+        mybutton.style.display = 'none';
+      }
+    }
+  }
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
   const categories = useSelector(state => state.category.categories);
   let searchInput;
   const getColumnSearchProps = dataIndex => ({
@@ -183,6 +200,12 @@ const Category = props => {
           bordered
           dataSource={categories}
         ></Table>
+         <Button
+              onClick={() => topFunction()}
+              className={styles.topButton}
+              icon={<UpOutlined />}
+              id="myBtn"
+            ></Button>
       </Content>
       </>
       )}

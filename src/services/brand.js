@@ -1,6 +1,6 @@
 import { request } from '../Utils/request';
 export async function getDataBrand() {
-  return await request(`/api/brands?onlyActive=true`);
+  return await request(`/api/website/brands?onlyActive=true`);
 }
 
 export async function addDataBrand(payload) {
