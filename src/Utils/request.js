@@ -15,10 +15,9 @@ class Response {
   status = null;
 
   message = null;
-  
+
   errors = null;
   constructor(response) {
-    
     if (response.status) {
       this.status = response.status;
     }
@@ -66,23 +65,21 @@ const errorHandler = async error => {
       const { message } = await response.json();
       messageError = message || messageError;
     }
-      notification.error({
-        message: messageError,
-      });
+    notification.error({
+      message: messageError,
+    });
   }
 
   if (status <= 504 && status >= 500) {
-    return new Response({status:500, errors: data.errors})
+    return new Response({ status: 500, errors: data.errors });
   }
 
-  
   if (status === 404) return new Response({ status: 404 });
 
   if (status === 400) {
-    return new Response({ status:400, errors: data.errors });
+    return new Response({ status: 400, errors: data.errors });
   }
   return new Response({ status: 400 });
-
 };
 
 const request = extend({
@@ -110,7 +107,7 @@ function getWithExpiry(key) {
 }
 request.interceptors.request.use(
   (url, options) => {
-     const token = getWithExpiry('token');
+    const token = getWithExpiry('token');
     const timezone = Intl ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'Asia/Saigon';
     return {
       url,

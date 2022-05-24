@@ -39,17 +39,18 @@ const EditCategory = props => {
   const currCategory = useSelector(state => state.category.editCategory);
   React.useEffect(() => {
     var formFill = {};
-     formFill['name'] = currCategory.categoryName;
-     formFill['description'] = currCategory.categoryDesc;
-     const parent = categories.find(item => { if(item.categoryId === currCategory.parentId) return item})
+     let editCate = currCategory; 
+     formFill['name'] = editCate.categoryName;
+     formFill['description'] = editCate.categoryDesc;
+     const parent = categories.find(item => { if(item.categoryId === editCate.parentId) return item})
      formFill['parent'] = parent !== undefined ? parent.categoryName : '';
      setState({
        ...state,
-       parentId: currCategory.parentId
+       parentId: editCate.parentId
      })
      console.log(formFill);
      form.setFieldsValue(formFill);
-  }, [categories, currCategory.categoryDesc, currCategory.categoryName, currCategory.parentId, form, state]);
+  }, [categories, currCategory, form, state]);
   var isLoading = false;
   const searchResult = value => {
     let result = categories.filter(item =>

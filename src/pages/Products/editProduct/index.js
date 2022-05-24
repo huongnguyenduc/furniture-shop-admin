@@ -21,7 +21,6 @@ import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { router } from 'umi';
 import { uploader } from '../../../Utils/uploader';
 
-
 const EditProduct = props => {
   const { dispatch, loading } = props;
   var pathArray = window.location.pathname.split('/');
@@ -53,7 +52,7 @@ const EditProduct = props => {
     });
     console.log(formFill);
     form.setFieldsValue(formFill);
-  }, [editProduct, form, state]);
+  }, [editProduct.categoryId, editProduct.categoryName, editProduct.productDesc, editProduct.productName, form, state]);
   var isLoading = false;
   const searchResult = value => {
     let result = categories.filter(item =>
@@ -140,9 +139,9 @@ const EditProduct = props => {
             <Col span={24}>
               <Title className={styles.title}>CHỈNH SỬA SẢN PHẨM</Title>
             </Col>
-            <Col span={5} >
+            <Col span={5}>
               <Row>
-                <Col span={24}  className={styles.imageContainer}>
+                <Col span={24} className={styles.imageContainer}>
                   <Image
                     src={state.newimageUrl !== '' ? state.newimageUrl : editProduct.image}
                     className={styles.image}
@@ -152,7 +151,11 @@ const EditProduct = props => {
                   <Button onClick={() => resetImage()}>Reset</Button>
                 </Col>
                 <Col span={4} offset={6}>
-                  <Upload maxCount={1} onChange={file => setImageProduct(file)} showUploadList={false}>
+                  <Upload
+                    maxCount={1}
+                    onChange={file => setImageProduct(file)}
+                    showUploadList={false}
+                  >
                     <Button icon={<UploadOutlined />}></Button>
                   </Upload>
                 </Col>
@@ -187,7 +190,11 @@ const EditProduct = props => {
                     </Form.Item>
                   </Col>
                   <Col span={24}>
-                    <Form.Item className={styles.formItems} label="MÔ TẢ SẢN PHẨM" name="description">
+                    <Form.Item
+                      className={styles.formItems}
+                      label="MÔ TẢ SẢN PHẨM"
+                      name="description"
+                    >
                       <TextArea className={styles.textArea} />
                     </Form.Item>
                   </Col>
