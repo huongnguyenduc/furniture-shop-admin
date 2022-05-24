@@ -1,37 +1,38 @@
 import React from 'react';
-
-import { Form, Input, Typography, Button } from 'antd';
+import { Modal, Button, Form, Input } from 'antd';
+import { useDispatch } from 'dva';
+import styles from './index.less';
 import { connect } from 'dva';
-import { router } from 'umi';
-const { Title } = Typography;
 
-const editBrand = props => {
-  const { dispatch } = props;
+const edit = props => {
   const [form] = Form.useForm();
   form.setFieldsValue({
-    brandId: props.location.state.brandId,
-    brandName: props.location.state.brandName,
-    description: props.location.state.description,
+    brandId: props.value.brandId,
+    brandName: props.value.brandName,
+    description: props.value.brandDesc,
   });
-  const handleClick = async () => {
+
+  const handleSubmit = async () => {
     const validatedAllFields = await form.validateFields();
     const { brandId, brandName, description } = validatedAllFields;
     const brandEdit = { brandId, brandName, description };
-    console.log(brandEdit);
-    await dispatch({
-      type: 'brands/updateBrand',
-      payload: brandEdit,
-    });
-    router.goBack();
+    props.handleUpdate(brandEdit);
+    props.onCancel();
   };
   return (
-    <div>
-      <Title level={3} style={{ margin: '50px' }}>
-        Edit brand
-      </Title>
+    <Modal
+      title="Edit Brand"
+      onCancel={props.onCancel}
+      visible={props.visible}
+      cancelButtonProps={{ style: { display: 'none' } }}
+      okButtonProps={{ style: { display: 'none' } }}
+      width={700}
+      bodyStyle={{ height: 'unset' }}
+    >
       <Form
-        form={form}
+        id="formEdit"
         name="edit-brand"
+        form={form}
         labelCol={{
           span: 8,
         }}
@@ -43,14 +44,16 @@ const editBrand = props => {
         }}
         autoComplete="off"
       >
-        <Form.Item name="brandId" hidden={true}>
+        <Form.Item name="brandId" className={styles.formItems} hidden={true}>
           <Input
+            className={styles.inputItems}
             style={{ width: '300px' }}
-            value={props.location.state.brandId}
-            defaultValue={props.location.state.brandId}
+            value={props.value.brandId}
+            defaultValue={props.value.brandId}
           />
         </Form.Item>
         <Form.Item
+          className={styles.formItems}
           label="Tên thương hiệu"
           name="brandName"
           rules={[
@@ -61,12 +64,14 @@ const editBrand = props => {
           ]}
         >
           <Input
+            className={styles.inputItems}
             style={{ width: '300px' }}
-            value={props.location.state.brandName}
-            defaultValue={props.location.state.brandName}
+            value={props.value.brandName}
+            defaultValue={props.value.brandName}
           />
         </Form.Item>
         <Form.Item
+          className={styles.formItems}
           label="Mô tả"
           name="description"
           rules={[
@@ -77,9 +82,10 @@ const editBrand = props => {
           ]}
         >
           <Input
+            className={styles.inputItems}
             style={{ width: '300px' }}
-            value={props.location.state.brandDesc}
-            defaultValue={props.location.state.brandDesc}
+            value={props.value.brandDesc}
+            defaultValue={props.value.brandDesc}
           />
         </Form.Item>
         <Form.Item
@@ -88,13 +94,18 @@ const editBrand = props => {
             span: 16,
           }}
         >
-          <Button type="primary" htmlType="submit" onClick={handleClick}>
+          <Button
+            type="primary"
+            className={styles.myButton}
+            htmlType="submit"
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
         </Form.Item>
       </Form>
-    </div>
+    </Modal>
   );
 };
 
-export default connect()(editBrand);
+export default edit;

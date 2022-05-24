@@ -14,16 +14,16 @@ const ActionRender = props => {
       },
     });
   };
+  const handleClickUpdate = async () => {
+    const { brandId, brandName, brandDesc } = props.record;
+    const brandEdit = { brandId, brandName, brandDesc };
+    props.showModalUpdate(brandEdit);
+  };
 
   return (
     <Space size="middle">
       <Tooltip title="Sửa">
-        <Button
-          className={styles.buttonContainer}
-          onClick={() => {
-            router.push(`/brand/edit/${props.record.brandId}`, props.record);
-          }}
-        >
+        <Button className={styles.buttonContainer} onClick={handleClickUpdate}>
           <EditOutlined />
         </Button>
       </Tooltip>

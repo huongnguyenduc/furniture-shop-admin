@@ -53,10 +53,6 @@ export default {
           component: './Brands/index.js',
         },
         {
-          path: '/brand/edit/:id',
-          component: './Brands/editBrand/index',
-        },
-        {
           path: '/import',
           component: './Import/index',
         },
@@ -67,6 +63,10 @@ export default {
         {
           path: '/import/edit/:id',
           component: './Import/editImport/index.js',
+        },
+        {
+          path: '/import/invoice/:id?',
+          component: './importInvoice/index.js',
         },
         {
           path: '/orders',
