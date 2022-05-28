@@ -12,7 +12,8 @@ export default {
     },
     {
       path: '/',
-
+      authority: ['ROLE_ADMIN'],
+      Routes: ['./src/wrappers/auth'],
       component: '../layouts/index',
       routes: [
         {
@@ -28,24 +29,28 @@ export default {
           component: './Category/createCategory/index',
         },
         {
-          path: '/product',
+          path: '/category/edit/:id',
+          component: './Category/editCategory/index.js',
+        },
+        {
+          path: '/products',
           component: './Products/index',
         },
         {
-          path: '/product/create',
+          path: '/products/create',
           component: './Products/createProduct/index',
         },
         {
-          path: '/product/edit/:id',
+          path: '/products/edit/:id',
           component: './Products/editProduct/index.js',
+        },
+        {
+          path: '/products/:id/variant/:vrId',
+          component: './Products/editVariant/index.js',
         },
         {
           path: '/brand',
           component: './Brands/index.js',
-        },
-        {
-          path: '/brand/edit/:id',
-          component: './Brands/editBrand/index',
         },
         {
           path: '/import',
@@ -58,6 +63,22 @@ export default {
         {
           path: '/import/edit/:id',
           component: './Import/editImport/index.js',
+        },
+        {
+          path: '/import/invoice/:id?',
+          component: './importInvoice/index.js',
+        },
+        {
+          path: '/orders',
+          component: './Orders/index',
+        },
+        {
+          path: '/user',
+          component: './User/index',
+        },
+        {
+          path: '/user/create',
+          component: './User/createUser/index',
         },
         {
           path: '/report',

@@ -4,6 +4,7 @@ import { Modal, Image, Descriptions, Col, Row, Table, Button, Space } from 'antd
 import styles from './styles.less';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { moneyConverter, modifyString, setDataSource } from '../../../Utils/helper';
+import ActionRender from '../variant/actionRender/index';
 function isNumeric(str) {
   if (typeof str != 'string') return false; // we only process strings!
   return (
@@ -15,28 +16,30 @@ const ViewDetail = ({ visible, onCancel, products }) => {
   var column = [
     {
       title: 'ID',
-      dataIndex: 'variant_id',
+      dataIndex: 'variantId',
       align: 'left',
-      width: '4%',
+      width: '8%',
     },
     {
       title: 'Ảnh',
-      dataIndex: 'image_url',
-      align: 'left',
-      width: '6%',
+      dataIndex: 'image',
+      align: 'center',
+      width: '11%',
       render: item => {
-        return <Image width={30} height={40} src={item}></Image>;
+        return <Image width={60} height={60} src={item}></Image>;
       },
     },
     {
       title: 'SKU',
       dataIndex: 'sku',
       align: 'center',
+      width: '40%',
     },
     {
       title: 'Giá nhập',
-      dataIndex: 'import_price',
+      dataIndex: 'importPrice',
       align: 'center',
+      width: '15%',
       render: item => {
         return moneyConverter(item);
       },
@@ -45,6 +48,7 @@ const ViewDetail = ({ visible, onCancel, products }) => {
       title: 'Giá bán',
       dataIndex: 'price',
       align: 'center',
+      width: '15%',
       render: item => {
         return moneyConverter(item);
       },
@@ -53,22 +57,33 @@ const ViewDetail = ({ visible, onCancel, products }) => {
       title: 'Số lượng',
       dataIndex: 'quantity',
       align: 'center',
+      width: '12%',
       render: item => {
         return moneyConverter(item);
       },
     },
   ];
-  var subcolumn = view.variants[0].options;
-  subcolumn.forEach(item => {
-    var temp = 100 / subcolumn.length + '%';
-    column.push({
-      title: item.option_name,
-      dataIndex: modifyString(item.option_name),
-      align: 'center',
-      width: temp,
-    });
+  if (view.variants.length > 0) {
+    var subcolumn = JSON.parse(JSON.stringify(view?.variants[0]?.options));
+    if (subcolumn !== undefined)
+      subcolumn.forEach(item => {
+        var temp = 100 / (subcolumn.length + column.length) + '%';
+        column.push({
+          title: item.optionName,
+          dataIndex: modifyString(item.optionName),
+          align: 'center',
+          width: temp,
+        });
+      });
+  }
+  column.push({
+    title: 'Hành động',
+    align: 'center',
+    width: '15%',
+    render: item => {
+      return <ActionRender item={item} />;
+    },
   });
-
   return (
     <Modal
       className="cc"
@@ -77,28 +92,22 @@ const ViewDetail = ({ visible, onCancel, products }) => {
       visible={visible}
       cancelButtonProps={{ style: { display: 'none' } }}
       okButtonProps={{ style: { display: 'none' } }}
-      width={1200}
+      width={1500}
       bodyStyle={{ height: 'unset' }}
       onCancel={onCancel}
     >
       <Row className={styles.viewContainer}>
         <Col span={24}>
           <Descriptions>
-            <Descriptions.Item label="Mã sản phẩm"> {view.product_id}</Descriptions.Item>
-            <Descriptions.Item label="Phân loại">{view.category_name}</Descriptions.Item>
-            <Descriptions.Item label="Hãng">{view.brand_name}</Descriptions.Item>
-            <Descriptions.Item label="Tên sản phẩm"> {view.product_name}</Descriptions.Item>
-            <Descriptions.Item label="Mô tả">{view.description}</Descriptions.Item>
+            <Descriptions.Item label="Mã sản phẩm"> {view?.productId}</Descriptions.Item>
+            <Descriptions.Item label="Phân loại">{view?.categoryName}</Descriptions.Item>
+            <Descriptions.Item label="Hãng">{view?.brandName}</Descriptions.Item>
+            <Descriptions.Item label="Tên sản phẩm"> {view?.productName}</Descriptions.Item>
+            <Descriptions.Item label="Mô tả">{view?.productDesc}</Descriptions.Item>
           </Descriptions>
         </Col>
         <Col span={4} className={styles.carouContainer}>
-          <Image
-            className={styles.image}
-            width={220}
-            height={320}
-            src={view.image_url}
-            preview={false}
-          />
+          <Image className={styles.image} width={220} height={280} src={view?.image} />
         </Col>
         <Col span={19} offset={1} className={styles.inforContainer}>
           <span style={{ marginBottom: '20px' }} className={styles.subtitle}>
@@ -108,8 +117,9 @@ const ViewDetail = ({ visible, onCancel, products }) => {
             className={styles.tableVariant}
             columns={column}
             bordered
-            dataSource={setDataSource(view.variants)}
+            dataSource={setDataSource(view?.variants)}
             pagination={{ position: ['none', 'none'] }}
+            scroll={{ y: 400 }}
           ></Table>
         </Col>
       </Row>

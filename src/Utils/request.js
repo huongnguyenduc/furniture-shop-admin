@@ -16,13 +16,16 @@ class Response {
 
   message = null;
 
+  errors = null;
   constructor(response) {
-    console.log(response);
     if (response.status) {
       this.status = response.status;
     }
     if (response.content) {
       this.data = response.content;
+    }
+    if (response.errors) {
+      this.errors = response.errors;
     }
     if (response.message && response.message !== '') {
       this.message = response.message;
@@ -46,9 +49,6 @@ class Response {
 const errorHandler = async error => {
   const { response = {}, data } = error;
   const { status } = response;
-  console.log(status)
-  console.log(response)
-  console.log(data)
   if (status === 401) {
     notification.error({
       message: 'Please login to do this',
@@ -65,33 +65,19 @@ const errorHandler = async error => {
       const { message } = await response.json();
       messageError = message || messageError;
     }
-      notification.error({
-        message: messageError,
-      });
+    notification.error({
+      message: messageError,
+    });
   }
 
   if (status <= 504 && status >= 500) {
-    notification.error({
-      message: 'Please try login again, contact admin if you still see this message',
-    });
-    // window.g_app._store.dispatch({
-    //   type: 'login/logout',
-    // });
-  }
-
-  if (status > 404 && status < 422) {
-    notification.error({
-      message: `Error ${status}`,
-    });
+    return new Response({ status: 500, errors: data.errors });
   }
 
   if (status === 404) return new Response({ status: 404 });
 
   if (status === 400) {
-    notification.error({
-      message: 'Username or password is invalid.',
-    });
-    return new Response({ status:400 });
+    return new Response({ status: 400, errors: data.errors });
   }
   return new Response({ status: 400 });
 };
@@ -121,7 +107,7 @@ function getWithExpiry(key) {
 }
 request.interceptors.request.use(
   (url, options) => {
-     const token = getWithExpiry('token');
+    const token = getWithExpiry('token');
     const timezone = Intl ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'Asia/Saigon';
     return {
       url,
