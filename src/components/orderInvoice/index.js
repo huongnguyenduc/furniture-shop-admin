@@ -1,17 +1,18 @@
 import styles from './index.less';
+
 import { Table, Layout, Button } from 'antd';
 import { getdateTime, moneyConverter } from '../../Utils/helper';
 import React, { forwardRef, useRef } from 'react';
 const { Content } = Layout;
 
 const Invoice = forwardRef((props, ref) => {
-  const listItems = props.data.location.state.items;
+  console.log(props);
   const columns = [
     {
       title: 'SKU',
       dataIndex: 'sku',
       align: 'center',
-      width: '10%',
+      width: '20%',
     },
     {
       title: 'Tên sản phẩm',
@@ -39,30 +40,29 @@ const Invoice = forwardRef((props, ref) => {
       width: '10%',
     },
   ];
-  const data = listItems.map(value => ({
+  const data = props.data.location.state.items.map(value => ({
     sku: value.variant.sku,
-    price: moneyConverter(value.price),
-    quantity: value.quantity,
-    variantId: value.variant.variantId,
     productName: value.variant.productName,
-    total: moneyConverter(value.price * value.quantity),
+    price: moneyConverter(value.variant.price),
+    quantity: value.quantity,
+    total: moneyConverter(value.variant.price * value.quantity),
   }));
   return (
     <div ref={ref} className={styles.layout}>
       <main className={styles.main}>
         <header>
-          <h2 className={styles.header}>HÓA ĐƠN NHẬP</h2>
+          <h2 className={styles.header}>HÓA ĐƠN BÁN HÀNG</h2>
         </header>
         <section className={styles.section}>
           <div>
-            <p>Mã hóa đơn: {props.data.location.state.idInvoice}</p>
-            <p>Người nhập: {props.data.location.state.emailImporter}</p>
+            <p>Mã hóa đơn: {props.data.location.state.orderID}</p>
+            <p>Người đặt: {props.data.location.state.username}</p>
             <p>Người xuất hóa đơn: {props.data.location.state.emailExport}</p>
           </div>
           <div></div>
           <div>
-            <p>Ngày nhập: {props.data.location.state.createdAt}</p>
-            <p>Mô tả: {props.data.location.state.importDesc}</p>
+            <p>Ngày đặt hàng: {props.data.location.state.createdAt.substring(0, 10)}</p>
+            <p>Tình trạng thanh toán: {props.data.location.state.paymentStatus}</p>
           </div>
           <div></div>
         </section>

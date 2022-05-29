@@ -73,6 +73,10 @@ export default {
           component: './Orders/index',
         },
         {
+          path: '/orders/invoice/',
+          component: './orderInvoice/index',
+        },
+        {
           path: '/user',
           component: './User/index',
         },
