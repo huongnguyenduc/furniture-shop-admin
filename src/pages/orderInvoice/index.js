@@ -23,7 +23,7 @@ const OrderInvoice = props => {
               onClick={handlePrint}
               type="primary"
             >
-              Print/Dowload PDF
+              Get PDF
             </Button>
           )}
           content={() => componentRef.current}
