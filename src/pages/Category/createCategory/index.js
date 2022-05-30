@@ -80,6 +80,7 @@ const CreateCategory = props => {
     });
   };
   const inputRef = useRef(null);
+  
   const saveInputRef = input => {
     inputRef.current = input;
   };

@@ -43,7 +43,11 @@ const NewImport = props => {
 
   const isLoading = loading.effects['products/getProductList'];
   const products = useSelector(state => state.products.products);
-
+  const profile = useSelector(state => state.profile.account);
+  var today = new Date();
+  let month = (today.getMonth() + 1);
+  if (month < 10) month = '0'+month;
+  var date = today.getDate() + '-' + month + '-' + today.getFullYear();
   const [options, setOptions] = useState([]);
   const [variants, setVariants] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -76,11 +80,7 @@ const NewImport = props => {
   };
 
   const onDelete = item => {
-    let index = importItems.indexOf(item);
-    if (index !== -1) {
-      importItems.slice(index, 1);
-      setImportItems(importItems);
-    }
+    setImportItems(items => items.filter(product => product.variant_id !== item.variant_id));
   };
 
   const onFinish = values => {
@@ -149,15 +149,31 @@ const NewImport = props => {
                   <Col span={24}>
                     <Title className={styles.subTitle}>THÔNG TIN CHUNG</Title>
                   </Col>
+                  <Col span={12}>
+                    <Form.Item className={styles.formItems} label="Người nhập" name="name">
+                      <Input
+                        className={styles.inputItems}
+                        defaultValue={
+                          profile.firstName != null ? profile.firstName : profile.username
+                        }
+                        disabled
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item className={styles.formItems} label="Ngày nhập" name="date">
+                      <Input className={styles.inputItems} disabled defaultValue={date} />
+                    </Form.Item>
+                  </Col>
                   <Col span={24}>
                     <Form.Item className={styles.formItems} label="MÔ TẢ" name="decription">
-                      <TextArea className={styles.inputItems} />
+                      <TextArea className={styles.areaItems} />
                     </Form.Item>
                   </Col>
                   <Col span={4} offset={15}>
                     <Form.Item>
                       <Button
-                        className={styles.myButton}
+                        className={styles.myButtonCancle}
                         onClick={() => {
                           router.goBack();
                         }}

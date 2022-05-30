@@ -1,13 +1,13 @@
 import styles from './index.less';
 import { Table, Layout, Button } from 'antd';
 import { getdateTime, moneyConverter } from '../../Utils/helper';
-import Invoice from '../../components/importInvoice';
+import Invoice from '../../components/orderInvoice/';
 import ReactToPrint, { useReactToPrint } from 'react-to-print';
 import React, { useRef } from 'react';
 
 const { Content } = Layout;
 
-const ImportInvoice = props => {
+const OrderInvoice = props => {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -33,4 +33,4 @@ const ImportInvoice = props => {
     </div>
   );
 };
-export default ImportInvoice;
+export default OrderInvoice;

@@ -16,14 +16,26 @@ import {
   DropboxOutlined,
 } from '@ant-design/icons';
 import Header from '../components/Header';
+import { connect } from 'dva';
 const { Sider, Content } = Layout;
 function BasicLayout(props) {
-  const { children } = props;
+  const { children, dispatch } = props;
   const [Collapsed, setCollapsed] = useState(false);
   window.onunload = () => {
     // Clear the local storage
     window.MyStorage.clear();
   };
+  React.useEffect(() => {
+    dispatch({
+      type: 'brands/getBrandList',
+    });
+    dispatch({
+      type: 'category/getCategoryList',
+    });
+    dispatch({
+      type: 'products/getProductList',
+    });
+  }, [dispatch]);
   return (
     <Layout>
       <Affix offsetTop={1}>
@@ -99,7 +111,7 @@ function BasicLayout(props) {
               className={styles.menuItems}
               key="8"
               icon={<TagsOutlined className={styles.menuIcons} />}
-              // --chưa commit --// 
+              // --chưa commit --//
               onClick={() => router.push('/voucher')}
               // -- //
             >
@@ -132,4 +144,4 @@ function BasicLayout(props) {
   );
 }
 
-export default BasicLayout;
+export default connect()(BasicLayout);

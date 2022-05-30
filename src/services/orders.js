@@ -15,7 +15,7 @@ export function editOrder(payload) {
   });
 }
 export function delOrder(payload) {
-  return request(``, {
+  return request(`/api/orders/${payload}`, {
     method: 'DELETE',
   });
 }

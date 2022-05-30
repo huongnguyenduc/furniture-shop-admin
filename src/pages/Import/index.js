@@ -16,11 +16,16 @@ const Import = props => {
       type: 'imports/getImports',
     });
   }, [dispatch]);
+  React.useEffect(() => {
+    dispatch({
+      type: 'profile/getProfile',
+    });
+  }, [dispatch]);
   const isLoading = loading.effects['imports/getImports'];
   const imports = useSelector(state => state.imports.imports);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const profile = useSelector(state => state.profile.account);
   const [importDetails, setImportDetails] = useState([]);
-
   const columns = [
     {
       title: 'ID',
@@ -60,6 +65,7 @@ const Import = props => {
       align: 'center',
       width: '15%',
       render: importData => {
+        console.log(importData);
         return (
           <div onClick={() => setImportDetails(importData)}>
             <ActionRender showModal={showModal} />
@@ -106,6 +112,8 @@ const Import = props => {
           visible={isModalVisible}
           onCancel={handleCancel}
           importDetails={importDetails}
+          emailExport={profile.email}
+          dispatch={dispatch}
         />
       </Spin>
     </Layout>

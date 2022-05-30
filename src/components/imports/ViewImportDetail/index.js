@@ -3,6 +3,7 @@ import { Modal, Table, Image, Button } from 'antd';
 import { router } from 'umi';
 
 const pdfpreview = props => {
+  console.log(props);
   router.push(`/import/invoice/${props.importDetails.importId}`, {
     items: props.importDetails.importDetails,
     idInvoice: props.importDetails.importId,
@@ -10,10 +11,10 @@ const pdfpreview = props => {
     emailImporter: props.importDetails.emailImporter,
     createdAt: props.importDetails.createdAt,
     totalPrice: props.importDetails.totalPrice,
+    emailExport: props.emailExport,
   });
 };
 const ViewImportDetail = props => {
-  console.log(props.importDetails.importId);
   const columns = [
     {
       title: 'Variant ID',
