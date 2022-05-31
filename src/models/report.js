@@ -1,5 +1,6 @@
 import { formatBillRevuene, formatImporter, CalSummary, formatDataTable, formatBestSellerTable} from "../Utils/report";
 import {getBillRevenueReport, getImporterReport, getBestSeller} from "../services/report";
+import { notification } from 'antd';
 import moment from "moment";
 export default {
     namespace: 'report',
@@ -306,7 +307,10 @@ export default {
                 dataBestSeller
               },
           });
+        }else{
+          notification.error({ message: "Khong the goi api." });
         }
+        
       }
     }
   };

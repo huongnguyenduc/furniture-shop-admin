@@ -16,11 +16,8 @@ import { CSVLink, CSVDownload } from "react-csv";
 import moment from 'moment';
 const Report = props => {
   const { RangePicker } = DatePicker;
-  const { Option } = Select;
   const {dispatch, loading} = props;
   const isLoading = loading.effects['report/getDataLineChart'];
-  const cus = useSelector(state => state.report.customers)
-  const products = useSelector(state => state.report.products)
   const dataLineChart = useSelector(state => state.report.dataLineChart)
   const dataBestSeller = useSelector(state => state.report.dataBestSeller)
   const dataReportTable = useSelector(state => state.report.dataReportTable)
