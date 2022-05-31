@@ -1,3 +1,6 @@
+import { formatBillRevuene, formatImporter, CalSummary, formatDataTable, formatBestSellerTable} from "../Utils/report";
+import {getBillRevenueReport, getImporterReport, getBestSeller} from "../services/report";
+import moment from "moment";
 export default {
     namespace: 'report',
     state: {
@@ -66,7 +69,7 @@ export default {
         },
         
       ],
-      dataLineChart:[ // date: fomart 'DD-MM_YYYY', object theo thứ tự từng category
+      dataLineChart:[
         {
           "date": "1-1-2022",
           "value": 12,
@@ -160,7 +163,7 @@ export default {
           "category": "Chi phí",
         },
       ],
-      dataTopProducts:[
+      dataBestSeller:[
         {
           index: 1,
           name: 'Bàn to gia đính',
@@ -221,9 +224,9 @@ export default {
         {
           index: '1',
           date: '01-01-2022',
-          "numberOfSales": 12,
+          numberOfSales: 12,
           revenue: 12000,
-          "numberOfImports": 2,
+          numberOfImports: 2,
           cost: 1000,
         },
         {
@@ -258,9 +261,53 @@ export default {
           "numberOfImports": 2,
           cost: 1000,
         }
-      ]
-        },
-    reducers: {
+      ],
+      summary:{
+        numberOfSales: 0,
+        numberOfImporter:0,
+        revenue: 0,
+        cost: 0,
+      }
     },
+    reducers: {
+      fetchLineChart(state, action){
+        return {
+          ...state,
+          dataLineChart: action.payload.dataChart,
+          summary: action.payload.summary,
+          dataReportTable: action.payload.dataReportTable,
+          dataBestSeller: action.payload.dataBestSeller
+        }
+      }
+    },
+    effects:{
+      *getDataLineChart(action, {put,call}){
+        const res1 = yield call(getBillRevenueReport, action.payload); // getAllData
+        const res2 = yield call(getImporterReport, action.payload);
+        const res3 = yield call(getBestSeller);                         
+        if (res1.status === 200 && res2.status ===200 && res3.status ===200){
+          let data2 = formatImporter(res2.content,action.payload.start, action.payload.end);
+          let data1 = formatBillRevuene(res1.content,action.payload.start, action.payload.end);
+          for(let i=0; i<data1.length; i++){
+            data2.push(data1[i]);
+          }
+          
+          const data = data2.sort((a,b)=> new moment(a.date).format('YYYYMMDD') - new moment(b.date).format('YYYYMMDD'));
+          const summary = CalSummary(data);
+          const dataReportTable = formatDataTable(data);
+          const dataBestSeller = formatBestSellerTable(res3.content);
+
+          yield put({
+              type: 'fetchLineChart',
+              payload: {
+                dataChart: data,
+                summary,
+                dataReportTable,
+                dataBestSeller
+              },
+          });
+        }
+      }
+    }
   };
   

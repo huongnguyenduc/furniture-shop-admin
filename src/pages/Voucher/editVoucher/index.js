@@ -36,10 +36,10 @@ const rangeConfig = {
 
 
 const EditVoucher = props => {
+  const voucherTemp = JSON.parse(props.location.query.voucher);
   const [newVoucher, setNewVoucher] = useState(voucherTemp);
   const {dispatch} = props;
-  const voucherTemp = JSON.parse(props.location.query.voucher);
-
+  
   React.useEffect(() => {
     
   }, []);
@@ -207,7 +207,7 @@ const EditVoucher = props => {
                 size='large'
                 type='primary'
                 htmlType="submit"
-            >Cập nhât</Button>
+            >Cập nhật</Button>
             </Form.Item>
         </Col>
     </Row>

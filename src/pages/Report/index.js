@@ -1,59 +1,31 @@
 import React, { useState } from 'react'
-import {Layout, Row, Col, DatePicker, Select, Button, Form,  } from 'antd'
+import {Layout, Row, Col, DatePicker, Select, Button, Form, Spin } from 'antd'
 import { connect, useSelector } from 'dva';
-import { Line, Pie } from '@ant-design/plots'
-import {
-  StockOutlined, 
-  UserAddOutlined, 
-  DollarCircleOutlined, 
-  FileDoneOutlined, 
-  TrademarkOutlined, 
-  StepBackwardOutlined,
-  ExportOutlined,
+import { Line } from '@ant-design/plots'
+import { 
+  DollarCircleOutlined,  
   ShoppingOutlined,
   MoneyCollectOutlined,
   FundOutlined, 
-  PicCenterOutlined} 
+  } 
 from '@ant-design/icons';
 import { Table } from 'antd';
 import styles from './styles.less'  
-import CustomerItem from '../../components/report/customerItem/index'
-import ProductItem from '../../components/report/productItem/index'
 import {moneyConverter} from '../../Utils/helper'
 import { CSVLink, CSVDownload } from "react-csv";
 import moment from 'moment';
 const Report = props => {
   const { RangePicker } = DatePicker;
   const { Option } = Select;
-  //const data = useSelector(state => state.report.chart)
+  const {dispatch, loading} = props;
+  const isLoading = loading.effects['report/getDataLineChart'];
   const cus = useSelector(state => state.report.customers)
   const products = useSelector(state => state.report.products)
   const dataLineChart = useSelector(state => state.report.dataLineChart)
-  const dataTopProducts = useSelector(state => state.report.dataTopProducts)
+  const dataBestSeller = useSelector(state => state.report.dataBestSeller)
   const dataReportTable = useSelector(state => state.report.dataReportTable)
+  const summary = useSelector(state => state.report.summary)
   const [dataForm, setDataForm] = useState(dataFormTemp);
-  //Huy
-  // const config = {
-  //   data,
-  //   xField: 'time',
-  //   yField: 'value',
-  //   seriesField: 'category',
-  //   yAxis: {
-  //     label: {
-  //       formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
-  //     },
-  //   },
-  //   legend: {
-  //     position: 'top',
-  //   },
-  //   smooth: true,
-  //   animation: {
-  //     appear: {
-  //       animation: 'path-in',
-  //       duration: 4000,
-  //     },
-  //   },
-  // };
   const data = [
     {
       "year": "1850",
@@ -267,7 +239,7 @@ const Report = props => {
     },
   ]
   const config =  {
-    data: dataLineChart,
+    data: dataLineChart || [],
     xField: 'date',
     yField: 'value',
     seriesField: 'category',
@@ -294,6 +266,8 @@ const Report = props => {
           return '#FFC107';
         case 'Chi phí':
           return '#F41127'; 
+        case 'Số đơn nhập':
+          return '  #4A92FE';
         default: 
           return '#232323';
       }
@@ -389,18 +363,42 @@ const Report = props => {
   ]
   //-- Form --//
   const dataFormTemp = {
-    dateStart : moment().format("YYYY-MM-DD"),
-    dateEnd : moment().format("YYYY-MM-DD"),
+    start : moment().set("date",1).format("YYYY-MM-DD"),
+    end : moment().format("YYYY-MM-DD"),
+    compression: "day",
+    rangePicker: [moment().set("date",1), moment()],
   }
+  React.useEffect(() => {
+    dispatch({
+      type: 'report/getDataLineChart',
+      payload: dataFormTemp
+    });    
+    setDataForm({...dataFormTemp});
+  }, [dataFormTemp, dispatch]);
+
   const onValuesChange = async (changedValues, allValues) => {
     const tmp = {...allValues};
 
     if (tmp.rangePicker !== undefined && tmp.rangePicker !== null){
-      tmp.dateStart = allValues.rangePicker[0].toISOString();
-      tmp.dateEnd = allValues.rangePicker[1].toISOString();
+      tmp.start = allValues.rangePicker[0].format("YYYY-MM-DD");
+      tmp.end = allValues.rangePicker[1].format("YYYY-MM-DD");
     }
+
     setDataForm({...tmp});
+  }
+  const onFinish = () =>{
+    //console.log(dataForm);
+    // dispatch({
+    //   type: "report/getDataLineChart",
+    //   payload: dataForm,
+    // })
+  }
+  const onBtnSubmit = () =>{
     console.log(dataForm);
+    dispatch({
+      type: "report/getDataLineChart",
+      payload: dataForm,
+    })
   }
   //-- ENd Form --//
   return (
@@ -417,6 +415,8 @@ const Report = props => {
             labelAlign = "left" 
             onValuesChange = {onValuesChange}
             className={styles.form}
+            initialValues = {dataFormTemp}
+            onFinish = {onFinish}
           >        
                 <Form.Item name="rangePicker" 
                           label="Thời gian" 
@@ -436,19 +436,22 @@ const Report = props => {
             <Button
               size='large'
               type='primary'
+              className= {styles.myButton}
+              onClick={onBtnSubmit}
             >Xem</Button>
            </Col>
           </Row>
          </div>
        </Col>
      </Row>
+     {isLoading ? (<Spin className={styles.spin} />) : ( <div>
      <Row gutter={16}>
        <Col span={6}>
           <div className={styles.overViewContainer}>
             <Row >
               <Col span={18}>
                 <p className={styles.title}>Tổng hóa đơn</p> 
-                <p className={styles.value}>3.543</p> 
+                <p className={styles.value}>{moneyConverter(summary.numberOfSales)}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
                 <ShoppingOutlined className={styles.icon} style={{color: '#17A00E'}}/>
@@ -461,7 +464,7 @@ const Report = props => {
             <Row >
               <Col span={18}>
                 <p className={styles.title}>Doanh thu</p> 
-                <p className={styles.value}>1.000.000 VND</p> 
+                <p className={styles.value}>{moneyConverter(summary.revenue)+" VND"}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
                 <DollarCircleOutlined className={styles.icon} style={{color: '#FFC107'}}/>
@@ -474,7 +477,7 @@ const Report = props => {
             <Row >
               <Col span={18}>
                 <p className={styles.title}>Số đơn nhập</p> 
-                <p className={styles.value}>1.000.000 VND</p> 
+                <p className={styles.value}>{moneyConverter(summary.numberOfImporter)}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
                 <MoneyCollectOutlined className={styles.icon} style={{color: '#4A92FE'}}/>
@@ -487,7 +490,7 @@ const Report = props => {
             <Row >
               <Col span={18}>
                 <p className={styles.title}>Chi phí</p> 
-                <p className={styles.value}>1.000.000 VND</p> 
+                <p className={styles.value}>{moneyConverter(summary.cost)+" VND"}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
               <FundOutlined className={styles.icon} style={{color: '#F41127'}}/>
@@ -508,7 +511,7 @@ const Report = props => {
           <p className={styles.title}>Top sản phẩm bán chạy</p>
           <Table 
             columns={columnsTopProducts}
-            dataSource={dataTopProducts}
+            dataSource={dataBestSeller}
             size="small"
             pagination={false}
             scroll={{ y: 360 }}/>
@@ -537,112 +540,11 @@ const Report = props => {
         
        </Col>
      </Row>
+     </div>)}
    </Layout>
   )
 }
 
-export default  connect(({ chart }) => ({
-  chart,
+export default  connect((state) => ({
+  loading : state.loading
 })) (Report);
-
-{/* <Layout>
-    <Row>
-      <Col className={styles.chartContainer} span = {14} >
-        <div className={styles.chartPicker}>
-          <RangePicker className={styles.picker} />
-          <Select className='picker' defaultValue="month" style={{ width: 120 }} >
-            <Option value="week">Tuần</Option>
-            <Option value="month">Tháng</Option>
-            <Option value="year">Năm</Option>
-          </Select>
-        </div>
-        <div className={styles.chartInfor}> 
-          <Line {...config} />
-        </div>
-      </Col>
-      <Col className={styles.overViewContainer} span = {9}>
-        <Row>
-         <Col className={styles.itemsInfor} span ={11}>
-         <StockOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
-           <div>
-             <p className={styles.titleInfor}>
-               Tổng doanh số
-             </p>
-             <span className={styles.bodyInfor}>
-               $321K
-             </span>
-           </div> 
-         </Col>
-         <Col className={styles.itemsInfor} span ={11}>
-           <DollarCircleOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
-           <div>
-             <p className={styles.titleInfor}>
-               Tổng chi phí
-             </p>
-             <span className={styles.bodyInfor}>
-               $321K
-             </span>
-           </div> 
-         </Col>
-         <Col className={styles.itemsInfor} span ={11}>
-           <TrademarkOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
-           <div>
-             <p className={styles.titleInfor}>
-               Doanh thu hôm nay
-             </p>
-             <span className={styles.bodyInfor}>
-               $321K
-             </span>
-           </div> 
-         </Col>
-         <Col className={styles.itemsInfor} span ={11}>
-           <FileDoneOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
-           <div>
-             <p className={styles.titleInfor}>
-               Tổng đơn đặt
-             </p>
-             <span className={styles.bodyInfor}>
-               $321K
-             </span>
-           </div>
-         </Col>
-         <Col className={styles.itemsInfor} span ={11}>
-           <RobotOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
-           <div>
-             <p className={styles.titleInfor}>
-               Lượt ghé thăm
-             </p>
-             <span className={styles.bodyInfor}>
-               $321K
-             </span>
-           </div>
-         </Col>
-         <Col className={styles.itemsInfor} span ={11}>
-           <UserAddOutlined className={styles.iconInfor} style={{ fontSize: '28px', color: '#1890ff'}} />
-           <div>
-             <p className={styles.titleInfor}>
-               Khách hàng mới
-             </p>
-             <span className={styles.bodyInfor}>
-               $321K
-             </span>
-           </div>
-         </Col>
-        </Row>
-      </Col>
-      <Col className={styles.customerContainer} span={6}>
-        <div className={styles.customerTitle}>Khách mua nhiều nhất</div>
-        {cus.map((item, index) => {
-          return (
-            <div key={`key-${index}`}>
-            <CustomerItem url={item.image} name={item.name} email={item.email} />
-            </div>
-          )
-        })}
-      </Col>
-      <Col className={styles.productContainer} span={14}>
-      <div className={styles.productTitle}>Sản phẩm bán chạy</div>
-      <ProductItem products ={products} />
-      </Col>
-    </Row>
-   </Layout> */}
