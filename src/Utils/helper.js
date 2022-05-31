@@ -1,3 +1,6 @@
+
+export const DEFAULT_AVATAR = 'https://res.cloudinary.com/dthfkshzd/image/upload/v1652983803/125366266-user_cas0im.webp';
+
 export const getdateTime = () => {
   var now = new Date();
   var year = now.getFullYear();
@@ -16,7 +19,12 @@ export function moneyConverter(value) {
   let dollarUSLocale = Intl.NumberFormat('en-US');
   return dollarUSLocale.format(value);
 }
+export function toDate(value) {
+ 
+  return value.substring(0,10);
+}
 export function modifyString(str) {
+  if(str === undefined) return undefined;
   str = str.replace(/\s/g, '');
   return str
     .normalize('NFD')
@@ -27,7 +35,7 @@ export function modifyString(str) {
 export function setDataSource(source) {
   var result = source.map(item => {
     item.options.forEach(option => {
-      item[modifyString(option.option_name)] = option.option_value;
+      item[modifyString(option.optionName)] = option.optionValue;
     });
     return item;
   });

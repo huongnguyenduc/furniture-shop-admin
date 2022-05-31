@@ -1,7 +1,7 @@
 import { stringify } from 'querystring';
 import { history, router } from 'umi';
 import { accountLogin, getPageQuery } from '../services/login';
-import { message } from 'antd';
+import { notification } from 'antd';
 const Model = {
   namespace: 'login',
   state: {},
@@ -10,6 +10,9 @@ const Model = {
     *login({ payload }, { call, put }) {
       const response = yield call(accountLogin, payload);
       if (response.status === 200) {
+        yield put({
+          type: 'profile/getProfile'
+        })
         yield put({
           type: 'changeLoginStatus',
           payload: response,
@@ -35,6 +38,11 @@ const Model = {
         }
         redirect = redirect === 'login' ? '/' : redirect;
         router.push(redirect || '/');
+      } else {
+        console.log(response);
+        notification.error({
+          message: 'Username or password is invalid.',
+        });
       }
     },
     logout() {
