@@ -2,7 +2,6 @@ import { connect, useSelector } from 'dva';
 import { Layout, Table, Button, Modal, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.less';
-import { router } from 'umi';
 
 import React, { useState } from 'react';
 import ActionRender from '../../components/brand/actionRender';
@@ -54,26 +53,25 @@ const Brand = props => {
     {
       title: 'ID',
       dataIndex: 'brandId',
-      align: 'left',
-      width: '5%',
+      align: 'center',
+      width: '6%',
     },
 
     {
       title: 'Tên thương hiệu',
       dataIndex: 'brandName',
       align: 'center',
-      width: '10%',
+      width: '25%',
     },
     {
       title: 'Mô tả',
       dataIndex: 'brandDesc',
       align: 'center',
-      width: '15%',
     },
     {
       title: 'Hành Động',
       align: 'center',
-      width: '10%',
+      width: '20%',
       render: record => {
         return (
           <ActionRender
@@ -86,6 +84,7 @@ const Brand = props => {
       },
     },
   ];
+
   //Create
   const showModalCreate = () => {
     setIsModalVisibleCreate(true);
@@ -104,43 +103,39 @@ const Brand = props => {
   };
   return (
     <Layout className={styles.layoutContainer}>
-      {isLoading ? (
-        <Spin />
-      ) : (
-        <div>
-          <CreateModal
-            handleCreate={handleCreate}
-            onCancel={handleCancelCreate}
-            visible={isModalVisibleCreate}
-          />
-          <EditModal
-            value={value}
-            handleUpdate={handleUpdate}
-            onCancel={handleCancelUpdate}
-            visible={isModalVisibleUpdate}
-          />
-          <Header className={styles.brandHeader}>
-            <span className={styles.title}>DANH SÁCH THƯƠNG HIỆU</span>
-            <Button
-              type="primary"
-              size="large"
-              className={styles.myButtonStyling}
-              onClick={showModalCreate}
-            >
-              <PlusOutlined className={styles.plusIcon} />
-              <div className={styles.myTextButton}> Tạo mới</div>
-            </Button>
-          </Header>
-          <Content className={styles.brandContent}>
-            <Table
-              className={styles.tableBrands}
-              columns={columns}
-              bordered
-              dataSource={brands}
-            ></Table>
-          </Content>
-        </div>
-      )}
+      <Header className={styles.brandHeader}>
+        <span className={styles.title}>DANH SÁCH THƯƠNG HIỆU</span>
+        <Button
+          type="primary"
+          size="large"
+          className={styles.myButtonStyling}
+          onClick={showModalCreate}
+        >
+          <PlusOutlined className={styles.plusIcon} />
+          <div className={styles.myTextButton}> Tạo mới</div>
+        </Button>
+      </Header>
+      <Spin spinning={isLoading}>
+        <Content className={styles.brandContent}>
+          <Table
+            className={styles.tableBrands}
+            columns={columns}
+            bordered
+            dataSource={brands}
+          ></Table>
+        </Content>
+      </Spin>
+      <CreateModal
+        handleCreate={handleCreate}
+        onCancel={handleCancelCreate}
+        visible={isModalVisibleCreate}
+      />
+      <EditModal
+        value={value}
+        handleUpdate={handleUpdate}
+        onCancel={handleCancelUpdate}
+        visible={isModalVisibleUpdate}
+      />
     </Layout>
   );
 };

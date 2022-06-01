@@ -85,21 +85,21 @@ const Import = props => {
 
   return (
     <Layout className={styles.layoutContainer}>
+      <Header className={styles.productHeader}>
+        <span className={styles.title}>DANH SÁCH PHIẾU NHẬP</span>
+        <Button
+          type="primary"
+          size="large"
+          className={styles.myButtonStyling}
+          onClick={() => {
+            router.push('/import/create');
+          }}
+        >
+          <PlusOutlined className={styles.plusIcon} />
+          <div className={styles.myTextButton}> Tạo mới</div>
+        </Button>
+      </Header>
       <Spin spinning={isLoading}>
-        <Header className={styles.productHeader}>
-          <span className={styles.title}>DANH SÁCH PHIẾU NHẬP</span>
-          <Button
-            type="primary"
-            size="large"
-            className={styles.myButtonStyling}
-            onClick={() => {
-              router.push('/import/create');
-            }}
-          >
-            <PlusOutlined className={styles.plusIcon} />
-            <div className={styles.myTextButton}> Tạo mới</div>
-          </Button>
-        </Header>
         <Content className={styles.productContent}>
           <Table
             className={styles.tableProducts}

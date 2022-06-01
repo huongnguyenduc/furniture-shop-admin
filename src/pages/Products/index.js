@@ -23,7 +23,7 @@ const Product = props => {
   const [state, setState] = useState({
     searchText: '',
     searchedColumn: '',
-  })
+  });
   let searchInput;
   const getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -43,7 +43,6 @@ const Product = props => {
             className={styles.buttonSearch}
             type="primary"
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          
             size="small"
             style={{ width: 50 }}
           >
@@ -71,7 +70,10 @@ const Product = props => {
     filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) =>
       record[dataIndex]
-        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : '',
     onFilterDropdownVisibleChange: visible => {
       if (visible) {
@@ -114,7 +116,7 @@ const Product = props => {
       dataIndex: 'productName',
       align: 'center',
       width: '15%',
-      ...getColumnSearchProps('productName')
+      ...getColumnSearchProps('productName'),
     },
     {
       title: 'Thương hiệu',
@@ -163,43 +165,39 @@ const Product = props => {
   };
   return (
     <Layout className={styles.layoutContainer}>
-      {isLoading ? (
-        <Spin />
-      ) : (
-        <>
-          <Affix offsetTop={100}>
-            <ViewDetail onCancel={handleCancel} visible={isShowModal} />
-          </Affix>
-          <Header className={styles.productHeader}>
-            <span className={styles.title}>DANH SÁCH SẢN PHẨM</span>
-            <Button
-              type="primary"
-              size="large"
-              className={styles.myButtonStyling}
-              onClick={() => {
-                router.push('/products/create');
-              }}
-            >
-              <PlusOutlined className={styles.plusIcon} />
-              <div className={styles.myTextButton}> Tạo mới</div>
-            </Button>
-          </Header>
-          <Content className={styles.productContent}>
-            <Table
-              className={styles.tableProducts}
-              columns={columns}
-              bordered
-              dataSource={products}
-            ></Table>
-            <Button
-              onClick={() => topFunction()}
-              className={styles.topButton}
-              icon={<UpOutlined />}
-              id="myBtn"
-            ></Button>
-          </Content>
-        </>
-      )}
+      <Affix offsetTop={100}>
+        <ViewDetail onCancel={handleCancel} visible={isShowModal} />
+      </Affix>
+      <Header className={styles.productHeader}>
+        <span className={styles.title}>DANH SÁCH SẢN PHẨM</span>
+        <Button
+          type="primary"
+          size="large"
+          className={styles.myButtonStyling}
+          onClick={() => {
+            router.push('/products/create');
+          }}
+        >
+          <PlusOutlined className={styles.plusIcon} />
+          <div className={styles.myTextButton}> Tạo mới</div>
+        </Button>
+      </Header>
+      <Spin spinning={isLoading}>
+        <Content className={styles.productContent}>
+          <Table
+            className={styles.tableProducts}
+            columns={columns}
+            bordered
+            dataSource={products}
+          ></Table>
+          <Button
+            onClick={() => topFunction()}
+            className={styles.topButton}
+            icon={<UpOutlined />}
+            id="myBtn"
+          ></Button>
+        </Content>
+      </Spin>
     </Layout>
   );
 };

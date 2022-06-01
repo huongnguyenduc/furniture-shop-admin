@@ -2,8 +2,9 @@ import React from 'react';
 import styles from './styles.less';
 import { ReactComponent as Arrow } from '../../../assets/icons/arrow-line.svg';
 import Icon from '@ant-design/icons';
+import { Button } from 'antd';
 
-export const OrderStatus = ({ heading, leftColor, rightColor, icon, value }) => {
+export const OrderStatus = ({ heading, tailing, leftColor, rightColor, icon, value, onClick }) => {
   return (
     <div
       className={styles.orderStatus}
@@ -11,9 +12,11 @@ export const OrderStatus = ({ heading, leftColor, rightColor, icon, value }) => 
     >
       <div className={styles.heading}>{heading}</div>
       <div className={styles.bigNumber}>{value}</div>
-      <div>Quantity</div>
+      <div className={styles.heading}>{tailing}</div>
       <Icon component={icon} className={styles.icon} />
-      <Icon component={Arrow} className={styles.forwardIcon} />
+      <div className={styles.forwardIcon} onClick={onClick}>
+        <Icon component={Arrow} />
+      </div>
     </div>
   );
 };
