@@ -15,6 +15,12 @@ import {moneyConverter} from '../../Utils/helper'
 import { CSVLink, CSVDownload } from "react-csv";
 import moment from 'moment';
 const Report = props => {
+  const dataFormTemp = {
+    start : moment().set("date",1).format("YYYY-MM-DD"),
+    end : moment().format("YYYY-MM-DD"),
+    compression: "day",
+    rangePicker: [moment().set("date",1), moment()],
+  }
   const { RangePicker } = DatePicker;
   const {dispatch, loading} = props;
   const isLoading = loading.effects['report/getDataLineChart'];
@@ -359,19 +365,12 @@ const Report = props => {
     },
   ]
   //-- Form --//
-  const dataFormTemp = {
-    start : moment().set("date",1).format("YYYY-MM-DD"),
-    end : moment().format("YYYY-MM-DD"),
-    compression: "day",
-    rangePicker: [moment().set("date",1), moment()],
-  }
   React.useEffect(() => {
     dispatch({
       type: 'report/getDataLineChart',
-      payload: dataFormTemp
+      payload: dataForm
     });    
-    setDataForm({...dataFormTemp});
-  }, [dataFormTemp, dispatch]);
+  }, [dataForm, dispatch]);
 
   const onValuesChange = async (changedValues, allValues) => {
     const tmp = {...allValues};
