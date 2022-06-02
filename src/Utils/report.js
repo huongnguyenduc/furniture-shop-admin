@@ -225,3 +225,47 @@ export function formatBestSellerTable(data){
   }
   return res;
 }
+
+export function formatColLineData(data){
+  const res = {
+    cols: [],
+    lines: []
+  }
+
+  for( let i = 0; i < data.length; i++){
+    if (data[i].category === "Đơn hàng") {
+      let col = {
+        date: data[i].date,
+        type: 'Đơn bán',
+        value: data[i].value,
+      }
+      res.cols.push(col);
+    }
+    if (data[i].category === "Số đơn nhập") {
+      let col = {
+        date: data[i].date,
+        type: 'Đơn nhập',
+        value: data[i].value,
+      }
+      res.cols.push(col);
+    }
+    if (data[i].category === "Doanh thu") {
+      let col = {
+        date: data[i].date,
+        name: 'Đơn nhập',
+        money: data[i].value,
+      }
+      res.lines.push(col);
+    }
+    if (data[i].category === "Chi phí") {
+      let col = {
+        date: data[i].date,
+        name: 'Chi phí',
+        money: data[i].value,
+      }
+      res.lines.push(col);
+    }
+  }
+
+  return res;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {Layout, Row, Col, DatePicker, Select, Button, Form, Spin } from 'antd'
 import { connect, useSelector } from 'dva';
-import { Line } from '@ant-design/plots'
+import { Line , DualAxes} from '@ant-design/plots'
 import { 
   DollarCircleOutlined,  
   ShoppingOutlined,
@@ -21,6 +21,7 @@ const Report = props => {
     compression: "day",
     rangePicker: [moment().set("date",1), moment()],
   }
+  let countLoading = 0;
   const { RangePicker } = DatePicker;
   const {dispatch, loading} = props;
   const isLoading = loading.effects['report/getDataLineChart'];
@@ -28,6 +29,8 @@ const Report = props => {
   const dataBestSeller = useSelector(state => state.report.dataBestSeller)
   const dataReportTable = useSelector(state => state.report.dataReportTable)
   const summary = useSelector(state => state.report.summary)
+  const columnsData = useSelector(state => state.report.columnsData)
+  const linesData = useSelector(state => state.report.linesData);
   const [dataForm, setDataForm] = useState(dataFormTemp);
   const data = [
     {
@@ -241,41 +244,41 @@ const Report = props => {
       "category": "Gas fuel"
     },
   ]
-  const config =  {
-    data: dataLineChart || [],
-    xField: 'date',
-    yField: 'value',
-    seriesField: 'category',
-    yAxis: {
-      label: {
-        // 数值格式化为千分位
-        formatter: (v) => {
-          return moneyConverter(v) + ' VND';
-        },
-      },
-    },
-    smooth: true,
-    animation: {
-      appear: {
-        animation: 'path-in',
-        duration: 3000,
-      },
-    },
-    color: ({category}) =>{
-      switch(category){
-        case 'Đơn hàng':
-          return '#17A00E'; //#FFC107
-        case 'Doanh thu':
-          return '#FFC107';
-        case 'Chi phí':
-          return '#F41127'; 
-        case 'Số đơn nhập':
-          return '  #4A92FE';
-        default: 
-          return '#232323';
-      }
-    }
-  };
+  // const config =  {         // config multi line
+  //   data: dataLineChart || [],
+  //   xField: 'date',
+  //   yField: 'value',
+  //   seriesField: 'category',
+  //   yAxis: {
+  //     label: {
+  //       // 数值格式化为千分位
+  //       formatter: (v) => {
+  //         return moneyConverter(v) + ' VND';
+  //       },
+  //     },
+  //   },
+  //   smooth: true,
+  //   animation: {
+  //     appear: {
+  //       animation: 'path-in',
+  //       duration: 3000,
+  //     },
+  //   },
+  //   color: ({category}) =>{
+  //     switch(category){
+  //       case 'Đơn hàng':
+  //         return '#17A00E'; //#FFC107
+  //       case 'Doanh thu':
+  //         return '#FFC107';
+  //       case 'Chi phí':
+  //         return '#F41127'; 
+  //       case 'Số đơn nhập':
+  //         return '  #4A92FE';
+  //       default: 
+  //         return '#232323';
+  //     }
+  //   }
+  // };
   const columnsTopProducts = [
     {
       width: '20%',
@@ -364,13 +367,86 @@ const Report = props => {
       key: "cost",
     },
   ]
+  const config = {                  // config cột line 
+    data: [columnsData, linesData],
+    xField: 'date',
+    yField: ['value', 'money'],
+    yAxis: {
+      money:{
+        label: {
+          formatter: (v) => {
+            return moneyConverter(v) + ' VND';
+          },
+        }
+      },
+      value: {
+        label: {
+          formatter: (v) => {
+            return moneyConverter(v) + ' đơn';
+          },
+        }
+      }
+    },
+    geometryOptions: [
+      {
+        geometry: 'column',
+        isGroup: true,
+        seriesField: 'type',
+        columnWidthRatio: 0.4,
+        color: ({type}) =>{
+              switch(type){
+                case 'Đơn bán':
+                  return '#17A00E'; //#FFC107
+                case 'Đơn nhập':
+                  return '#4A92FE';
+                default: 
+                  return '#232323';
+              }
+        }
+      },
+      {
+        geometry: 'line',
+        seriesField: 'name',
+        color: ({name}) =>{
+          switch(name){
+            case 'Doanh thu':
+              return '#FFC107'; //#FFC107
+            case 'Chi phí':
+              return '#F41127';
+            default: 
+              return '#232323';
+          }
+        },
+        lineStyle: ({ name }) => {
+          if (name === 'a') {
+            return {
+              lineDash: [1, 4],
+              opacity: 1,
+            };
+          }
+
+          return {
+            opacity: 0.5,
+          };
+        },
+      },
+      
+    ],
+    smooth: true,
+    animation: {
+      appear: {
+        animation: 'path-in',
+        duration: 3000,
+      },
+    },
+  };
   //-- Form --//
   React.useEffect(() => {
     dispatch({
-      type: 'report/getDataLineChart',
-      payload: dataForm
-    });    
-  }, [dataForm, dispatch]);
+    type: 'report/getDataLineChart',
+    payload: dataForm
+    });  
+  }, [dataForm, dispatch]);           // xóa dataForm
 
   const onValuesChange = async (changedValues, allValues) => {
     const tmp = {...allValues};
@@ -390,7 +466,6 @@ const Report = props => {
     // })
   }
   const onBtnSubmit = () =>{
-    console.log(dataForm);
     dispatch({
       type: "report/getDataLineChart",
       payload: dataForm,
@@ -499,7 +574,8 @@ const Report = props => {
       <Col span={18}>
         <div className={styles.lineChartContainer}>
           <p className={styles.title}>Biểu đồ mô tả chi tiết theo ngày</p>
-          <Line {...config} className={styles.lineChart}/>
+          {/* <Line {...config} className={styles.lineChart}/> */}
+          <DualAxes {...config} className={styles.lineChart}/>
         </div>
       </Col>
       <Col span={6}>

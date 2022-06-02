@@ -4,6 +4,7 @@ import {
   CalSummary,
   formatDataTable,
   formatBestSellerTable,
+  formatColLineData
 } from '../Utils/report';
 import {
   getBillRevenueReport,
@@ -280,6 +281,110 @@ export default {
       revenue: 0,
       cost: 0,
     },
+    columnsData: [
+      {
+        date: '2019-03',
+        value: 35000,
+        type: 'Đơn bán',
+      },
+      {
+        date: '2019-04',
+        value: 90000,
+        type: 'Đơn bán',
+      },
+      {
+        date: '2019-05',
+        value: 30000,
+        type: 'Đơn bán',
+      },
+      {
+        date: '2019-06',
+        value: 45000,
+        type: 'Đơn bán',
+      },
+      {
+        date: '2019-07',
+        value: 47000,
+        type: 'Đơn bán',
+      },
+      {
+        date: '2019-03',
+        value: 22000,
+        type: 'Đơn nhập',
+      },
+      {
+        date: '2019-04',
+        value: 30000,
+        type: 'Đơn nhập',
+      },
+      {
+        date: '2019-05',
+        value: 25000,
+        type: 'Đơn nhập',
+      },
+      {
+        date: '2019-06',
+        value: 22000,
+        type: 'Đơn nhập',
+      },
+      {
+        date: '2019-07',
+        value: 36200,
+        type: 'Đơn nhập',
+      },
+    ],
+    linesData:[
+      {
+        date: '2019-03',
+        money: 80000,
+        name: 'Doanh thu',
+      },
+      {
+        date: '2019-04',
+        money: 60000,
+        name: 'Doanh thu',
+      },
+      {
+        date: '2019-05',
+        money: 40,
+        name: 'Doanh thu',
+      },
+      {
+        date: '2019-06',
+        money: 30,
+        name: 'Doanh thu',
+      },
+      {
+        date: '2019-07',
+        money: 20,
+        name: 'Doanh thu',
+      },
+      {
+        date: '2019-03',
+        money: 75,
+        name: 'Chi phí',
+      },
+      {
+        date: '2019-04',
+        money: 20,
+        name: 'Chi phí',
+      },
+      {
+        date: '2019-05',
+        money: 10,
+        name: 'Chi phí',
+      },
+      {
+        date: '2019-06',
+        money: 7,
+        name: 'Chi phí',
+      },
+      {
+        date: '2019-07',
+        money: 13,
+        name: 'Chi phí',
+      },
+    ]
   },
   reducers: {
     fetchLineChart(state, action) {
@@ -289,6 +394,8 @@ export default {
         summary: action.payload.summary,
         dataReportTable: action.payload.dataReportTable,
         dataBestSeller: action.payload.dataBestSeller,
+        columnsData: action.payload.columnsData,
+        linesData: action.payload.linesData,
       };
     },
     getReportData(state, action) {
@@ -316,6 +423,7 @@ export default {
         const summary = CalSummary(data);
         const dataReportTable = formatDataTable(data);
         const dataBestSeller = formatBestSellerTable(res3.content);
+        const dataColLine = formatColLineData(data);  
 
         yield put({
           type: 'fetchLineChart',
@@ -324,6 +432,8 @@ export default {
             summary,
             dataReportTable,
             dataBestSeller,
+            linesData: dataColLine.lines,
+            columnsData: dataColLine.cols
           },
         });
       } else {
@@ -338,8 +448,8 @@ export default {
 
       if (res1.status === 200 && res2.status === 200) {
         const summary = {
-          numberOfSales: res1.content.count_paid_orders,
-          numberOfImporter: res2.content.count_import,
+          numberOfSales: res1.content.money_paid_orders,
+          numberOfImporter: res2.content.money_import,
           revenue: res1.content.revenue,
           cost: res2.content.total_cost,
         };
