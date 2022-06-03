@@ -36,10 +36,10 @@ const rangeConfig = {
 
 
 const EditVoucher = props => {
+  const voucherTemp = JSON.parse(props.location.query.voucher);
   const [newVoucher, setNewVoucher] = useState(voucherTemp);
   const {dispatch} = props;
-  const voucherTemp = JSON.parse(props.location.query.voucher);
-
+  
   React.useEffect(() => {
     
   }, []);
@@ -63,7 +63,6 @@ const EditVoucher = props => {
         type:"voucher/editVoucher",
         payload: newVoucher,
       })
-      router.push('/voucher');
     }
   }
   
@@ -98,7 +97,7 @@ const EditVoucher = props => {
         </Form.Item>
         </Col>
         <Col span={24}>
-        <Form.Item label="TÊN" 
+        <Form.Item label="MÃ" 
             name='voucherName'
             className={styles.formItems}
             rules={[
@@ -131,6 +130,11 @@ const EditVoucher = props => {
                   required: true,
                   message: 'Vui lòng chọn giá trị khuyến mãi!',
                 },
+                {
+                  type:"number",
+                  min: 1,
+                  message: "Giá trị phải lớn hơn 0",
+                }
               ]}
         >
             <InputNumber className={styles.numberInputItems}/>
@@ -146,6 +150,11 @@ const EditVoucher = props => {
                   required: true,
                   message: 'Vui lòng chọn số lượng khuyến mãi!',
                 },
+                {
+                  type:"number",
+                  min: 1,
+                  message: "Số lương phải lớn hơn 0",
+                }
               ]}
         >
             <InputNumber className={styles.numberInputItems}/>
@@ -161,6 +170,11 @@ const EditVoucher = props => {
                   required: true,
                   message: 'Vui lòng chọn giá tiền hóa đơn tối thiểu để áp dụng khuyễn mãi!',
                 },
+                {
+                  type:"number",
+                  min: 1,
+                  message: "Hóa đơn phải lớn hơn 0",
+                }
               ]}
         >
             <InputNumber className={styles.numberInputItems}/>
@@ -193,7 +207,7 @@ const EditVoucher = props => {
                 size='large'
                 type='primary'
                 htmlType="submit"
-            >Cập nhât</Button>
+            >Cập nhật</Button>
             </Form.Item>
         </Col>
     </Row>

@@ -34,50 +34,50 @@ const EditProduct = props => {
   const [state, setState] = useState({
     newimageUrl: '',
     image: null,
-    optionsCate: [],
-    categoryId: null,
+    optionsBrand: [],
+    brandId: null,
     previewImage: '',
     previewVisible: true,
     previewTitle: '',
   });
-  const categories = useSelector(state => state.category.categories);
+  const brands = useSelector(state => state.brands.brands);
   React.useEffect(() => {
     var formFill = {};
     formFill['name'] = editProduct.productName;
     formFill['description'] = editProduct.productDesc;
-    formFill['category'] = editProduct.categoryName;
+    formFill['brand'] = editProduct.brandName;
     setState({
       ...state,
-      categoryId: editProduct.categoryId,
+      brandId: editProduct.brandId,
     });
     console.log(formFill);
     form.setFieldsValue(formFill);
-  }, [editProduct.categoryId, editProduct.categoryName, editProduct.productDesc, editProduct.productName, form, state]);
+  }, [editProduct.brandId, editProduct.brandName, editProduct.productDesc, editProduct.productName, form, state]);
   var isLoading = false;
   const searchResult = value => {
-    let result = categories.filter(item =>
-      item.categoryName.toUpperCase().includes(value.toUpperCase()),
+    let result = brands.filter(item =>
+      item.brandName.toUpperCase().includes(value.toUpperCase()),
     );
-    console.log(categories);
+    console.log(brands);
     return result.map((item, index) => {
       return {
-        value: item.categoryName,
-        label: <span>{item.categoryName}</span>,
+        value: item.brandName,
+        label: <span>{item.brandName}</span>,
       };
     });
   };
-  const onSelectCate = value => {
-    let result = categories.find(item => item.categoryName.toUpperCase() === value.toUpperCase());
+  const onSelectBrand = value => {
+    let result = brands.find(item => item.brandName.toUpperCase() === value.toUpperCase());
     setState({
       ...state,
-      categoryId: result.categoryId,
+      brandId: result.brandId,
     });
   };
-  const handleSearchCate = value => {
+  const handleSearchBrand = value => {
     setState({
       ...state,
-      optionsCate: value ? searchResult(value) : [],
-      categoryId: null,
+      optionsBrand: value ? searchResult(value) : [],
+      brandId: null,
     });
   };
   const setImageProduct = async file => {
@@ -97,15 +97,15 @@ const EditProduct = props => {
     var formFill = {};
     formFill['name'] = '';
     formFill['description'] = '';
-    formFill['category'] = '';
+    formFill['brand'] = '';
     form.setFieldsValue(formFill);
   };
 
   const onFinish = async values => {
     var newCate = {};
     newCate['productId'] = editProduct.productId;
-    newCate['brandId'] = editProduct.brandId;
-    newCate['categoryId'] = state.categoryId;
+    newCate['brandId'] = editProduct.categoryId;
+    newCate['categoryId'] = state.brand != null ? state.brand : editProduct.brandId;
     newCate['productName'] = values.name;
     newCate['productDesc'] = values.description;
     newCate['image'] = state.newimageUrl !== '' ? state.newimageUrl : editProduct.image;
@@ -172,7 +172,7 @@ const EditProduct = props => {
                       rules={[
                         {
                           required: true,
-                          message: 'Vui lòng điền tên sản phẩm',
+                          message: 'Vui lòng điền tên sản phẩm', 
                         },
                       ]}
                     >
@@ -180,12 +180,12 @@ const EditProduct = props => {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                    <Form.Item className={styles.formItems} label="PHÂN LOẠI" name="category">
+                    <Form.Item className={styles.formItems} label="THƯƠNG HIỆU" name="brand">
                       <AutoComplete
                         className="complete"
-                        options={state.optionsCate}
-                        onSelect={onSelectCate}
-                        onSearch={handleSearchCate}
+                        options={state.optionsBrand}
+                        onSelect={onSelectBrand}
+                        onSearch={handleSearchBrand}
                       />
                     </Form.Item>
                   </Col>

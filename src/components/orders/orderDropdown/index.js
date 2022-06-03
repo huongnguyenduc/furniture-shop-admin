@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
-import { Menu, Dropdown, Space, Button, message, Modal } from 'antd';
+import { Menu, Dropdown, Space, Button, Modal } from 'antd';
 import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
 import styles from './styles.less';
 import {
-  ODER_PENDING,
-  ODER_SHIPPING,
-  ODER_COMPLETED,
-  ODER_CANCELED,
+  ORDER_PENDING,
+  ORDER_SHIPPING,
+  ORDER_COMPLETED,
+  ORDER_CANCELED,
 } from '../../../Utils/contants';
 
-const OrderRender = ({ text,dispatch }) => {
+const OrderRender = ({ text, dispatch }) => {
   const [status, setStatus] = useState(text.orderStatus);
-  
-  const updateStatus = (value) => {
+
+  const updateStatus = value => {
     let request = {};
     request.orderId = text.orderId;
     request.orderStatus = value;
     request.paymentStatus = text.paymentStatus;
-  dispatch({
-    type:'orders/updateStatus',
-    payload: request
-  })}
+    dispatch({
+      type: 'orders/updateStatus',
+      payload: request,
+    });
+  };
 
   const confirm = () => {
     Modal.confirm({
@@ -30,35 +31,35 @@ const OrderRender = ({ text,dispatch }) => {
       okText: 'OK',
       cancelText: 'Hủy',
       onOk: () => {
-        setStatus(ODER_CANCELED);
-        updateStatus(ODER_CANCELED);
-      }
+        setStatus(ORDER_CANCELED);
+        updateStatus(ORDER_CANCELED);
+      },
     });
   };
 
   const handleMenuClick = e => {
-    if (e.key === "1") {
-      setStatus(ODER_PENDING);
-      updateStatus(ODER_PENDING);
+    if (e.key === '1') {
+      setStatus(ORDER_PENDING);
+      updateStatus(ORDER_PENDING);
     }
-    if (e.key === "2") {
-      setStatus(ODER_SHIPPING);
-      updateStatus(ODER_SHIPPING);
+    if (e.key === '2') {
+      setStatus(ORDER_SHIPPING);
+      updateStatus(ORDER_SHIPPING);
     }
-    if (e.key === "3") {
-      setStatus(ODER_COMPLETED);
-      updateStatus(ODER_COMPLETED);
+    if (e.key === '3') {
+      setStatus(ORDER_COMPLETED);
+      updateStatus(ORDER_COMPLETED);
     }
-    if (e.key === "4") {
-        confirm()
+    if (e.key === '4') {
+      confirm();
     }
   };
   const menu = (
     <Menu onClick={handleMenuClick} className={styles.menu}>
-      <Menu.Item key="1">{ODER_PENDING}</Menu.Item>
-      <Menu.Item key="2">{ODER_SHIPPING}</Menu.Item>
-      <Menu.Item key="3">{ODER_COMPLETED}</Menu.Item>
-      <Menu.Item key="4">{ODER_CANCELED}</Menu.Item>
+      <Menu.Item key="1">{ORDER_PENDING}</Menu.Item>
+      <Menu.Item key="2">{ORDER_SHIPPING}</Menu.Item>
+      <Menu.Item key="3">{ORDER_COMPLETED}</Menu.Item>
+      <Menu.Item key="4">{ORDER_CANCELED}</Menu.Item>
     </Menu>
   );
 

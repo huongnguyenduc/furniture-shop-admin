@@ -1,5 +1,6 @@
 import { getDataVoucher , addVoucher, editVoucher,deleteVoucher} from "../services/voucher";
 import { notification , message} from 'antd';
+import {router} from 'umi';
 export default {
     namespace: 'voucher',
     state: {
@@ -67,10 +68,12 @@ export default {
                     message: `Thêm mới voucher thành công`,
                     placement: 'bottomRight'
                 });
+                router.goBack();
             }
             else{
-                response.error.forEach(e => {
-                    notification.error({ message: response.error });
+                notification.error({ 
+                    message: response.error,
+                    placement: 'bottomRight'
                 });
             }
         },
@@ -81,6 +84,7 @@ export default {
                     message: `Cập nhật voucher thành công`,
                     placement: 'bottomRight'
                 });
+                router.goBack();
             }
             else{
                 notification.error({ 

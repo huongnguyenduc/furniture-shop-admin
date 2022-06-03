@@ -1,10 +1,7 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { connect, useSelector } from 'dva';
-import { Layout, Table, Button, Modal } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Layout, Table, Button, Modal, Spin } from 'antd';
 import styles from './styles.less';
-import { router } from 'umi';
-import { create } from 'react-test-renderer';
 import { moneyConverter } from '../../Utils/helper';
 import OrderRender from '../../components/orders/orderDropdown/index';
 import PaymentRender from '../../components/orders/paymentDropdown/index';
@@ -41,8 +38,8 @@ const Orders = props => {
       align: 'center',
       width: '15%',
       render: text => {
-          return text.substring(0,10);
-      }
+        return text.substring(0, 10);
+      },
     },
     {
       title: 'Tổng hóa đơn',
@@ -57,13 +54,13 @@ const Orders = props => {
       title: 'Trạng thái đơn hàng',
       align: 'center',
       width: '15%',
-      render: text => <OrderRender text={text} dispatch={dispatch}/>
+      render: text => <OrderRender text={text} dispatch={dispatch} />,
     },
     {
       title: 'Trạng thái Thanh toán',
       align: 'center',
       width: '15%',
-      render: text => <PaymentRender text={text} dispatch={dispatch}/>
+      render: text => <PaymentRender text={text} dispatch={dispatch} />,
     },
     {
       title: 'Hành Động',
@@ -76,22 +73,24 @@ const Orders = props => {
     setIsShowModal(true);
   };
   const handleCancle = () => {
-    setIsShowModal(false)
-  }
+    setIsShowModal(false);
+  };
   return (
     <Layout className={styles.layoutContainer}>
       <Header className={styles.productHeader}>
         <span className={styles.title}>DANH SÁCH HÓA ĐƠN</span>
       </Header>
-      <Content className={styles.productContent}>
-        <ViewDetail visible={isShowModal} onCancel={handleCancle}/>
-        <Table
-          className={styles.tableProducts}
-          columns={columns}
-          bordered
-          dataSource={orders}
-        ></Table>
-      </Content>
+      <Spin spinning={isLoading}>
+        <Content className={styles.productContent}>
+          <ViewDetail visible={isShowModal} onCancel={handleCancle} />
+          <Table
+            className={styles.tableProducts}
+            columns={columns}
+            bordered
+            dataSource={orders}
+          ></Table>
+        </Content>
+      </Spin>
     </Layout>
   );
 };

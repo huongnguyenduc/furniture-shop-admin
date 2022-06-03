@@ -20,7 +20,6 @@ const Header = props => {
   }, [dispatch]);
   var uploading = false;
   const profile = useSelector(state => state.profile.account);
-  console.log(profile);
   const [state, setState] = useState({
     imageUrl: '',
   });

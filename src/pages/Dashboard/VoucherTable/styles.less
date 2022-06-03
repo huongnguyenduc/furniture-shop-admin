@@ -1,3 +1,47 @@
-.container {
+.layoutContainer{
+  margin-left: 20px;
+  margin-right: 10px;
+  .productHeader{
+    display: flex;
+    justify-content: space-between;
+    background-color: aliceblue;
+    font-size: 25px;
+    font-weight: 500;
+    height: auto;
+    .title{
+      font-weight: 600;
+    }
+    .myButtonStyling {
+      display: flex;
+      justify-content: space-between;
+      height: 45px;
+      border-radius: 10px;
+      margin: 30px 0px 10px 0px;
+      background-color: #5488b9;
+      align-items: center;
+      .plusIcon{
+        margin-right: 5px;
+      }
+      .myTextButton {  
+        font-weight: 600;
+        font-size: 16px;
+      }
+    }
+  }
+  .productContent {
+    margin-top: 20px;
+    padding: 20px 15px 0x 20px;
     border-radius: 20px;
+    .tableCategory {
+      font-size: 16px;
+      font-weight: 500;
+      .tag{
+        margin-bottom: 10px;
+        font-size: 15px;
+        height: 35px;
+        padding-top: 5px;
+        border-radius: 5px;
+      }
+    }
+  }
 }
