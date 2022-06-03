@@ -21,7 +21,8 @@ const edit = props => {
   };
   return (
     <Modal
-      title="Edit Brand"
+      className='brand'
+      title="Chỉnh sửa thương hiệu"
       onCancel={props.onCancel}
       visible={props.visible}
       cancelButtonProps={{ style: { display: 'none' } }}
@@ -100,7 +101,7 @@ const edit = props => {
             htmlType="submit"
             onClick={handleSubmit}
           >
-            Submit
+            Hoàn tất
           </Button>
         </Form.Item>
       </Form>

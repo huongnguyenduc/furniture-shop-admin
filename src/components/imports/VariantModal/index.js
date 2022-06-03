@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Space, Radio, Image } from 'antd';
-
+import styles from './styles.less';
 const VariantModal = props => {
   const [selectedVariant, setSelectedVariant] = useState();
 
@@ -10,11 +10,13 @@ const VariantModal = props => {
 
   return (
     <Modal
-      title={'Select variant to import'}
+      className='brand'
+      title={'CHỌN PHIÊN BẢN'}
       visible={props.visible}
       onOk={() => props.handleOk(selectedVariant)}
       onCancel={props.handleCancel}
-    >
+    >  
+      <div className={styles.scroll}>
       <Radio.Group onChange={onChange}>
         <Space direction="vertical">
           {props.variants.map((e, index) => {
@@ -27,6 +29,7 @@ const VariantModal = props => {
           })}
         </Space>
       </Radio.Group>
+      </div>
     </Modal>
   );
 };

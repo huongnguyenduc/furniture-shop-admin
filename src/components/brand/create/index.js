@@ -16,10 +16,10 @@ const create = props => {
   };
   return (
     <Modal
-      title="Create Brand"
+      className='brand'
+      title="Tạo mới thương hiệu"
       onCancel={props.onCancel}
       visible={props.visible}
-      className={styles.styleModal}
       cancelButtonProps={{ style: { display: 'none' } }}
       okButtonProps={{ style: { display: 'none' } }}
       width={700}
@@ -78,7 +78,7 @@ const create = props => {
             htmlType="submit"
             onClick={handleSubmit}
           >
-            Submit
+            Hoàn tất
           </Button>
         </Form.Item>
       </Form>

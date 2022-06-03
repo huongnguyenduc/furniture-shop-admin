@@ -45,7 +45,7 @@ const Dashboard = props => {
     <div className={styles.container}>
       <Spin spinning={isLoading}>
         <Row gutter={[16, 16]}>
-          <Col span={8}>
+          <Col span={7}>
             <OrderStatus
               heading="Đơn hàng"
               tailing="Orders"
@@ -56,7 +56,7 @@ const Dashboard = props => {
               onClick={() => router.push('/orders')}
             />
           </Col>
-          <Col span={8}>
+          <Col span={7} offset={1} className={styles.itemfist}>
             <OrderStatus
               heading="Doanh thu"
               tailing="Revenue"
@@ -67,7 +67,7 @@ const Dashboard = props => {
               onClick={() => router.push('/report')}
             />
           </Col>
-          <Col span={8}>
+          <Col span={7} offset={1} className={styles.itemfist}>
             <OrderStatus
               heading="Chi phí"
               tailing="Costs"
