@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { connect, useSelector } from 'dva';
-import { Layout, Table, Button, Space, Tag,Spin,Input } from 'antd';
+import { Layout, Table, Button, Space, Tag, Spin, Input } from 'antd';
 import Highlighter from 'react-highlight-words';
-import { PlusOutlined, SearchOutlined,UpOutlined  } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined, UpOutlined } from '@ant-design/icons';
 import styles from './styles.less';
 import ActionRender from '../../components/Category/actionRender/index';
 
 import { router } from 'umi';
-import { moneyConverter } from '../../Utils/helper';
 const { Content, Header } = Layout;
 
 const Category = props => {
   const { dispatch, loading } = props;
-  const isLoading = loading.effects[('category/getCategoryList')];
+  const isLoading = loading.effects['category/getCategoryList'];
   React.useEffect(() => {
     dispatch({
       type: 'category/getCategoryList',
@@ -59,7 +58,6 @@ const Category = props => {
             className={styles.buttonSearch}
             type="primary"
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          
             size="small"
             style={{ width: 50 }}
           >
@@ -87,7 +85,10 @@ const Category = props => {
     filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) =>
       record[dataIndex]
-        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
         : '',
     onFilterDropdownVisibleChange: visible => {
       if (visible) {
@@ -137,7 +138,7 @@ const Category = props => {
       key: 'categoryName',
       align: 'center',
       width: '15%',
-      ...getColumnSearchProps('categoryName')
+      ...getColumnSearchProps('categoryName'),
     },
     {
       title: 'Mô tả',
@@ -168,17 +169,14 @@ const Category = props => {
       title: 'Hành Động',
       align: 'center',
       width: '15%',
-      render: (item) => {
-        return <ActionRender item = {item} />;
+      render: item => {
+        return <ActionRender item={item} />;
       },
     },
   ];
 
-  return ( 
-    
+  return (
     <Layout className={styles.layoutContainer}>
-      {isLoading ? ( <Spin />) : (
-        <>
       <Header className={styles.productHeader}>
         <span className={styles.title}>DANH SÁCH PHÂN LOẠI</span>
         <Button
@@ -193,22 +191,22 @@ const Category = props => {
           <div className={styles.myTextButton}> Tạo mới</div>
         </Button>
       </Header>
-      <Content className={styles.productContent}>
-        <Table
-          className={styles.tableCategory}
-          columns={columns}
-          bordered
-          dataSource={categories}
-        ></Table>
-         <Button
-              onClick={() => topFunction()}
-              className={styles.topButton}
-              icon={<UpOutlined />}
-              id="myBtn"
-            ></Button>
-      </Content>
-      </>
-      )}
+      <Spin spinning={isLoading}>
+        <Content className={styles.productContent}>
+          <Table
+            className={styles.tableCategory}
+            columns={columns}
+            bordered
+            dataSource={categories}
+          ></Table>
+          <Button
+            onClick={() => topFunction()}
+            className={styles.topButton}
+            icon={<UpOutlined />}
+            id="myBtn"
+          ></Button>
+        </Content>
+      </Spin>
     </Layout>
   );
 };
