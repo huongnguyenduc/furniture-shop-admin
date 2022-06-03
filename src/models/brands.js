@@ -27,7 +27,6 @@ export default {
     //get brand
     *getBrandList(action, { put, call }) {
       const response = yield call(getDataBrand);
-      console.log(response.content);
       if (response.status === 200) {
         yield put({
           type: 'saveBrandList',
