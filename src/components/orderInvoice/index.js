@@ -9,7 +9,7 @@ const Invoice = forwardRef((props, ref) => {
   console.log(props);
   const columns = [
     {
-      title: 'SKU',
+      title: 'Mã hàng',
       dataIndex: 'sku',
       align: 'center',
       width: '20%',
@@ -20,16 +20,15 @@ const Invoice = forwardRef((props, ref) => {
       align: 'center',
       width: '20%',
     },
-
     {
-      title: 'Quantity',
-      dataIndex: 'quantity',
+      title: 'Giá nhập',
+      dataIndex: 'price',
       align: 'center',
       width: '10%',
     },
     {
-      title: 'Giá nhập',
-      dataIndex: 'price',
+      title: 'Số lượng',
+      dataIndex: 'quantity',
       align: 'center',
       width: '10%',
     },
