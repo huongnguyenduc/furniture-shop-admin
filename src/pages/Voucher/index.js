@@ -18,7 +18,8 @@ const Voucher = props => {
     dispatch({
       type: 'voucher/getVoucherList',
     });
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const columns = [
     {
       title: 'ID',

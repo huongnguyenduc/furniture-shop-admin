@@ -446,7 +446,8 @@ const Report = props => {
     type: 'report/getDataLineChart',
     payload: dataForm
     });  
-  }, [dataForm, dispatch]);           // xóa dataForm
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);           // xóa dataForm
 
   const onValuesChange = async (changedValues, allValues) => {
     const tmp = {...allValues};

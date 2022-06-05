@@ -15,12 +15,14 @@ const Import = props => {
     dispatch({
       type: 'imports/getImports',
     });
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   React.useEffect(() => {
     dispatch({
       type: 'profile/getProfile',
     });
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const isLoading = loading.effects['imports/getImports'];
   const imports = useSelector(state => state.imports.imports);
   const [isModalVisible, setIsModalVisible] = useState(false);

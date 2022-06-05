@@ -17,7 +17,8 @@ const Brand = props => {
     dispatch({
       type: 'brands/getBrandList',
     });
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [value, setValue] = useState({
     brandId: 0,
     brandName: '0',

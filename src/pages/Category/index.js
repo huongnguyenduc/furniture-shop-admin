@@ -16,7 +16,8 @@ const Category = props => {
     dispatch({
       type: 'category/getCategoryList',
     });
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [state, setState] = useState({
     searchText: '',
     searchedColumn: '',
