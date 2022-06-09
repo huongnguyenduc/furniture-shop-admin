@@ -467,10 +467,12 @@ const Report = props => {
     // })
   }
   const onBtnSubmit = () =>{
-    dispatch({
-      type: "report/getDataLineChart",
-      payload: dataForm,
-    })
+    if (dataForm.rangePicker !== null){
+      dispatch({
+        type: "report/getDataLineChart",
+        payload: dataForm
+      })
+    }
   }
   //-- ENd Form --//
   return (
