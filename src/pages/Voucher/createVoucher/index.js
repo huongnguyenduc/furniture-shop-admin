@@ -117,7 +117,7 @@ const CreateVoucher = props => {
             rules={[
                 {
                   required: true,
-                  message: 'Vui lòng điền tên khuyến mãi!',
+                  message: 'Vui lòng điền mã khuyến mãi!',
                 },
                 { 
                   pattern: "^[A-Z0-9]*$",

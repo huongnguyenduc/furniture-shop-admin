@@ -103,8 +103,12 @@ const EditVoucher = props => {
             rules={[
                 {
                   required: true,
-                  message: 'Vui lòng điền tên khuyến mãi!',
+                  message: 'Vui lòng điền mã khuyến mãi!',
                 },
+                { 
+                  pattern: "^[A-Z0-9]*$",
+                  message: 'Mã chỉ bao gồm kí tự A-Z và chữ số 0-9',
+                }
               ]}
         >
             <Input className={styles.inputItems} />

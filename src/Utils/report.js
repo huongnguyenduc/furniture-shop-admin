@@ -201,7 +201,7 @@ export function formatDataTable(data){
 
     let row = {
       index: parseInt(i) + 1,
-      date: moment(data[4*i].date).format("DD-MM-YYYY"),
+      date: moment(data[4*i].date).format("DD/MM/YYYY"),
       numberOfSales: nS,
       revenue: r,
       numberOfImports: nI,
@@ -252,7 +252,7 @@ export function formatColLineData(data){
     if (data[i].category === "Doanh thu") {
       let col = {
         date: data[i].date,
-        name: 'Đơn nhập',
+        name: 'Doanh thu',
         money: data[i].value,
       }
       res.lines.push(col);

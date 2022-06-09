@@ -424,7 +424,10 @@ export default {
         const dataReportTable = formatDataTable(data);
         const dataBestSeller = formatBestSellerTable(res3.content);
         const dataColLine = formatColLineData(data);  
-
+          // test
+            console.log("DATA table COLLINE");
+            console.log(dataReportTable);
+          //
         yield put({
           type: 'fetchLineChart',
           payload: {
