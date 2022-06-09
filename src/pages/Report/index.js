@@ -447,7 +447,7 @@ const Report = props => {
     payload: dataForm
     });  
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);           // xóa dataForm
+  }, [  ]);           // xóa dataForm
 
   const onValuesChange = async (changedValues, allValues) => {
     const tmp = {...allValues};
@@ -524,7 +524,7 @@ const Report = props => {
           <div className={styles.overViewContainer}>
             <Row >
               <Col span={18}>
-                <p className={styles.title}>Tổng hóa đơn</p> 
+                <p className={styles.title}>TỔNG HÓA ĐƠN</p> 
                 <p className={styles.value}>{moneyConverter(summary.numberOfSales)}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
@@ -532,12 +532,12 @@ const Report = props => {
               </Col>
             </Row>
           </div>
-       </Col>
+       </Col> 
        <Col span={6}>
           <div className={styles.overViewContainer}>
             <Row >
               <Col span={18}>
-                <p className={styles.title}>Doanh thu</p> 
+                <p className={styles.title}>DOANH THU</p> 
                 <p className={styles.value}>{moneyConverter(summary.revenue)+" VND"}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
@@ -550,7 +550,7 @@ const Report = props => {
           <div className={styles.overViewContainer}>
             <Row >
               <Col span={18}>
-                <p className={styles.title}>Số đơn nhập</p> 
+                <p className={styles.title}>SỐ ĐƠN NHẬP</p> 
                 <p className={styles.value}>{moneyConverter(summary.numberOfImporter)}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
@@ -563,7 +563,7 @@ const Report = props => {
           <div className={styles.overViewContainer}>
             <Row >
               <Col span={18}>
-                <p className={styles.title}>Chi phí</p> 
+                <p className={styles.title}>CHI PHÍ</p> 
                 <p className={styles.value}>{moneyConverter(summary.cost)+" VND"}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
@@ -576,14 +576,14 @@ const Report = props => {
      <Row gutter={16}>
       <Col span={18}>
         <div className={styles.lineChartContainer}>
-          <p className={styles.title}>Biểu đồ mô tả chi tiết theo ngày</p>
+          <p className={styles.title}>BIỂU ĐỒ CHI TIẾT THEO NGÀY</p>
           {/* <Line {...config} className={styles.lineChart}/> */}
           <DualAxes {...config} className={styles.lineChart}/>
         </div>
       </Col>
       <Col span={6}>
         <div className={styles.lineChartContainer}>
-          <p className={styles.title}>Top sản phẩm bán chạy</p>
+          <p className={styles.title}>TOP SẢN PHẨM BÁN CHẠY</p>
           <Table 
             columns={columnsTopProducts}
             dataSource={dataBestSeller}

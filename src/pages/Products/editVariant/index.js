@@ -121,7 +121,7 @@ const EditVariant = props => {
                   <Col span={23} offset={1}>
                     <Form.Item
                       className={styles.formItems}
-                      label="TÊN SẢN PHIÊN BẢN"
+                      label="TÊN PHIÊN BẢN"
                       name="name"
                     >
                       <Input defaultValue={editVariant.sku} className={styles.inputItems} />

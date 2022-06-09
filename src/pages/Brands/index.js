@@ -1,8 +1,8 @@
 import { connect, useSelector } from 'dva';
-import { Layout, Table, Button, Modal, Spin } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Layout, Table, Button, Input, Spin, Space} from 'antd';
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import styles from './styles.less';
-
+import Highlighter from 'react-highlight-words';
 import React, { useState } from 'react';
 import ActionRender from '../../components/brand/actionRender';
 import CreateModal from '../../components/brand/create/index';
@@ -26,6 +26,91 @@ const Brand = props => {
   });
   const [isModalVisibleUpdate, setIsModalVisibleUpdate] = useState(false);
   const [isModalVisibleCreate, setIsModalVisibleCreate] = useState(false);
+  //handle search
+  const [state, setState] = useState({
+    searchText: '',
+    searchedColumn: '',
+  });
+  let searchInput;
+  const getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 10 }}>
+        <Input
+          ref={node => {
+            searchInput = node;
+          }}
+          placeholder={`Search`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            className={styles.buttonSearch}
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            size="small"
+            style={{ width: 50 }}
+          >
+            <SearchOutlined />
+          </Button>
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 70 }}>
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              setState({
+                searchText: selectedKeys[0],
+                searchedColumn: dataIndex,
+              });
+            }}
+          >
+            Filter
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex]
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        : '',
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => searchInput.select(), 100);
+      }
+    },
+    render: text =>
+      state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[state.searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
+  const handleReset = clearFilters => {
+    clearFilters();
+    setState({ searchText: '' });
+  };
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
   //update brand
   const handleUpdate = async props => {
     await dispatch({
@@ -56,6 +141,7 @@ const Brand = props => {
       dataIndex: 'brandId',
       align: 'center',
       width: '6%',
+      sorter: (a, b) => a.brandId - b.brandId,
     },
 
     {
@@ -63,6 +149,7 @@ const Brand = props => {
       dataIndex: 'brandName',
       align: 'center',
       width: '25%',
+      ...getColumnSearchProps('brandName'),
     },
     {
       title: 'Mô tả',

@@ -164,6 +164,7 @@ const CreateProduct = props => {
     onFill();
   };
   const handlePreview = async file => {
+    console.log(file);
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -184,7 +185,10 @@ const CreateProduct = props => {
     for (var option of variants[index].options) {
       if (option.optionName === field) {  
         option.option_image = fileList.fileList;
+        if( option.option_image.length > 0) {
+        //option.option_image[0].status = 'done';
         handleUploadOptionImage(field ,index ,fileList.file.originFileObj);
+        }
       }
     }
     product.variants = variants;
@@ -199,6 +203,7 @@ const CreateProduct = props => {
     for (var option of variants[index].options) {
       if (option.optionName === field) {  
         option.image_url = await uploader(file);
+       // option.option_image[0].thumbUrl = option.image_url ;
       }
     }
     product.variants = variants;
@@ -594,14 +599,13 @@ const CreateProduct = props => {
                                         <Form.Item name={label_image}>
                                           <Upload
                                             className="upload_card"
-                                            action="/upload.do"
                                             listType="picture-card"
                                            // fileList={option.option_image}
                                             maxCount={1}
                                             onPreview={handlePreview}
                                             onChange={file => handleChangeImageOption(file, label)}
                                           >
-                                            {option.option_image.length >= 1 ? null : uploadButton}
+                                            {option.option_image.length > 0 ? null : uploadButton}
                                           </Upload>
 
                                           <Modal
