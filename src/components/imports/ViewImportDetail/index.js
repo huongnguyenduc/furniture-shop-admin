@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Table, Image, Button } from 'antd';
 import { router } from 'umi';
-
+import { moneyConverter } from '../../../Utils/helper';
 const pdfpreview = props => {
   console.log(props);
   router.push(`/import/invoice/${props.importDetails.importId}`, {
@@ -47,9 +47,9 @@ const ViewImportDetail = props => {
       title: 'Giá nhập',
       dataIndex: 'price',
       align: 'center',
-      // render: item => {
-      //   return moneyConverter(item);
-      // },
+      render: item => {
+        return moneyConverter(item);
+      },
     },
   ];
   const listImport = props.importDetails.importDetails;
@@ -66,8 +66,9 @@ const ViewImportDetail = props => {
 
   return (
     <Modal
+      className="cc"
       width={1020}
-      title="Import detail"
+      title="CHI TIẾT NHẬP HÀNG"
       visible={props.visible}
       onCancel={props.onCancel}
       footer={[
@@ -76,7 +77,14 @@ const ViewImportDetail = props => {
         </Button>,
       ]}
     >
-      <Table columns={columns} dataSource={data}></Table>
+      <Table 
+      columns={columns} 
+      dataSource={data} 
+      pagination={{ position: ['none', 'none'] }} 
+      scroll={{ y: 400 }}
+      bordered>
+
+      </Table>
     </Modal>
   );
 };

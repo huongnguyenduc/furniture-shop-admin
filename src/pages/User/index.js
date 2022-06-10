@@ -99,7 +99,8 @@ const User = props => {
     dispatch({
       type: 'user/getUsers',
     });
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const customers = useSelector(state => state.user.customers);
   const staffs = useSelector(state => state.user.staffs);
   window.onscroll = function() {

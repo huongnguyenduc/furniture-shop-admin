@@ -18,7 +18,8 @@ const Voucher = props => {
     dispatch({
       type: 'voucher/getVoucherList',
     });
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const columns = [
     {
       title: 'ID',
@@ -32,20 +33,7 @@ const Voucher = props => {
       dataIndex: 'voucherName',
       align: 'center',
       width: '13%',
-    },
-    {
-      title: 'Mô tả',
-      dataIndex: 'voucherDesc',
-      align: 'center',
-      width: '15%',
-    },
-    {
-      title: 'Số lượng',
-      dataIndex: 'amount',
-      align: 'center',
-      width: '7%',
-      sorter: (a, b) => parseInt(a.amount) - parseInt(b.amount),
-    },
+    }, 
     {
       title: 'Ngày áp dụng',
       dataIndex: 'validDate',
@@ -82,6 +70,19 @@ const Voucher = props => {
       render: item => {
         return moneyConverter(item) + 'đ';
       },
+    },
+    {
+      title: 'Số lượng',
+      dataIndex: 'amount',
+      align: 'center',
+      width: '10%',
+      sorter: (a, b) => parseInt(a.amount) - parseInt(b.amount),
+    },
+    {
+      title: 'Mô tả',
+      dataIndex: 'voucherDesc',
+      align: 'center',
+      width: '15%',
     },
     {
       title: 'Hành Động',

@@ -28,7 +28,8 @@ const Dashboard = props => {
     dispatch({
       type: 'report/getSummary',
     });
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const orders = useSelector(state => state.orders.orders);
   const reportSummary = useSelector(state => state.report.summary);
 
