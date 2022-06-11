@@ -8,7 +8,7 @@ import moment from 'moment';
 const { TextArea } = Input;
 const {RangePicker} = DatePicker;
 
-const rangeConfig = {
+const  rangeConfig = {
     rules: [
       {
         type: 'array',

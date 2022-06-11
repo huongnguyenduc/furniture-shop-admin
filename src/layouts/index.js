@@ -21,6 +21,10 @@ const { Sider, Content } = Layout;
 function BasicLayout(props) {
   const { children, dispatch } = props;
   const [Collapsed, setCollapsed] = useState(false);
+  let roles = localStorage.getItem('roles');
+  console.log(roles);
+  roles = typeof roles === 'string' ? [roles] : roles;
+  const isAdmin = roles.indexOf('ADMIN') !== -1;
   window.onunload = () => {
     // Clear the local storage
     window.MyStorage.clear();
@@ -69,14 +73,6 @@ function BasicLayout(props) {
             </Menu.Item>
             <Menu.Item
               className={styles.menuItems}
-              key="3"
-              icon={<InboxOutlined className={styles.menuIcons} />}
-              onClick={() => router.push('/products')}
-            >
-              <span className={styles.menuTitle}>Sản Phẩm</span>
-            </Menu.Item>
-            <Menu.Item
-              className={styles.menuItems}
               key="4"
               icon={<FileDoneOutlined className={styles.menuIcons} />}
               onClick={() => router.push('/category')}
@@ -90,6 +86,14 @@ function BasicLayout(props) {
               onClick={() => router.push('/brand')}
             >
               <span className={styles.menuTitle}>Thương Hiệu</span>
+            </Menu.Item>
+            <Menu.Item
+              className={styles.menuItems}
+              key="3"
+              icon={<InboxOutlined className={styles.menuIcons} />}
+              onClick={() => router.push('/products')}
+            >
+              <span className={styles.menuTitle}>Sản Phẩm</span>
             </Menu.Item>
             <Menu.Item
               className={styles.menuItems}
@@ -107,6 +111,7 @@ function BasicLayout(props) {
             >
               <span className={styles.menuTitle}>Nhập Hàng</span>
             </Menu.Item>
+            {isAdmin &&
             <Menu.Item
               className={styles.menuItems}
               key="8"
@@ -117,6 +122,8 @@ function BasicLayout(props) {
             >
               <span className={styles.menuTitle}>Khuyến Mại</span>
             </Menu.Item>
+            }
+            {isAdmin &&
             <Menu.Item
               className={styles.menuItems}
               key="9"
@@ -125,6 +132,8 @@ function BasicLayout(props) {
             >
               <span className={styles.menuTitle}>Tài Khoản</span>
             </Menu.Item>
+            }
+            {isAdmin &&
             <Menu.Item
               className={styles.menuItems}
               key="10"
@@ -133,6 +142,7 @@ function BasicLayout(props) {
             >
               <span className={styles.menuTitle}>Báo Cáo</span>
             </Menu.Item>
+            }
           </Menu>
         </Sider>
       </Affix>
