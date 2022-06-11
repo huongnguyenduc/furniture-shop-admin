@@ -9,7 +9,7 @@ const Model = {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(accountLogin, payload);
-      if (response.status === 200) {
+      if (response.status === 200 && response.content.user.role != null) {
         yield put({
           type: 'profile/getProfile'
         })
@@ -67,11 +67,16 @@ const Model = {
       // `item` is an object which contains the original value
       // as well as the time when it's supposed to expire
       const item = {
-        value: payload.content,
+        value: payload.content.token,
         expiry: now.getTime() + 86400 * 1000,
       };
       localStorage.setItem('token', JSON.stringify(item));
-      localStorage.setItem('roles', JSON.stringify(payload.auth));
+      if(payload.content.user.role !== null) {
+      localStorage.setItem('roles', [payload.content.user.role.name]);
+      }
+      else {
+        localStorage.setItem('roles',[""]);
+      }
       //console.log(`login, ${payload.data.auth}`);
       return { ...state };
     },

@@ -121,7 +121,7 @@ const EditVariant = props => {
                   <Col span={23} offset={1}>
                     <Form.Item
                       className={styles.formItems}
-                      label="TÊN SẢN PHIÊN BẢN"
+                      label="TÊN PHIÊN BẢN"
                       name="name"
                     >
                       <Input defaultValue={editVariant.sku} className={styles.inputItems} />
@@ -132,7 +132,7 @@ const EditVariant = props => {
                       <InputNumber 
                       defaultValue={editVariant.price} 
                       className={styles.inputNumberItems}
-                      min={1000} 
+                      min={1} 
                       formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                       />
                     </Form.Item>
@@ -143,6 +143,20 @@ const EditVariant = props => {
                       defaultValue={editVariant.quantity} 
                       className={styles.inputNumberItems} 
                       min={0} 
+                      rules={[
+                        {
+                          pattern: /^(?:\d*)$/,
+                          message: 'Vui lòng nhập số',
+                        },
+                        {
+                          max: 10,
+                          message: 'Tối đa 10 kí tự',
+                        },
+                        {
+                          required: true,
+                          message: 'Vui lòng nhập số lượng!',
+                        },
+                      ]}
                       formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}/>
                     </Form.Item>
                   </Col>

@@ -46,8 +46,12 @@ const NewImport = props => {
   const profile = useSelector(state => state.profile.account);
   var today = new Date();
   let month = (today.getMonth() + 1);
+  let day = today.getDate();
+  if(day < 10){ 
+    day = '0'+day;
+ }
   if (month < 10) month = '0'+month;
-  var date = today.getDate() + '-' + month + '-' + today.getFullYear();
+  var date = day + '-' + month + '-' + today.getFullYear();
   const [options, setOptions] = useState([]);
   const [variants, setVariants] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -242,12 +246,14 @@ const NewImport = props => {
                           className={styles.formImportItem}
                           label="GIÁ NHẬP"
                           name={orignalPrice}
+                          
                           required={true}
                         >
                           <InputNumber
                             className={styles.numberInputItems}
                             defaultValue={1}
                             min={1}
+                            max={100000}
                           />
                         </Form.Item>
                         <Form.Item
@@ -260,6 +266,7 @@ const NewImport = props => {
                             className={styles.numberInputItems}
                             defaultValue={1}
                             min={1}
+                            max={100}
                           />
                         </Form.Item>
                       </Row>

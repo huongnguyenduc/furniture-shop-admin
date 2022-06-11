@@ -10,6 +10,7 @@ import {
 import { uploader } from '../Utils/uploader';
 import { notification } from 'antd';
 import { NotificationOutlined } from '@ant-design/icons';
+import { router } from 'umi';
 export default {
   namespace: 'products',
   state: {
@@ -74,6 +75,7 @@ export default {
             break;
           }
         }
+        router.goBack();
       } else {
         notification.error({ message: response.content });
       }

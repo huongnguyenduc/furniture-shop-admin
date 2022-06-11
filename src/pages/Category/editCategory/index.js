@@ -13,7 +13,7 @@ import {
   AutoComplete,
   Tag,
   message,
-  Spin
+  Spin,
 } from 'antd';
 import { router } from 'umi';
 const normFile = e => {
@@ -39,18 +39,21 @@ const EditCategory = props => {
   const currCategory = useSelector(state => state.category.editCategory);
   React.useEffect(() => {
     var formFill = {};
-     let editCate = currCategory; 
-     formFill['name'] = editCate.categoryName;
-     formFill['description'] = editCate.categoryDesc;
-     const parent = categories.find(item => { if(item.categoryId === editCate.parentId) return item})
-     formFill['parent'] = parent !== undefined ? parent.categoryName : '';
-     setState({
-       ...state,
-       parentId: editCate.parentId
-     })
-     console.log(formFill);
-     form.setFieldsValue(formFill);
-  }, [categories, currCategory, form, state]);
+    let editCate = currCategory;
+    formFill['name'] = editCate.categoryName;
+    formFill['description'] = editCate.categoryDesc;
+    const parent = categories.find(item => {
+      if (item.categoryId === editCate.parentId) return item;
+    });
+    formFill['parent'] = parent !== undefined ? parent.categoryName : '';
+    setState({
+      ...state,
+      parentId: editCate.parentId,
+    });
+    console.log(formFill);
+    form.setFieldsValue(formFill);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   var isLoading = false;
   const searchResult = value => {
     let result = categories.filter(item =>
@@ -80,128 +83,128 @@ const EditCategory = props => {
 
   const onFill = () => {
     var formFill = {};
-     formFill['name'] = '';
-     formFill['description'] = '';
-     formFill['parent'] = ''
-     setState({
-       ...state,
-       parentId: []
-     })
-     form.setFieldsValue(formFill);
-  }
+    formFill['name'] = '';
+    formFill['description'] = '';
+    formFill['parent'] = '';
+    setState({
+      ...state,
+      parentId: [],
+    });
+    form.setFieldsValue(formFill);
+  };
   const onFinish = async values => {
-      var newCate = {};
-      newCate['parentId'] = state.parentId;
-      newCate['categoryId'] = currCategory.categoryId;
-      newCate['options'] = currCategory.options;
-      newCate['categoryName'] = values.name;
-      newCate['categoryDesc'] = values.description;
-      isLoading =  loading.effects[('category/editCategory')];
-      console.log(newCate);
-      dispatch({
-        type: 'category/editCategory',
-        payload: newCate,
-      });
-      if(!isLoading) router.goBack();
-      onFill();
+    var newCate = {};
+    newCate['parentId'] = state.parentId;
+    newCate['categoryId'] = currCategory.categoryId;
+    newCate['options'] = currCategory.options;
+    newCate['categoryName'] = values.name;
+    newCate['categoryDesc'] = values.description;
+    isLoading = loading.effects['category/editCategory'];
+    console.log(newCate);
+    dispatch({
+      type: 'category/editCategory',
+      payload: newCate,
+    });
+    if (!isLoading) router.goBack();
+    onFill();
   };
   return (
     <div>
       <Spin spinning={isLoading}>
-      <Form
-        name="create-category"
-        labelCol={{
-          span: 12,
-        }}
-        wrapperCol={{
-          span: 24,
-        }}
-        initialValues={{
-          description: '',
-          multiSubmission: true,
-          sponsors: [],
-        }}
-        layout="vertical"
-        form={form}
-        onFinish={onFinish}
-        autoComplete="off"
-        className={styles.container}
-      >
-        <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }]}>
-          <Col span={24}>
-            <Affix offsetTop={70}>
-              <Title className={styles.title}>CHỈNH SỬA PHÂN LOẠI</Title>
-            </Affix>
-          </Col>
-          <Col span={16}>
-            <Affix offsetTop={130}>
-              <Row gutter={[{ xs: 8, sm: 16, md: 24 }]}>
-                <Col span={12}>
-                  <Form.Item
-                    className={styles.formItems}
-                    label="TÊN PHÂN LOẠI"
-                    name="name"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Vui lòng điền tên loại sản phẩm',
-                      },
-                    ]}
-                  >
-                    <Input className={styles.inputItems} />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item className={styles.formItems} label="CHA" name="parent">
-                    <AutoComplete
-                      className="complete"
-                      options={state.optionsCate}
-                      onSelect={onSelectCate}
-                      onSearch={handleSearchCate}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={24}>
-                  <Form.Item className={styles.formItems} label="MÔ TẢ" name="description">
-                    <Input className={styles.inputItems} />
-                  </Form.Item>
-                </Col>
-                <Col span={4} offset={15}>
-                  <Form.Item>
-                    <Button
-                      className={styles.myButtonCancel}
-                      onClick={() => {
-                        router.goBack();
-                      }}
-                      size="large"
-                      htmlType="button"
+        <Form
+          name="create-category"
+          labelCol={{
+            span: 12,
+          }}
+          wrapperCol={{
+            span: 24,
+          }}
+          initialValues={{
+            description: '',
+            multiSubmission: true,
+            sponsors: [],
+          }}
+          layout="vertical"
+          form={form}
+          onFinish={onFinish}
+          autoComplete="off"
+          className={styles.container}
+        >
+          <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }]}>
+            <Col span={24}>
+              <Affix offsetTop={70}>
+                <Title className={styles.title}>CHỈNH SỬA PHÂN LOẠI</Title>
+              </Affix>
+            </Col>
+            <Col span={16}>
+              <Affix offsetTop={130}>
+                <Row gutter={[{ xs: 8, sm: 16, md: 24 }]}>
+                  <Col span={12}>
+                    <Form.Item
+                      className={styles.formItems}
+                      label="TÊN PHÂN LOẠI"
+                      name="name"
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Vui lòng điền tên loại sản phẩm',
+                        },
+                      ]}
                     >
-                      Hủy
-                    </Button>
-                  </Form.Item>
-                </Col>
-                <Col span={3}>
-                  <Form.Item>
-                    <Button
-                      type="primary"
-                      className={styles.myButton}
-                      size="large"
-                      htmlType="submit"
-                      // onClick={handleAllFields}
-                      // loading={isLoading}
-                    >
-                      Hoàn tất
-                    </Button>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Affix>
-          </Col>
-        </Row>
-      </Form>
+                      <Input className={styles.inputItems} />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item className={styles.formItems} label="CHA" name="parent">
+                      <AutoComplete
+                        className="complete"
+                        options={state.optionsCate}
+                        onSelect={onSelectCate}
+                        onSearch={handleSearchCate}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={24}>
+                    <Form.Item className={styles.formItems} label="MÔ TẢ" name="description">
+                      <Input className={styles.inputItems} />
+                    </Form.Item>
+                  </Col>
+                  <Col span={4} offset={15}>
+                    <Form.Item>
+                      <Button
+                        className={styles.myButtonCancel}
+                        onClick={() => {
+                          router.goBack();
+                        }}
+                        size="large"
+                        htmlType="button"
+                      >
+                        Hủy
+                      </Button>
+                    </Form.Item>
+                  </Col>
+                  <Col span={3}>
+                    <Form.Item>
+                      <Button
+                        type="primary"
+                        className={styles.myButton}
+                        size="large"
+                        htmlType="submit"
+                        // onClick={handleAllFields}
+                        // loading={isLoading}
+                      >
+                        Hoàn tất
+                      </Button>
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Affix>
+            </Col>
+          </Row>
+        </Form>
       </Spin>
     </div>
   );
 };
 
-export default connect(state => ({ loading: state.loading })) (EditCategory);
+export default connect(state => ({ loading: state.loading }))(EditCategory);

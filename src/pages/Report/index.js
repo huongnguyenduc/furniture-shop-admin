@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Layout, Row, Col, DatePicker, Select, Button, Form, Spin } from 'antd'
+import {Layout, Row, Col, DatePicker, Select, Button, Form, Spin, notification, message } from 'antd'
 import { connect, useSelector } from 'dva';
 import { Line , DualAxes} from '@ant-design/plots'
 import { 
@@ -446,7 +446,8 @@ const Report = props => {
     type: 'report/getDataLineChart',
     payload: dataFormTemp
     });
-  }, [dataFormTemp, dispatch]);           // xóa dataForm
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);           // xóa dataForm
 
   const onValuesChange = async (changedValues, allValues) => {
     const tmp = {...allValues};
@@ -468,10 +469,15 @@ const Report = props => {
   }
   const onBtnSubmit = () =>{
     if (dataFormTemp.rangePicker !== null){
-      dispatch({
-        type: "report/getDataLineChart",
-        payload: dataFormTemp
-      })
+      const rangeDate = (dataFormTemp.rangePicker[1] - dataFormTemp.rangePicker[0])/(3600000*24);
+      if (rangeDate > 11){
+        notification.error({message: "Chỉ được xem báo cáo trong khoảng 10 ngày"});
+      }else{
+        dispatch({
+          type: "report/getDataLineChart",
+          payload: dataFormTemp
+        })
+      }
     }
   }
   //-- ENd Form --//
@@ -523,7 +529,7 @@ const Report = props => {
           <div className={styles.overViewContainer}>
             <Row >
               <Col span={18}>
-                <p className={styles.title}>Tổng hóa đơn</p> 
+                <p className={styles.title}>TỔNG HÓA ĐƠN</p> 
                 <p className={styles.value}>{moneyConverter(summary.numberOfSales)}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
@@ -531,7 +537,7 @@ const Report = props => {
               </Col>
             </Row>
           </div>
-       </Col>
+       </Col> 
        <Col span={6}>
           <div className={styles.overViewContainer}>
             <Row >
@@ -549,7 +555,7 @@ const Report = props => {
           <div className={styles.overViewContainer}>
             <Row >
               <Col span={18}>
-                <p className={styles.title}>Số đơn nhập</p> 
+                <p className={styles.title}>SỐ ĐƠN NHẬP</p> 
                 <p className={styles.value}>{moneyConverter(summary.numberOfImporter)}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
@@ -575,14 +581,14 @@ const Report = props => {
      <Row gutter={16}>
       <Col span={18}>
         <div className={styles.lineChartContainer}>
-          <p className={styles.title}>Biểu đồ mô tả chi tiết theo ngày</p>
+          <p className={styles.title}>BIỂU ĐỒ CHI TIẾT THEO NGÀY</p>
           {/* <Line {...config} className={styles.lineChart}/> */}
           <DualAxes {...config} className={styles.lineChart}/>
         </div>
       </Col>
       <Col span={6}>
         <div className={styles.lineChartContainer}>
-          <p className={styles.title}>Top sản phẩm bán chạy</p>
+          <p className={styles.title}>TOP SẢN PHẨM BÁN CHẠY</p>
           <Table 
             columns={columnsTopProducts}
             dataSource={dataBestSeller}

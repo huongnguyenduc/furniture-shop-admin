@@ -8,7 +8,7 @@ import moment from 'moment';
 const { TextArea } = Input;
 const {RangePicker} = DatePicker;
 
-const rangeConfig = {
+const  rangeConfig = {
     rules: [
       {
         type: 'array',
@@ -103,13 +103,17 @@ const EditVoucher = props => {
         </Form.Item>
         </Col>
         <Col span={24}>
-        <Form.Item label="MÃ" 
+        <Form.Item label="MÃ CODE" 
             name='voucherName'
             className={styles.formItems}
             rules={[
                 {
                   required: true,
                   message: 'Vui lòng điền mã khuyến mãi!',
+                },
+                {
+                  max: 10,
+                  message: 'Tối đa 10 kí tự',
                 },
                 { 
                   pattern: "^[A-Z0-9]*$",
@@ -137,7 +141,7 @@ const EditVoucher = props => {
         <Col span={24}>
         <Form.Item 
             name='voucherValue'
-            label="GIÁ TRỊ" 
+            label="PHẦN TRĂM" 
             className={styles.formItems}
             rules={[
                 {
@@ -151,7 +155,7 @@ const EditVoucher = props => {
                 }
               ]}
         >
-            <InputNumber className={styles.numberInputItems}/>
+            <InputNumber className={styles.numberInputItems} max={70}/>
         </Form.Item>
         </Col>
         <Col span={24}>
@@ -171,13 +175,13 @@ const EditVoucher = props => {
                 }
               ]}
         >
-            <InputNumber className={styles.numberInputItems}/>
+            <InputNumber className={styles.numberInputItems} max={100}/>
         </Form.Item>
         </Col>
         <Col span={24}>
         <Form.Item 
             name='cappedAt'
-            label="HÓA ĐƠN TỐI THIỂU" 
+            label="GIẢM TỐI ĐA" 
             className={styles.formItems}
             rules={[
                 {
