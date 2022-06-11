@@ -71,13 +71,13 @@ export default {
           console.log(response.content.productId);
           const respon = yield call(addVariant, element);
           if (respon.status !== 200) {
-            notification.error({ message: respon.content });
+            notification.error({ message: respon.errors });
             break;
           }
         }
         router.goBack();
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *editProduct(action, { put, call }) {
@@ -85,7 +85,7 @@ export default {
       if (response.status === 200) {
         notification.success({ message: 'Save success' });
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *editVariant(action, { put, call }) {
@@ -93,7 +93,7 @@ export default {
       if (response.status === 200) {
         notification.success({ message: 'Edit success' });
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *delProduct(action, { put, call }) {

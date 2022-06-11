@@ -163,7 +163,6 @@ const EditProduct = props => {
               </Row>
             </Col>
             <Col span={16}>
-              <Affix offsetTop={130}>
                 <Row gutter={[{ xs: 8, sm: 16, md: 24 }]}>
                   <Col span={12}>
                     <Form.Item
@@ -228,7 +227,6 @@ const EditProduct = props => {
                     </Form.Item>
                   </Col>
                 </Row>
-              </Affix>
             </Col>
           </Row>
         </Form>

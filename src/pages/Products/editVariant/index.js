@@ -30,9 +30,25 @@ const EditVariant = props => {
   var pathArray = window.location.pathname.split('/');
   const idProduct = pathArray[pathArray.length - 3];
   const idVariant = pathArray[pathArray.length - 1];
-  const products = useSelector(state => state.products.products);
-  const editProduct = products.find(item => item.productId == idProduct);
-  let editVariant = editProduct.variants.find(item => (item.variantId = idVariant));
+  let products = useSelector(state => state.products.products);
+  let editProduct;
+  let editVariant;
+  editProduct = products.find(item => item.productId == idProduct);
+  editVariant = editProduct.variants.find(item => (item.variantId == idVariant));
+  React.useEffect(() => {
+     console.log(editVariant.variantId);
+    var formFill = {};
+    formFill['name'] = editVariant.sku;
+    formFill['quantity'] = editVariant.quantity;
+    formFill['price'] = editVariant.price;
+    editVariant.options.forEach(item => {
+      formFill[item.optionName] = item.optionValue;
+    });
+    console.log(formFill);
+    form.setFieldsValue(formFill);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  console.log(editVariant.variantId);
   const [state, setState] = useState({
     newimageUrl: '',
     image: null,
@@ -54,14 +70,14 @@ const EditVariant = props => {
   };
   const onFinish = values => {
     isLoading = loading.effects['products/editVariant'];
-    const {name, price, quantity} = values;
-    if(name !== undefined && name !== '') editVariant.sku = name;
-    if(price !== undefined) editVariant.price = price;
-    if(quantity !== undefined) editVariant.quantity = quantity;
-    if(state.newimageUrl !== '') editVariant.image = state.newimageUrl;
-    editVariant.options.forEach((item) => {
-      if(values[item.optionName] !== undefined) item.optionValue = values[item.optionName];
-    })
+    const { name, price, quantity } = values;
+    if (name !== undefined && name !== '') editVariant.sku = name;
+    if (price !== undefined) editVariant.price = price;
+    if (quantity !== undefined) editVariant.quantity = parseInt(quantity);
+    if (state.newimageUrl !== '') editVariant.image = state.newimageUrl;
+    editVariant.options.forEach(item => {
+      if (values[item.optionName] !== undefined) item.optionValue = values[item.optionName];
+    });
     console.log(values);
     console.log(editVariant);
     dispatch({
@@ -93,12 +109,12 @@ const EditVariant = props => {
             </Col>
             <Col span={5}>
               <Row>
-                <Col span={24} className={styles.imageContainer} >
+                <Col span={24} className={styles.imageContainer}>
                   <Spin spinning={uploading}>
-                  <Image
-                    src={state.newimageUrl !== '' ? state.newimageUrl : editVariant.image}
-                    className={styles.image}
-                  ></Image>
+                    <Image
+                      src={state.newimageUrl !== '' ? state.newimageUrl : editVariant.image}
+                      className={styles.image}
+                    ></Image>
                   </Spin>
                 </Col>
                 <Col span={11} offset={2}>
@@ -116,101 +132,118 @@ const EditVariant = props => {
               </Row>
             </Col>
             <Col span={16}>
-              <Affix offsetTop={130}>
-                <Row gutter={[{ xs: 8, sm: 16, md: 24 }]}>
-                  <Col span={23} offset={1}>
-                    <Form.Item
-                      className={styles.formItems}
-                      label="TÊN PHIÊN BẢN"
-                      name="name"
+              <Row gutter={[{ xs: 8, sm: 16, md: 24 }]}>
+                <Col span={23} offset={1}>
+                  <Form.Item className={styles.formItems} label="TÊN PHIÊN BẢN">
+                  <Form.Item name="name"
+                   rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập tên!',
+                    },
+                    {
+                      max: 50,
+                      message: 'Tối đa 50 kí tự',
+                    },
+                  ]}
                     >
-                      <Input defaultValue={editVariant.sku} className={styles.inputItems} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={11}  offset={1}>
-                    <Form.Item className={styles.formItems} label="GIÁ BÁN" name="price">
-                      <InputNumber 
-                      defaultValue={editVariant.price} 
+                    <Input className={styles.inputItems} />
+                  </Form.Item>
+                  </Form.Item>
+                </Col>
+                <Col span={11} offset={1}>
+                  <Form.Item className={styles.formItems} label="GIÁ BÁN">
+                  <Form.Item name="price"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập giá!',
+                    },
+                    {
+                      pattern: /^(?:\d*)$/,
+                      message: 'Vui lòng nhập số',
+                    },
+                    {
+                      max: 10,
+                      message: 'Tối đa 10 kí tự',
+                    },
+                  ]}
+                  >
+                    <Input
                       className={styles.inputNumberItems}
-                      min={1} 
-                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      />
+                    />
+                  </Form.Item>
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item className={styles.formItems} label="SỐ LƯỢNG">
+                    <Form.Item
+                      name="quantity"
+                    >
+                      <Input disabled className={styles.inputNumberItems} />
                     </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item className={styles.formItems} label="SỐ LƯỢNG" name="quantity">
-                      <InputNumber 
-                      defaultValue={editVariant.quantity} 
-                      className={styles.inputNumberItems} 
-                      min={0} 
-                      rules={[
-                        {
-                          pattern: /^(?:\d*)$/,
-                          message: 'Vui lòng nhập số',
-                        },
-                        {
-                          max: 10,
-                          message: 'Tối đa 10 kí tự',
-                        },
-                        {
-                          required: true,
-                          message: 'Vui lòng nhập số lượng!',
-                        },
-                      ]}
-                      formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}/>
-                    </Form.Item>
-                  </Col>
-                  <Col span={24}>
-                    <Title className={styles.subtitle}>CHỈNH SỬA THUỘC TÍNH</Title>
-                  </Col>
-                  <Col span={24}>
-                    <Row>
-                      {editVariant.options.map((item, index) => {
-                        
-                        return (
-                          <Col span={11} offset={1}>
-                            <Form.Item
-                              className={styles.formItems}
-                              label={item.optionName}
-                              name={item.optionName}
+                  </Form.Item>
+                </Col>
+                <Col span={24}>
+                  <Title className={styles.subtitle}>CHỈNH SỬA THUỘC TÍNH</Title>
+                </Col>
+                <Col span={24}>
+                  <Row>
+                    {editVariant.options.map((item, index) => {
+                      return (
+                        <Col span={11} offset={1}>
+                          <Form.Item
+                            className={styles.formItems}
+                            label={item.optionName}>
+                            <Form.Item name={item.optionName}
+                             rules={[
+                              {
+                                required: true,
+                                message: `Vui lòng nhập ${item.optionName}`,
+                              },
+                              {
+                                max: 50,
+                                message: 'Tối đa 50 kí tự',
+                              },
+                            ]}
                             >
-                              <Input defaultValue={item.optionValue} className={styles.inputItems} />
-                            </Form.Item>
-                          </Col>
-                        );
-                      })}
-                    </Row>
-                  </Col>
-                  <Col span={4} offset={15}>
-                    <Form.Item>
-                      <Button
-                        className={styles.myButtonCancel}
-                        onClick={() => {
-                          router.goBack();
-                        }}
-                        size="large"
-                        htmlType="button"
-                      >
-                        Hủy
-                      </Button>
-                    </Form.Item>
-                  </Col>
-                  <Col span={3}>
-                    <Form.Item>
-                      <Button
-                        type="primary"
-                        className={styles.myButton}
-                        size="large"
-                        htmlType="submit"
-                        // onClick={handleAllFields}
-                        // loading={isLoading}
-                      >
-                        Hoàn tất
-                      </Button>
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Affix>
+                            <Input className={styles.inputItems} />
+                          </Form.Item>
+                          </Form.Item>
+                        </Col>
+                      );
+                    })}
+                  </Row>
+                </Col>
+                <Col span={4} offset={15}>
+                  <Form.Item>
+                    <Button
+                      className={styles.myButtonCancel}
+                      onClick={() => {
+                        router.goBack();
+                      }}
+                      size="large"
+                      htmlType="button"
+                    >
+                      Hủy
+                    </Button>
+                  </Form.Item>
+                </Col>
+                <Col span={3}>
+                  <Form.Item>
+                    <Button
+                      type="primary"
+                      className={styles.myButton}
+                      size="large"
+                      htmlType="submit"
+                      // onClick={handleAllFields}
+                      // loading={isLoading}
+                    >
+                      Hoàn tất
+                    </Button>
+                  </Form.Item>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </Form>
@@ -219,4 +252,4 @@ const EditVariant = props => {
   );
 };
 
-export default  connect(state => ({ loading: state.loading })) (EditVariant);
+export default connect(state => ({ loading: state.loading }))(EditVariant);
