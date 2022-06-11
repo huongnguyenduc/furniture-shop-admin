@@ -132,7 +132,7 @@ const EditVariant = props => {
                       <InputNumber 
                       defaultValue={editVariant.price} 
                       className={styles.inputNumberItems}
-                      min={1000} 
+                      min={1} 
                       formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                       />
                     </Form.Item>
