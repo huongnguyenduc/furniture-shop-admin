@@ -80,12 +80,17 @@ const CreateProduct = props => {
     let result = categories.filter(item =>
       item.categoryName.toUpperCase().includes(value.toUpperCase()),
     );
-    return result.map((item, index) => {
-      return {
+    let render = [];
+    result.forEach((item) => {
+      if(item.options.length > 0) {
+      if(render.find(i => i.value == item.categoryName) === undefined)
+      render.push({
         value: item.categoryName,
         label: <span>{item.categoryName}</span>,
-      };
+      });
+    }
     });
+    return render;
   };
   const handleSearchCate = value => {
     setState({
