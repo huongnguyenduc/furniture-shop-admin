@@ -1,4 +1,4 @@
-import { getCustomers, getStaffs,addUser,blockAccount } from '../services/user';
+import { getCustomers, getStaffs,addUser, blockAccount, delAccount } from '../services/user';
 import { notification } from 'antd';
 export default {
   namespace: 'user',
@@ -58,6 +58,19 @@ export default {
           message: response.errors
         })
       }
+    },
+    *delUser(action, {put, call}) {
+      const response = yield call(delAccount, action.payload);
+      if (response.status === 200) {
+        yield put({ type: 'delete', payload: action.payload }); 
+        notification.success({
+          message: 'Delete success'
+        })
+      } else {
+        notification.error({
+          message: response.errors
+        })
+      }
     }
   },
   reducers: {
@@ -72,6 +85,10 @@ export default {
         ...state,
         staffs: action.payload,
       };
+    },
+    delete(state, action) {
+      console.log(action.payload);
+      return { ...state, staffs: state.staffs.filter(user => user.username != action.payload) };
     },
   },
 };

@@ -59,7 +59,6 @@ export default {
   },
   reducers: {
     createBrand(state, action) {
-      console.log('da create');
       const brand = {
         brandName: action.payload.content.brandName,
         brandId: action.payload.content.brandId,

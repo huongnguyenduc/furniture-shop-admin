@@ -16,4 +16,9 @@ export function blockAccount(payload) {
     method: 'PUT',
   });
 }
+export function delAccount(payload) {
+  return request(`/api/users/${payload}`, {
+    method: 'DELETE',
+  });
+}
 

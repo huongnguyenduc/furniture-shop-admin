@@ -9,7 +9,7 @@ const StaffActionRender = ({ dispatch, item }) => {
   async function confirm(e) {
     dispatch({
       type: 'user/delUser',
-      payload: item.userId,
+      payload: item.username,
     });
   }
 
