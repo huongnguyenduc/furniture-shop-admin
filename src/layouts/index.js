@@ -115,7 +115,7 @@ function BasicLayout(props) {
               onClick={() => router.push('/voucher')}
               // -- //
             >
-              <span className={styles.menuTitle}>Khuyến Mại</span>
+              <span className={styles.menuTitle}>Khuyến Mãi</span>
             </Menu.Item>
             <Menu.Item
               className={styles.menuItems}

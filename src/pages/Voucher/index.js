@@ -71,7 +71,7 @@ const Voucher = props => {
       width: '15%',
       sorter: (a, b) => parseInt(a.voucherValue) - parseInt(b.voucherValue),
       render: item => {
-        return moneyConverter(item) + 'đ';
+        return moneyConverter(item);
       },
     },
     {
@@ -80,7 +80,7 @@ const Voucher = props => {
       align: 'center',
       width: '15%',
       render: item => {
-        return moneyConverter(item) + 'đ';
+        return moneyConverter(item);
       },
     },
     {

@@ -36,13 +36,19 @@ const rangeConfig = {
 
 
 const EditVoucher = props => {
-  const voucherTemp = JSON.parse(props.location.query.voucher);
+  let voucherTemp = JSON.parse(props.location.query.voucher);
   const [newVoucher, setNewVoucher] = useState(voucherTemp);
   const {dispatch} = props;
-  
+  const dateFormat = 'YYYY-MM-DD';
   React.useEffect(() => {
-    
-  }, []);
+    console.log("--EDIT VOUCHER--"); 
+    console.log("old temp");
+    console.log(voucherTemp);
+    voucherTemp['range_picker'] = [moment(voucherTemp.validDate.substring(0,10), "YYYY-MM-DD"), moment(voucherTemp.expirationDate.substring(0,10), "YYYY-MM-DD")]
+    console.log("new temp");
+    console.log(voucherTemp);
+    console.log("--END-EDIT---");
+  }, [props, voucherTemp]);
   
   const validFields = (voucher) =>{
     const tomorow = moment(moment().add(1, 'days'));
@@ -121,7 +127,11 @@ const EditVoucher = props => {
             className={styles.formItems}
             {...rangeConfig}
         >
-            <RangePicker className={styles.inputItems} />
+            <RangePicker 
+              className={styles.inputItems}
+              defaultValue={[moment(voucherTemp.validDate.substring(0,10), dateFormat), moment(voucherTemp.expirationDate.substring(0,10), dateFormat)]}
+              format={dateFormat}
+              />
         </Form.Item>
         </Col>
         <Col span={24}>
