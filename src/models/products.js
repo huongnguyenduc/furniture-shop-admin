@@ -105,7 +105,7 @@ export default {
         });
         notification.success({ message: 'Detele success' });
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *delVariant(action, { put, call }) {
@@ -117,7 +117,7 @@ export default {
         });
         notification.success({ message: 'Delete success' });
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *setView({ payload: id }, { put, call }) {

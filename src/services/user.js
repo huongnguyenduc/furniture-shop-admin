@@ -11,4 +11,9 @@ export function addUser(payload) {
     body: JSON.stringify(payload),
   });
 }
+export function blockAccount(payload) {
+  return request(`/api/users/${payload}`, {
+    method: 'PUT',
+  });
+}
 

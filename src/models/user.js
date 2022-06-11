@@ -1,4 +1,4 @@
-import { getCustomers, getStaffs,addUser } from '../services/user';
+import { getCustomers, getStaffs,addUser,blockAccount } from '../services/user';
 import { notification } from 'antd';
 export default {
   namespace: 'user',
@@ -37,9 +37,21 @@ export default {
     *createUser(action, {put, call}) {
       const response = yield call(addUser, action.payload);
       console.log(response);
-      if (response.status === 200) {
+      if (response.status === 201) {
         notification.success({
           message: 'Create success'
+        })
+      } else {
+        notification.error({
+          message: response.errors
+        })
+      }
+    },
+    *lockAccount(action, {put, call}) {
+      const response = yield call(blockAccount, action.payload);
+      if (response.status === 200) {
+        notification.success({
+          message: 'Update success'
         })
       } else {
         notification.error({

@@ -26,7 +26,7 @@ export default {
         router.goBack();
       } else {
         console.log(response)
-        notification.error({ message: response.message });
+        notification.error({ message: response.errors });
       }
     },
   },

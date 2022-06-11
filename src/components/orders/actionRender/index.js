@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './styles.less';
-import { Space, Tooltip, Button, Modal } from 'antd';
+import { Space, Tooltip, Button, Modal, notification } from 'antd';
 import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { router } from 'umi';
 const ActionRender = ({ showModal, item, dispatch }) => {
@@ -19,10 +19,17 @@ const ActionRender = ({ showModal, item, dispatch }) => {
       title: 'Bạn chắc chắn muốn xóa?',
       onOk: () => {
         const orderId = item.orderId;
+        let roles = localStorage.getItem('roles');
+        roles = typeof roles === 'string' ? [roles] : roles;
+        const isAdmin = roles.indexOf('ADMIN') !== -1;
+        if(isAdmin) {
         dispatch({
           type: 'orders/deleteOrder',
           payload: orderId,
-        });
+        });}
+        else {
+          notification.warning({message: "You don't have a permission to delete this!"})
+        }
       },
     });
   };

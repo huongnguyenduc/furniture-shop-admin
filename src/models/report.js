@@ -440,7 +440,7 @@ export default {
           },
         });
       } else {
-        notification.error({ message: 'Khong the goi api.' });
+        notification.error({ message: 'Không thể gọi api.' });
       }
     },
     *getSummary(action, { put, call }) {

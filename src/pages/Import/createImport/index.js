@@ -63,9 +63,9 @@ const NewImport = props => {
       sku: variants.at(index).sku,
       variant_id: variants.at(index).variantId,
     };
-
+    if(importItems.find(i => i.variant_id == item.variant_id) === undefined) {
     importItems.push(item);
-
+    }
     setImportItems(importItems);
     setIsModalVisible(false);
   };

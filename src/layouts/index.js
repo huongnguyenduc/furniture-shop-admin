@@ -22,7 +22,6 @@ function BasicLayout(props) {
   const { children, dispatch } = props;
   const [Collapsed, setCollapsed] = useState(false);
   let roles = localStorage.getItem('roles');
-  console.log(roles);
   roles = typeof roles === 'string' ? [roles] : roles;
   const isAdmin = roles.indexOf('ADMIN') !== -1;
   window.onunload = () => {
