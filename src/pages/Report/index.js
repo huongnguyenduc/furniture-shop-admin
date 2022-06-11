@@ -528,7 +528,7 @@ const Report = props => {
        <Col span={6}>
           <div className={styles.overViewContainer}>
             <Row >
-              <Col span={18}>
+              <Col span={16} offset={1}>
                 <p className={styles.title}>TỔNG HÓA ĐƠN</p> 
                 <p className={styles.value}>{moneyConverter(summary.numberOfSales)}</p> 
               </Col>  
@@ -541,8 +541,8 @@ const Report = props => {
        <Col span={6}>
           <div className={styles.overViewContainer}>
             <Row >
-              <Col span={18}>
-                <p className={styles.title}>Doanh thu</p> 
+              <Col span={16} offset={1}>
+                <p className={styles.title}>DOANH THU</p> 
                 <p className={styles.value}>{moneyConverter(summary.revenue)}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
@@ -554,7 +554,7 @@ const Report = props => {
        <Col span={6}>
           <div className={styles.overViewContainer}>
             <Row >
-              <Col span={18}>
+              <Col span={16} offset={1}>
                 <p className={styles.title}>SỐ ĐƠN NHẬP</p> 
                 <p className={styles.value}>{moneyConverter(summary.numberOfImporter)}</p> 
               </Col>  
@@ -567,8 +567,8 @@ const Report = props => {
        <Col span={6}>
           <div className={styles.overViewContainer}>
             <Row >
-              <Col span={18}>
-                <p className={styles.title}>Chi phí</p> 
+              <Col span={16} offset={1}>
+                <p className={styles.title}>CHI PHÍ</p> 
                 <p className={styles.value}>{moneyConverter(summary.cost)}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
