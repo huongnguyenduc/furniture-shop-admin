@@ -111,38 +111,38 @@ function BasicLayout(props) {
             >
               <span className={styles.menuTitle}>Nhập Hàng</span>
             </Menu.Item>
-            {isAdmin &&
-            <Menu.Item
-              className={styles.menuItems}
-              key="8"
-              icon={<TagsOutlined className={styles.menuIcons} />}
-              // --chưa commit --//
-              onClick={() => router.push('/voucher')}
-              // -- //
-            >
-              <span className={styles.menuTitle}>Khuyến Mại</span>
-            </Menu.Item>
-            }
-            {isAdmin &&
-            <Menu.Item
-              className={styles.menuItems}
-              key="9"
-              icon={<TeamOutlined className={styles.menuIcons} />}
-              onClick={() => router.push('/user')}
-            >
-              <span className={styles.menuTitle}>Tài Khoản</span>
-            </Menu.Item>
-            }
-            {isAdmin &&
-            <Menu.Item
-              className={styles.menuItems}
-              key="10"
-              icon={<PieChartOutlined className={styles.menuIcons} />}
-              onClick={() => router.push('/report')}
-            >
-              <span className={styles.menuTitle}>Báo Cáo</span>
-            </Menu.Item>
-            }
+            {isAdmin && (
+              <Menu.Item
+                className={styles.menuItems}
+                key="8"
+                icon={<TagsOutlined className={styles.menuIcons} />}
+                // --chưa commit --//
+                onClick={() => router.push('/voucher')}
+                // -- //
+              >
+                <span className={styles.menuTitle}>Khuyến Mại</span>
+              </Menu.Item>
+            )}
+            {isAdmin && (
+              <Menu.Item
+                className={styles.menuItems}
+                key="9"
+                icon={<TeamOutlined className={styles.menuIcons} />}
+                onClick={() => router.push('/user')}
+              >
+                <span className={styles.menuTitle}>Tài Khoản</span>
+              </Menu.Item>
+            )}
+            {isAdmin && (
+              <Menu.Item
+                className={styles.menuItems}
+                key="10"
+                icon={<PieChartOutlined className={styles.menuIcons} />}
+                onClick={() => router.push('/report')}
+              >
+                <span className={styles.menuTitle}>Báo Cáo</span>
+              </Menu.Item>
+            )}
           </Menu>
         </Sider>
       </Affix>
