@@ -143,6 +143,20 @@ const EditVariant = props => {
                       defaultValue={editVariant.quantity} 
                       className={styles.inputNumberItems} 
                       min={0} 
+                      rules={[
+                        {
+                          pattern: /^(?:\d*)$/,
+                          message: 'Vui lòng nhập số',
+                        },
+                        {
+                          max: 10,
+                          message: 'Tối đa 10 kí tự',
+                        },
+                        {
+                          required: true,
+                          message: 'Vui lòng nhập số lượng!',
+                        },
+                      ]}
                       formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}/>
                     </Form.Item>
                   </Col>

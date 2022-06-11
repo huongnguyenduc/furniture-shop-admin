@@ -12,7 +12,9 @@ import {
 const PaymentRender = ({ text,dispatch }) => {
   const [status, setStatus] = useState(text.paymentStatus);
   
-
+  React.useEffect(()=> {
+    setStatus(text.paymentStatus);
+  },[text.paymentStatus]);
   const updateStatus = (value) => {
     let request = {};
     request.orderId = text.orderId;

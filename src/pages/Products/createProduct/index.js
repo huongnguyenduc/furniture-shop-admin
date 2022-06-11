@@ -556,6 +556,14 @@ const CreateProduct = props => {
                                   name={label}
                                   rules={[
                                     {
+                                      pattern: /^(?:\d*)$/,
+                                      message: 'Vui lòng nhập số',
+                                    },
+                                    {
+                                      max: 10,
+                                      message: 'Tối đa 10 kí tự',
+                                    },
+                                    {
                                       required: true,
                                       message: 'Vui lòng nhập giá bán!',
                                     },

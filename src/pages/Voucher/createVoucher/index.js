@@ -119,6 +119,10 @@ const CreateVoucher = props => {
                   required: true,
                   message: 'Vui lòng điền mã khuyến mãi!',
                 },
+                {
+                  max: 10,
+                  message: 'Tối đa 10 kí tự',
+                },
                 { 
                   pattern: "^[A-Z0-9]*$",
                   message: 'Mã chỉ bao gồm kí tự A-Z và chữ số 0-9',
@@ -141,7 +145,7 @@ const CreateVoucher = props => {
         <Col span={24}>
         <Form.Item 
             name='voucherValue'
-            label="GIÁ TRỊ" 
+            label="PHẦN TRĂM" 
             className={styles.formItems}
             rules={[
                 {
@@ -155,7 +159,7 @@ const CreateVoucher = props => {
                 }
               ]}
         >
-            <InputNumber className={styles.numberInputItems}/>
+            <InputNumber className={styles.numberInputItems} max={70}/>
         </Form.Item>
         </Col>
         <Col span={24}>
@@ -175,13 +179,13 @@ const CreateVoucher = props => {
                 }
               ]}
         >
-            <InputNumber className={styles.numberInputItems}/>
+            <InputNumber className={styles.numberInputItems} max={100}/>
         </Form.Item>
         </Col>
         <Col span={24}>
         <Form.Item 
             name='cappedAt'
-            label="HÓA ĐƠN TỐI THIỂU" 
+            label="GIẢM TỐI ĐA" 
             className={styles.formItems}
             rules={[
                 {

@@ -18,7 +18,8 @@ const Orders = props => {
     dispatch({
       type: 'orders/getOrderList',
     });
-  }, [dispatch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const orders = useSelector(state => state.orders.orders);
   const [isShowModal, setIsShowModal] = useState(false);
   const [state, setState] = useState({
