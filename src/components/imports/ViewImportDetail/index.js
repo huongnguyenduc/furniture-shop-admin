@@ -1,6 +1,7 @@
 import React from 'react';
-import { Modal, Table, Image, Button } from 'antd';
+import { Modal, Table, Image, Button,Row,Col, Descriptions } from 'antd';
 import { router } from 'umi';
+import styles from './styles.less';
 import { moneyConverter } from '../../../Utils/helper';
 const pdfpreview = props => {
   console.log(props);
@@ -32,16 +33,10 @@ const ViewImportDetail = props => {
       },
     },
     {
-      title: 'SKU',
+      title: 'Mã SKU',
       dataIndex: 'sku',
       align: 'left',
-      width: '50%',
-    },
-    {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      align: 'center',
-      width: '10%',
+      width: '40%',
     },
     {
       title: 'Giá nhập',
@@ -49,6 +44,19 @@ const ViewImportDetail = props => {
       align: 'center',
       render: item => {
         return moneyConverter(item);
+      },
+    },
+    {
+      title: 'Số lượng',
+      dataIndex: 'quantity',
+      align: 'center',
+      width: '10%',
+    },
+    {
+      title: 'Thành tiền',
+      align: 'center',
+      render: item => {
+        return moneyConverter(item.price*item.quantity);
       },
     },
   ];
@@ -67,16 +75,39 @@ const ViewImportDetail = props => {
   return (
     <Modal
       className="cc"
-      width={1020}
+      width={1300}
       title="CHI TIẾT NHẬP HÀNG"
       visible={props.visible}
       onCancel={props.onCancel}
-      footer={[
-        <Button key="Ok" onClick={() => pdfpreview(props)}>
-          Export
-        </Button>,
-      ]}
+      footer={null}
+      
     >
+       <Row className={styles.viewContainer}>
+        <Col span={20}>
+        <Descriptions>
+        <Descriptions.Item label="Mã hóa đơn nhập"> { props.importDetails?.importId}</Descriptions.Item>
+            <Descriptions.Item label="Email người nhập"> { props.importDetails?.emailImporter}</Descriptions.Item>
+            <Descriptions.Item label="Ngày nhập">
+              {props.importDetails?.createdAt}
+            </Descriptions.Item>
+            <Descriptions.Item label="Tổng giá trị">
+              {moneyConverter( props.importDetails?.totalPrice)}
+            </Descriptions.Item>
+    
+          </Descriptions>
+        </Col>
+        <Col span={1} offset={2}>
+          <Button
+            className={styles.buttonExport}
+            onClick={() => pdfpreview(props)}
+          >
+            Export
+          </Button>
+        </Col>
+        <Col span={19} offset={4} className={styles.inforContainer}>
+          <span style={{ marginBottom: '20px' }} className={styles.subtitle}>
+            Danh sách hàng:
+          </span>
       <Table 
       columns={columns} 
       dataSource={data} 
@@ -85,6 +116,8 @@ const ViewImportDetail = props => {
       bordered>
 
       </Table>
+      </Col>
+      </Row>
     </Modal>
   );
 };

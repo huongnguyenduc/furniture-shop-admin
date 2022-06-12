@@ -6,19 +6,20 @@ import { EditOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { router } from 'umi';
 const CusActionRender = ({ dispatch, item }) => {
 
-  async function changeStatus(e) {
+  async function changeStatus() {
     dispatch({
       type: 'user/lockAccount',
-      payload: item.userId,
+      payload: item.username,
     });
   }
   function onChange(checked) {
     console.log(`switch to ${checked}`);
+    changeStatus();
   }
   return (
     <Space size="middle">
       <Tooltip title="Vô hiệu hóa">
-      <Switch defaultChecked={item.activeFlag == "N" ? true : false} onChange={onChange} />
+      <Switch defaultChecked={item.activeFlag == "B" ? true : false} onChange={onChange} />
       </Tooltip>
     </Space>
   );

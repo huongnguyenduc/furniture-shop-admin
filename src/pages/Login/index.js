@@ -4,9 +4,11 @@ import { Row, Col, Form, Input, Button, Checkbox, Spin } from 'antd';
 import { connect } from 'dva';
 const Login = props => {
   const { dispatch, loading } = props;
-  let isLoading = false
+  let isLoading = false;
+  React.useEffect(() => {
+    isLoading = loading.effects['login/login'];
+  },[loading.effects['login/login']])
   const onFinish = values => {
-  isLoading = loading.effects[('login/login')];
     console.log(values);
     dispatch({ type: 'login/login', payload: values });
   };

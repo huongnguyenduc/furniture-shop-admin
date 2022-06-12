@@ -63,9 +63,9 @@ const NewImport = props => {
       sku: variants.at(index).sku,
       variant_id: variants.at(index).variantId,
     };
-
+    if(importItems.find(i => i.variant_id == item.variant_id) === undefined) {
     importItems.push(item);
-
+    }
     setImportItems(importItems);
     setIsModalVisible(false);
   };
@@ -246,12 +246,14 @@ const NewImport = props => {
                           className={styles.formImportItem}
                           label="GIÁ NHẬP"
                           name={orignalPrice}
+                          
                           required={true}
                         >
                           <InputNumber
                             className={styles.numberInputItems}
                             defaultValue={1}
                             min={1}
+                            max={100000}
                           />
                         </Form.Item>
                         <Form.Item
@@ -264,6 +266,7 @@ const NewImport = props => {
                             className={styles.numberInputItems}
                             defaultValue={1}
                             min={1}
+                            max={100}
                           />
                         </Form.Item>
                       </Row>

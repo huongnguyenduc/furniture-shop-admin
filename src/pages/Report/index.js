@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Layout, Row, Col, DatePicker, Select, Button, Form, Spin } from 'antd'
+import {Layout, Row, Col, DatePicker, Select, Button, Form, Spin, notification, message } from 'antd'
 import { connect, useSelector } from 'dva';
 import { Line , DualAxes} from '@ant-design/plots'
 import { 
@@ -15,7 +15,7 @@ import {moneyConverter} from '../../Utils/helper'
 import { CSVLink, CSVDownload } from "react-csv";
 import moment from 'moment';
 const Report = props => {
-  const dataFormTemp = {
+  let dataFormTemp = {
     start : moment().set("date",1).format("YYYY-MM-DD"),
     end : moment().format("YYYY-MM-DD"),
     compression: "day",
@@ -31,7 +31,7 @@ const Report = props => {
   const summary = useSelector(state => state.report.summary)
   const columnsData = useSelector(state => state.report.columnsData)
   const linesData = useSelector(state => state.report.linesData);
-  const [dataForm, setDataForm] = useState(dataFormTemp);
+  //const [dataForm, setDataForm] = useState(dataFormTemp);
   const data = [
     {
       "year": "1850",
@@ -322,7 +322,7 @@ const Report = props => {
       dataIndex: 'revenue',
       align: 'center',
       render: (item) =>{
-        return moneyConverter(item) + "đ";
+        return moneyConverter(item);
       }
     },
     {
@@ -337,7 +337,7 @@ const Report = props => {
       dataIndex: 'cost',
       align: 'center',
       render: (item) =>{
-        return moneyConverter(item) + "đ";
+        return moneyConverter(item);
       }
     },
   ]
@@ -375,7 +375,7 @@ const Report = props => {
       money:{
         label: {
           formatter: (v) => {
-            return moneyConverter(v) + ' VND';
+            return moneyConverter(v) + ' $';
           },
         }
       },
@@ -444,10 +444,10 @@ const Report = props => {
   React.useEffect(() => {
     dispatch({
     type: 'report/getDataLineChart',
-    payload: dataForm
-    });  
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [  ]);           // xóa dataForm
+    payload: dataFormTemp
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);           // xóa dataForm
 
   const onValuesChange = async (changedValues, allValues) => {
     const tmp = {...allValues};
@@ -457,7 +457,8 @@ const Report = props => {
       tmp.end = allValues.rangePicker[1].format("YYYY-MM-DD");
     }
 
-    setDataForm({...tmp});
+    //setDataForm({...tmp});
+    dataFormTemp = {...tmp};
   }
   const onFinish = () =>{
     //console.log(dataForm);
@@ -467,11 +468,16 @@ const Report = props => {
     // })
   }
   const onBtnSubmit = () =>{
-    if (dataForm.rangePicker !== null){
-      dispatch({
-        type: "report/getDataLineChart",
-        payload: dataForm
-      })
+    if (dataFormTemp.rangePicker !== null){
+      const rangeDate = (dataFormTemp.rangePicker[1] - dataFormTemp.rangePicker[0])/(3600000*24);
+      if (rangeDate > 11){
+        notification.error({message: "Chỉ được xem báo cáo trong khoảng 10 ngày"});
+      }else{
+        dispatch({
+          type: "report/getDataLineChart",
+          payload: dataFormTemp
+        })
+      }
     }
   }
   //-- ENd Form --//
@@ -490,8 +496,7 @@ const Report = props => {
             onValuesChange = {onValuesChange}
             className={styles.form}
             initialValues = {dataFormTemp}
-            onFinish = {onFinish}
-          >        
+            onFinish = {onFinish}>        
                 <Form.Item name="rangePicker" 
                           label="Thời gian" 
                           rules= {[
@@ -523,7 +528,7 @@ const Report = props => {
        <Col span={6}>
           <div className={styles.overViewContainer}>
             <Row >
-              <Col span={18}>
+              <Col span={16} offset={1}>
                 <p className={styles.title}>TỔNG HÓA ĐƠN</p> 
                 <p className={styles.value}>{moneyConverter(summary.numberOfSales)}</p> 
               </Col>  
@@ -536,9 +541,9 @@ const Report = props => {
        <Col span={6}>
           <div className={styles.overViewContainer}>
             <Row >
-              <Col span={18}>
+              <Col span={16} offset={1}>
                 <p className={styles.title}>DOANH THU</p> 
-                <p className={styles.value}>{moneyConverter(summary.revenue)+" VND"}</p> 
+                <p className={styles.value}>{moneyConverter(summary.revenue)}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
                 <DollarCircleOutlined className={styles.icon} style={{color: '#FFC107'}}/>
@@ -549,7 +554,7 @@ const Report = props => {
        <Col span={6}>
           <div className={styles.overViewContainer}>
             <Row >
-              <Col span={18}>
+              <Col span={16} offset={1}>
                 <p className={styles.title}>SỐ ĐƠN NHẬP</p> 
                 <p className={styles.value}>{moneyConverter(summary.numberOfImporter)}</p> 
               </Col>  
@@ -562,9 +567,9 @@ const Report = props => {
        <Col span={6}>
           <div className={styles.overViewContainer}>
             <Row >
-              <Col span={18}>
+              <Col span={16} offset={1}>
                 <p className={styles.title}>CHI PHÍ</p> 
-                <p className={styles.value}>{moneyConverter(summary.cost)+" VND"}</p> 
+                <p className={styles.value}>{moneyConverter(summary.cost)}</p> 
               </Col>  
               <Col span={6} className={styles.divIcon}>
               <FundOutlined className={styles.icon} style={{color: '#F41127'}}/>
@@ -610,7 +615,8 @@ const Report = props => {
            </Row>
           <Table columns={colomnsReportTable}
                  dataSource={dataReportTable}
-                 pagination={false}/>
+                 pagination={false}
+                 scroll={{y:500}}/>
          </div>
         
        </Col>

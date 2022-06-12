@@ -26,7 +26,7 @@ const CreateUser = props => {
       message: 'Vui lòng xác nhận lại mật khẩu'
     })
   }
-  values.roleId = 1;
+  values.roleId = 2;
   dispatch({
     type: 'user/createUser',
     payload: values,
@@ -119,6 +119,10 @@ const CreateUser = props => {
                             max: 30,
                             message: 'Tối đa 30 kí tự',
                           },
+                          {
+                            min: 4,
+                            message: 'Tối thiểu 4 kí tự',
+                          },
                         ]}
                       >
                         <Input className={styles.inputItems} />
@@ -133,6 +137,10 @@ const CreateUser = props => {
                           {
                             required: true,
                             message: 'Vui lòng nhập lại mật khẩu',
+                          },
+                          {
+                            min: 4,
+                            message: 'Tối thiểu 4 kí tự',
                           },
                         ]}
                       >

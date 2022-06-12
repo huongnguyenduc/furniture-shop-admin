@@ -80,12 +80,17 @@ const CreateProduct = props => {
     let result = categories.filter(item =>
       item.categoryName.toUpperCase().includes(value.toUpperCase()),
     );
-    return result.map((item, index) => {
-      return {
+    let render = [];
+    result.forEach((item) => {
+      if(item.options.length > 0) {
+      if(render.find(i => i.value == item.categoryName) === undefined)
+      render.push({
         value: item.categoryName,
         label: <span>{item.categoryName}</span>,
-      };
+      });
+    }
     });
+    return render;
   };
   const handleSearchCate = value => {
     setState({
@@ -555,6 +560,14 @@ const CreateProduct = props => {
                                 <Form.Item
                                   name={label}
                                   rules={[
+                                    {
+                                      pattern: /^(?:\d*)$/,
+                                      message: 'Vui lòng nhập số',
+                                    },
+                                    {
+                                      max: 10,
+                                      message: 'Tối đa 10 kí tự',
+                                    },
                                     {
                                       required: true,
                                       message: 'Vui lòng nhập giá bán!',

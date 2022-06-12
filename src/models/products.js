@@ -10,6 +10,7 @@ import {
 import { uploader } from '../Utils/uploader';
 import { notification } from 'antd';
 import { NotificationOutlined } from '@ant-design/icons';
+import { router } from 'umi';
 export default {
   namespace: 'products',
   state: {
@@ -70,12 +71,13 @@ export default {
           console.log(response.content.productId);
           const respon = yield call(addVariant, element);
           if (respon.status !== 200) {
-            notification.error({ message: respon.content });
+            notification.error({ message: respon.errors });
             break;
           }
         }
+        router.goBack();
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *editProduct(action, { put, call }) {
@@ -83,7 +85,7 @@ export default {
       if (response.status === 200) {
         notification.success({ message: 'Save success' });
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *editVariant(action, { put, call }) {
@@ -91,7 +93,7 @@ export default {
       if (response.status === 200) {
         notification.success({ message: 'Edit success' });
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *delProduct(action, { put, call }) {
@@ -103,7 +105,7 @@ export default {
         });
         notification.success({ message: 'Detele success' });
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *delVariant(action, { put, call }) {
@@ -115,7 +117,7 @@ export default {
         });
         notification.success({ message: 'Delete success' });
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *setView({ payload: id }, { put, call }) {

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from 'react';
 import { Menu, Dropdown, Space, Button, Modal } from 'antd';
 import { ExclamationCircleOutlined, DownOutlined } from '@ant-design/icons';
@@ -11,7 +12,9 @@ import {
 
 const OrderRender = ({ text, dispatch }) => {
   const [status, setStatus] = useState(text.orderStatus);
-
+  React.useEffect(()=> {
+    setStatus(text.orderStatus);
+  },[text.orderStatus]);
   const updateStatus = value => {
     let request = {};
     request.orderId = text.orderId;

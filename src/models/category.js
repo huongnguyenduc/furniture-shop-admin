@@ -27,7 +27,7 @@ export default {
           payload: 111,
         });
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *addCategory(action, { put, call }) {
@@ -38,7 +38,7 @@ export default {
           payload: 111,
         });
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
     *editCategory(action, { put, call }) {
@@ -49,7 +49,7 @@ export default {
           payload: 111,
         });
       } else {
-        notification.error({ message: response.content });
+        notification.error({ message: response.errors });
       }
     },
   },

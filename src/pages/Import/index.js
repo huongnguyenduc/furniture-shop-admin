@@ -39,19 +39,13 @@ const Import = props => {
       title: 'Người Nhập',
       dataIndex: 'emailImporter',
       align: 'center',
-      width: '10%',
-    },
-    {
-      title: 'Mô tả',
-      dataIndex: 'importDesc',
-      align: 'center',
       width: '15%',
     },
     {
       title: 'Tổng giá trị',
       dataIndex: 'totalPrice',
       align: 'center',
-      width: '20%',
+      width: '15%',
       render: text => {
         return moneyConverter(text);
       },
@@ -59,6 +53,12 @@ const Import = props => {
     {
       title: 'Ngày nhập',
       dataIndex: 'createdAt',
+      align: 'center',
+      width: '15%',
+    },
+    {
+      title: 'Mô tả',
+      dataIndex: 'importDesc',
       align: 'center',
       width: '15%',
     },

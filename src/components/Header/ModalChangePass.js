@@ -101,6 +101,10 @@ export const ModalChangePass = ({ dispatch, onCancle, visible,username }) => {
                     max: 30,
                     message: 'Tối đa 30 kí tự',
                   },
+                  {
+                    min: 4,
+                    message: 'Tối thiểu 4 kí tự',
+                  },
                 ]}
               >
                 <Input.Password  className={styles.inputItems} />
