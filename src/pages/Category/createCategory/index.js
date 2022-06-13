@@ -46,13 +46,11 @@ const CreateCategory = props => {
     );
     let render = [];
     result.forEach((item) => {
-      if(item.options.length > 0) {
       if(render.find(i => i.value == item.categoryName) === undefined)
       render.push({
         value: item.categoryName,
         label: <span>{item.categoryName}</span>,
       });
-    }
     });
     return render;  
   };
