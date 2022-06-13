@@ -44,12 +44,15 @@ const CreateCategory = props => {
     let result = categories.filter(item =>
       item.categoryName.toUpperCase().includes(value.toUpperCase()),
     );
-    return result.map((item, index) => {
-      return {
+    let render = [];
+    result.forEach((item) => {
+      if(render.find(i => i.value == item.categoryName) === undefined)
+      render.push({
         value: item.categoryName,
         label: <span>{item.categoryName}</span>,
-      };
+      });
     });
+    return render;  
   };
   const onSelectCate = value => {
     let result = categories.find(item => item.categoryName.toUpperCase() === value.toUpperCase());
